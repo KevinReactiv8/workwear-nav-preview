@@ -58,7 +58,9 @@
   h1.title{ font-size:30px; font-weight:800; letter-spacing:-.5px; margin:8px 0 4px; }
   .count{ font-size:12px; color:var(--mut); margin-bottom:24px; }
   .grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
-  .card .ph{ aspect-ratio:3/4; background:linear-gradient(135deg,#f3f3f3,#e9e9e9); border-radius:4px; display:flex; align-items:center; justify-content:center; color:#c4c4c4; font-size:11px; letter-spacing:1px; text-transform:uppercase; }
+  .card .ph{ aspect-ratio:3/4; background:#f3f3f3; border-radius:4px; overflow:hidden; }
+  .card .ph img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease; }
+  .card:hover .ph img{ transform:scale(1.04); }
   .card p{ font-size:12px; margin-top:9px; }
   .card .price{ font-weight:700; font-size:12px; margin-top:2px; }
   .hint{ position:fixed; bottom:16px; left:50%; transform:translateX(-50%); background:#111; color:#fff; font-size:11px; letter-spacing:.4px; padding:9px 18px; border-radius:30px; opacity:.92; }
@@ -211,23 +213,71 @@
 <div class="hint">Tip: hover <b>All Products</b> for the mega menu · click any link to “navigate”</div>
 
 <script>
-  var names=["Pro Polo Shirt","Heavy-Duty Tee","Softshell Jacket","Cargo Work Trouser","Zipped Hoodie","Crew Sweatshirt","Hi-Vis Vest","Safety Boot","Work Gloves","Bump Cap","Fleece Bodywarmer","Performance Polo"];
+  // image pools per garment/category
+  var IMG = {
+    shirt:["shirt1","shirt2","shirt3","shirt4","shirt5"],
+    hoodie:["hoodie1","hoodie2","hoodie3","hoodie4"],
+    jacket:["jacket1","coverall1","coverall2","hoodie3"],
+    legwear:["legwear1","legwear2","overall1"],
+    boots:["boots1","boots2","boots3"],
+    gloves:["gloves1","gloves2","gloves3","gloves4"],
+    hat:["hat1","hat2","hat3","hat4"],
+    glasses:["glasses1","glasses2","glasses3"],
+    hivis:["hivis1","hivis2","hivis3"],
+    healthcare:["healthcare1","shirt2","hivis1"],
+    construction:["construction1","hat1","hivis2","boots1"],
+    general:["shirt1","hoodie1","jacket1","legwear1","boots1","gloves1","hat1","hivis1","shirt3","hoodie2","overall1","coverall1"]
+  };
+  // product names per garment
+  var NAMES = {
+    shirt:["Pro Piqué Polo","Performance Polo","Cotton Work Tee","Crew Neck Tee","Classic Polo","Heavy-Duty Tee"],
+    hoodie:["Zipped Hoodie","Pullover Hoodie","Workwear Hoodie","Heavy Hoodie"],
+    jacket:["Softshell Jacket","Work Coverall","Waterproof Jacket","Fleece Jacket"],
+    legwear:["Cargo Work Trouser","Holster Trouser","Bib & Brace","Work Short"],
+    boots:["Safety Boot","Steel-Toe Boot","Waterproof Boot","Dealer Boot"],
+    gloves:["Work Gloves","Cut-Resistant Glove","Leather Rigger Glove","Grip Glove"],
+    hat:["Safety Helmet","Bump Cap","Hard Hat","Vented Helmet"],
+    glasses:["Safety Glasses","Anti-Fog Goggles","Tinted Safety Specs","Wraparound Glasses"],
+    hivis:["Hi-Vis Vest","Hi-Vis Jacket","Hi-Vis Polo","Hi-Vis Trouser"],
+    general:["Pro Polo Shirt","Zipped Hoodie","Softshell Jacket","Cargo Trouser","Safety Boot","Work Gloves","Safety Helmet","Hi-Vis Vest","Work Tee","Fleece Jacket","Bib & Brace","Coverall"]
+  };
+  function poolFor(cat){
+    var c = cat.toLowerCase();
+    if(c.indexOf("polo")>-1||c.indexOf("tee")>-1) return "shirt";
+    if(c.indexOf("hoodie")>-1||c.indexOf("sweatshirt")>-1) return "hoodie";
+    if(c.indexOf("jacket")>-1) return "jacket";
+    if(c.indexOf("legwear")>-1||c.indexOf("trouser")>-1) return "legwear";
+    if(c.indexOf("footwear")>-1||c.indexOf("boot")>-1) return "boots";
+    if(c.indexOf("glove")>-1) return "gloves";
+    if(c.indexOf("headwear")>-1) return "hat";
+    if(c.indexOf("eyewear")>-1) return "glasses";
+    if(c.indexOf("hi-vis")>-1) return "hivis";
+    if(c.indexOf("healthcare")>-1) return "healthcare";
+    if(c.indexOf("construction")>-1) return "construction";
+    if(c.indexOf("ppe")>-1) return "ppe";
+    return "general";
+  }
   function money(i){ return "£" + (12 + (i*37%34)) + ".99"; }
   function render(cat){
     document.getElementById('ptitle').textContent = cat;
     var bits = cat.split(" · ");
-    document.getElementById('crumb');
     document.querySelector('.crumb').textContent = "Home" + (bits.length>1? " / " + bits[0] : (cat!=="All Products"? " / "+cat : ""));
+    var key = poolFor(cat);
+    var imgs, names;
+    if(key==="ppe"){ imgs=[].concat(IMG.hat,IMG.glasses,IMG.boots,IMG.gloves); names=["Safety Helmet","Safety Glasses","Safety Boot","Work Gloves","Bump Cap","Anti-Fog Goggles","Steel-Toe Boot","Cut-Resistant Glove"]; }
+    else if(key==="healthcare"||key==="construction"){ imgs=IMG[key]; names=NAMES.general; }
+    else { imgs=IMG[key]||IMG.general; names=NAMES[key]||NAMES.general; }
     var n = 8;
     document.getElementById('pcount').textContent = n + " products";
     var g = document.getElementById('grid'); g.innerHTML="";
     for(var i=0;i<n;i++){
+      var src = "img/"+imgs[i%imgs.length]+".jpg";
+      var nm = names[i%names.length];
       var c=document.createElement('div'); c.className='card';
-      c.innerHTML='<div class="ph">'+cat.replace(/ · /,' ')+'</div><p>'+names[(i)%names.length]+'</p><div class="price">'+money(i+cat.length)+'</div>';
+      c.innerHTML='<div class="ph"><img loading="lazy" src="'+src+'" alt="'+nm+'"></div><p>'+nm+'</p><div class="price">'+money(i+cat.length)+'</div>';
       g.appendChild(c);
     }
     window.scrollTo({top:0,behavior:'smooth'});
-    // close mobile menu
     document.getElementById('mainnav').classList.remove('open');
     document.querySelectorAll('.nav-li.m-open').forEach(function(e){e.classList.remove('m-open');});
   }
