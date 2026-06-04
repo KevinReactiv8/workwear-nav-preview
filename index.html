@@ -213,48 +213,58 @@
 <div class="hint">Tip: hover <b>All Products</b> for the mega menu · click any link to “navigate”</div>
 
 <script>
-  // image pools per garment/category
+  // real Workwear Direct product images, grouped by category
   var IMG = {
-    shirt:["shirt1","shirt2","shirt3","shirt4","shirt5"],
-    hoodie:["hoodie1","hoodie2","hoodie3","hoodie4"],
-    jacket:["jacket1","coverall1","coverall2","hoodie3"],
-    legwear:["legwear1","legwear2","overall1"],
-    boots:["boots1","boots2","boots3"],
-    gloves:["gloves1","gloves2","gloves3","gloves4"],
-    hat:["hat1","hat2","hat3","hat4"],
-    glasses:["glasses1","glasses2","glasses3"],
-    hivis:["hivis1","hivis2","hivis3"],
-    healthcare:["healthcare1","shirt2","hivis1"],
-    construction:["construction1","hat1","hivis2","boots1"],
-    general:["shirt1","hoodie1","jacket1","legwear1","boots1","gloves1","hat1","hivis1","shirt3","hoodie2","overall1","coverall1"]
+    polo:["polo1","polo2","polo3","polo4","polo5","polo6"],
+    tee:["tee1","tee2","tee3","tee4","tee5","tee6"],
+    hoodie:["hoodie1","hoodie2","hoodie3","hoodie4","hoodie5","hoodie6"],
+    sweat:["sweat1","sweat2","sweat3","sweat4","sweat5","sweat6"],
+    jacket:["jacket1","jacket2","jacket3","jacket4","jacket5","jacket6"],
+    trouser:["trouser1","trouser2","trouser3","trouser4","trouser5","trouser6"],
+    boot:["boot1","boot2","boot3","boot4","boot5","boot6"],
+    glove:["glove1","glove2","glove3","glove4","glove5"],
+    hat:["hat1","hat2","hat3","hat4","hat5","hat6"],
+    glasses:["glasses1","glasses2","glasses3","glasses4","glasses5","glasses6"],
+    hivis:["hivis1","hivis2","hivis3","hivis4","hivis5","hivis6","hivisjkt1","hivisjkt2","hivisjkt3","hivisjkt4"],
+    health:["health1","health2","health3","health4","health5","health6"],
+    chef:["chef1","chef2","chef3","chef4","chef5","chef6"],
+    general:["polo1","hoodie1","jacket1","trouser1","boot1","glove1","hat1","hivis1","tee1","sweat1","glasses1","health1"]
   };
   // product names per garment
   var NAMES = {
-    shirt:["Pro Piqué Polo","Performance Polo","Cotton Work Tee","Crew Neck Tee","Classic Polo","Heavy-Duty Tee"],
-    hoodie:["Zipped Hoodie","Pullover Hoodie","Workwear Hoodie","Heavy Hoodie"],
-    jacket:["Softshell Jacket","Work Coverall","Waterproof Jacket","Fleece Jacket"],
-    legwear:["Cargo Work Trouser","Holster Trouser","Bib & Brace","Work Short"],
-    boots:["Safety Boot","Steel-Toe Boot","Waterproof Boot","Dealer Boot"],
-    gloves:["Work Gloves","Cut-Resistant Glove","Leather Rigger Glove","Grip Glove"],
-    hat:["Safety Helmet","Bump Cap","Hard Hat","Vented Helmet"],
-    glasses:["Safety Glasses","Anti-Fog Goggles","Tinted Safety Specs","Wraparound Glasses"],
-    hivis:["Hi-Vis Vest","Hi-Vis Jacket","Hi-Vis Polo","Hi-Vis Trouser"],
-    general:["Pro Polo Shirt","Zipped Hoodie","Softshell Jacket","Cargo Trouser","Safety Boot","Work Gloves","Safety Helmet","Hi-Vis Vest","Work Tee","Fleece Jacket","Bib & Brace","Coverall"]
+    polo:["Classic Piqué Polo","Performance Polo","Cotton Polo","Heavyweight Polo","Contrast Polo","Stretch Polo"],
+    tee:["Cotton Work Tee","Crew Neck Tee","Long Sleeve Tee","Performance Tee","Heavy Cotton Tee","Premium Tee"],
+    hoodie:["Pullover Hoodie","Zipped Hoodie","Workwear Hoodie","Heavy Hoodie","Contrast Hoodie","Full-Zip Hoodie"],
+    sweat:["Crew Sweatshirt","1/4 Zip Sweatshirt","Workwear Sweatshirt","Heavy Sweatshirt","Contrast Sweatshirt","Set-In Sweatshirt"],
+    jacket:["Softshell Jacket","Waterproof Jacket","Fleece Jacket","Bomber Jacket","Padded Jacket","Work Jacket"],
+    trouser:["Cargo Work Trouser","Holster Trouser","Stretch Trouser","Pro Work Trouser","Combat Trouser","Service Trouser"],
+    boot:["Safety Boot","Steel-Toe Boot","Waterproof Boot","Dealer Boot","Hiker Safety Boot","Safety Trainer"],
+    glove:["Work Gloves","Cut-Resistant Glove","Leather Rigger Glove","Grip Glove","Latex Glove"],
+    hat:["Safety Helmet","Beanie Hat","Baseball Cap","Bump Cap","Knitted Hat","Snapback Cap"],
+    glasses:["Safety Glasses","Anti-Fog Goggles","Tinted Safety Specs","Clear Safety Specs","Wraparound Glasses","Over-Specs"],
+    hivis:["Hi-Vis Vest","Hi-Vis Jacket","Hi-Vis Polo","Hi-Vis Bomber","Hi-Vis Waistcoat","Hi-Vis Parka"],
+    health:["Healthcare Tunic","Scrub Top","Care Tunic","Beauty Tunic","Medical Polo","Healthcare Trouser"],
+    chef:["Chef Jacket","Chefs Whites","Chef Trouser","Bib Apron","Chef Skull Cap","Service Shirt"],
+    general:["Classic Polo","Zipped Hoodie","Softshell Jacket","Cargo Trouser","Safety Boot","Work Gloves","Safety Helmet","Hi-Vis Vest","Work Tee","Crew Sweatshirt","Safety Glasses","Care Tunic"]
   };
   function poolFor(cat){
     var c = cat.toLowerCase();
-    if(c.indexOf("polo")>-1||c.indexOf("tee")>-1) return "shirt";
-    if(c.indexOf("hoodie")>-1||c.indexOf("sweatshirt")>-1) return "hoodie";
-    if(c.indexOf("jacket")>-1) return "jacket";
-    if(c.indexOf("legwear")>-1||c.indexOf("trouser")>-1) return "legwear";
-    if(c.indexOf("footwear")>-1||c.indexOf("boot")>-1) return "boots";
-    if(c.indexOf("glove")>-1) return "gloves";
+    if(c.indexOf("hi-vis")>-1) return "hivis";
     if(c.indexOf("headwear")>-1) return "hat";
     if(c.indexOf("eyewear")>-1) return "glasses";
-    if(c.indexOf("hi-vis")>-1) return "hivis";
-    if(c.indexOf("healthcare")>-1) return "healthcare";
-    if(c.indexOf("construction")>-1) return "construction";
+    if(c.indexOf("footwear")>-1||c.indexOf("boot")>-1) return "boot";
+    if(c.indexOf("glove")>-1) return "glove";
     if(c.indexOf("ppe")>-1) return "ppe";
+    if(c.indexOf("polo")>-1) return "polo";
+    if(c.indexOf("tee")>-1) return "tee";
+    if(c.indexOf("hoodie")>-1) return "hoodie";
+    if(c.indexOf("sweatshirt")>-1) return "sweat";
+    if(c.indexOf("jacket")>-1) return "jacket";
+    if(c.indexOf("legwear")>-1||c.indexOf("trouser")>-1) return "trouser";
+    if(c.indexOf("healthcare")>-1) return "health";
+    if(c.indexOf("hospitality")>-1) return "chef";
+    if(c.indexOf("salon")>-1) return "health";
+    if(c.indexOf("construction")>-1) return "construction";
     return "general";
   }
   function money(i){ return "£" + (12 + (i*37%34)) + ".99"; }
@@ -264,8 +274,8 @@
     document.querySelector('.crumb').textContent = "Home" + (bits.length>1? " / " + bits[0] : (cat!=="All Products"? " / "+cat : ""));
     var key = poolFor(cat);
     var imgs, names;
-    if(key==="ppe"){ imgs=[].concat(IMG.hat,IMG.glasses,IMG.boots,IMG.gloves); names=["Safety Helmet","Safety Glasses","Safety Boot","Work Gloves","Bump Cap","Anti-Fog Goggles","Steel-Toe Boot","Cut-Resistant Glove"]; }
-    else if(key==="healthcare"||key==="construction"){ imgs=IMG[key]; names=NAMES.general; }
+    if(key==="ppe"){ imgs=[].concat(IMG.hat,IMG.glasses,IMG.boot,IMG.glove); names=["Safety Helmet","Safety Glasses","Safety Boot","Work Gloves","Bump Cap","Anti-Fog Goggles","Steel-Toe Boot","Cut-Resistant Glove"]; }
+    else if(key==="construction"){ imgs=[].concat(IMG.hivis.slice(0,4),IMG.hat,IMG.boot,IMG.trouser.slice(0,3)); names=NAMES.general; }
     else { imgs=IMG[key]||IMG.general; names=NAMES[key]||NAMES.general; }
     var n = 8;
     document.getElementById('pcount').textContent = n + " products";
