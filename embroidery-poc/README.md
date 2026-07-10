@@ -1,5 +1,9 @@
 # Image → Embroidery File (.dst) — Proof of Concept
 
+> **v2:** `digitize_pro.py` is the upgraded engine — see
+> [Professional-grade engine](#professional-grade-engine-digitize_propy) below.
+> `digitize.py` (v1, fills only) is kept for comparison.
+
 Answers the question: *"Can a PNG/JPG be digitised into a .emb or .dst file?"*
 
 ## Short answer
@@ -38,6 +42,42 @@ Answers the question: *"Can a PNG/JPG be digitised into a .emb or .dst file?"*
 pip install pyembroidery pillow numpy
 python digitize.py input.png output.dst 80   # 80 = target width in mm
 ```
+
+## Professional-grade engine (`digitize_pro.py`)
+
+The v2 engine applies the techniques a human digitizer uses, automatically:
+
+- **Vectorization** — OpenCV contour extraction with hole support and
+  Douglas-Peucker simplification (works at 1200px internally for clean edges)
+- **Underlay** — centre-walk contour underlay inset 0.6 mm from each edge,
+  plus sparse perpendicular tatami under large fills to stabilise the fabric
+- **Pull compensation** — regions extended 0.2 mm along the stitch direction
+  so the design stays true when thread tension pulls the fabric
+- **Angled tatami fills** — per-region stitch angle chosen from PCA of the
+  shape, with brick-pattern stagger so rows don't ridge
+- **Satin borders** — dense zigzag column (1.4 mm, 0.35 mm density) around
+  every region edge over an edge-run underlay — the clean raised edge that
+  makes embroidery look professional
+- **Tie-in / tie-off** — lock stitches at every thread start/stop
+- **Stitch routing** — regions sequenced nearest-neighbour per colour to
+  minimise jumps and trims
+- **Small-detail guard** — details narrower than 1 mm (needle limit) are
+  dropped with a warning instead of stitching mush
+
+```bash
+pip install pyembroidery pillow numpy opencv-python-headless shapely
+python digitize_pro.py input.png output.dst 100   # 100 = width in mm
+python vectorize_svg.py input.png output.svg 100  # SVG for Ink/Stitch route
+```
+
+Sample results (`logo_text_input.png` → `logo_text.dst`): 5,286 stitches,
+2 colour changes, 70 × 58 mm, lettering legible with satin-wrapped edges.
+Stitch audit: mean 2.4 mm, max 6.5 mm, zero over-length or micro stitches.
+
+`vectorize_svg.py` also exports the artwork as a millimetre-accurate SVG
+(`logo_vector.svg`) so the same vectorization can be loaded into
+Inkscape + [Ink/Stitch](https://inkstitch.org/) when you want GUI-tuned
+parameters (custom densities per fabric, manual satin direction, etc.).
 
 ## Honest limitations vs. professional digitizing
 
