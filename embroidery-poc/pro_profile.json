@@ -1,11 +1,11 @@
 {
-  "files_analyzed": 14,
+  "files_analyzed": 20,
   "satin_density_mm": 0.41,
-  "satin_width_median_mm": 1.67,
-  "satin_width_p95_mm": 3.0,
-  "satin_share_of_stitches": 0.69,
-  "run_stitch_len_mm": 2.04,
-  "trims_per_1k_stitches": 1.65,
+  "satin_width_median_mm": 1.84,
+  "satin_width_p95_mm": 3.3,
+  "satin_share_of_stitches": 0.7,
+  "run_stitch_len_mm": 1.92,
+  "trims_per_1k_stitches": 1.55,
   "per_file": [
     {
       "file": "casepak logo.DST",
@@ -184,6 +184,96 @@
       "satin_width_med": 1.71,
       "satin_width_p95": 2.41,
       "satin_density": 0.41,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "jet technology.DST",
+      "stitches": 934,
+      "size_mm": [
+        99.8,
+        9.4
+      ],
+      "colours": 1,
+      "trims_per_1k": 6.4,
+      "satin_width_med": null,
+      "satin_width_p95": null,
+      "satin_density": null,
+      "satin_share": 0.0,
+      "run_len_med": 0.99
+    },
+    {
+      "file": "sarah ppe gel.DST",
+      "stitches": 5596,
+      "size_mm": [
+        90.4,
+        86.8
+      ],
+      "colours": 2,
+      "trims_per_1k": 3.6,
+      "satin_width_med": 3.18,
+      "satin_width_p95": 4.12,
+      "satin_density": 0.45,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "tp logo.DST",
+      "stitches": 9053,
+      "size_mm": [
+        100.2,
+        86.4
+      ],
+      "colours": 1,
+      "trims_per_1k": 0.7,
+      "satin_width_med": 2.82,
+      "satin_width_p95": 3.51,
+      "satin_density": 0.4,
+      "satin_share": 0.3,
+      "run_len_med": 3.04
+    },
+    {
+      "file": "tp logoNEW.DST",
+      "stitches": 3588,
+      "size_mm": [
+        73.0,
+        63.2
+      ],
+      "colours": 1,
+      "trims_per_1k": 1.4,
+      "satin_width_med": 7.74,
+      "satin_width_p95": 10.1,
+      "satin_density": 0.2,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "GT Logistix_logo.DST",
+      "stitches": 1902,
+      "size_mm": [
+        40.4,
+        36.8
+      ],
+      "colours": 4,
+      "trims_per_1k": 1.1,
+      "satin_width_med": 4.7,
+      "satin_width_p95": 8.1,
+      "satin_density": 0.4,
+      "satin_share": 0.7,
+      "run_len_med": 1.66
+    },
+    {
+      "file": "GT Rentals_logo.DST",
+      "stitches": 1909,
+      "size_mm": [
+        40.2,
+        37.2
+      ],
+      "colours": 4,
+      "trims_per_1k": 1.6,
+      "satin_width_med": 2.87,
+      "satin_width_p95": 7.47,
+      "satin_density": 0.4,
       "satin_share": 1.0,
       "run_len_med": null
     },
