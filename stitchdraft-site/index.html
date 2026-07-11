@@ -41,7 +41,10 @@
   .logo { font-family: var(--sans); font-weight: 700; font-size: 1.25rem; letter-spacing: -.01em; color: var(--thread); text-decoration: none; }
   .logo b { color: var(--accent); font-weight: 700; }
   .logo::after { content: ""; display: block; height: 3px; width: 100%; background: var(--stitch-rule); margin-top: 2px; }
-  .nav-cta { font-family: var(--sans); font-weight: 600; font-size: .92rem; color: var(--fabric-deep); background: var(--accent); text-decoration: none; padding: .55rem 1.1rem; }
+  .nav-links { display: flex; gap: 1.4rem; align-items: center; }
+  .nav-links a { color: var(--thread-dim); text-decoration: none; font-size: .95rem; }
+  .nav-links a:hover { color: var(--accent-soft); }
+  .nav-cta { font-family: var(--sans); font-weight: 600; font-size: .92rem; color: var(--fabric-deep) !important; background: var(--accent); text-decoration: none; padding: .55rem 1.1rem; }
   .nav-cta:hover { background: var(--accent-soft); }
 
   .eyebrow { font-family: var(--mono); font-size: .78rem; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); margin: 0 0 1.1rem; }
@@ -131,7 +134,11 @@
 <header class="nav">
   <div class="navbar">
     <a class="logo" href="#top">Stitch<b>Draft</b></a>
-    <a class="nav-cta" href="mailto:info@stitchdraft.co.uk?subject=StitchDraft%20pilot%20enquiry">Book a pilot</a>
+    <nav class="nav-links">
+      <a href="#proof">Proof</a>
+      <a href="faq.html">FAQ</a>
+      <a class="nav-cta" href="mailto:info@stitchdraft.co.uk?subject=StitchDraft%20pilot%20enquiry">Book a pilot</a>
+    </nav>
   </div>
 </header>
 
@@ -332,7 +339,7 @@
 <footer>
   <div class="wrap foot">
     <span><strong style="color:var(--thread)">Stitch<span class="accent">Draft</span></strong> &middot; AI digitizing, licensed to digitizers</span>
-    <span><a href="mailto:info@stitchdraft.co.uk">info@stitchdraft.co.uk</a></span>
+    <span><a href="faq.html">FAQ</a> &middot; <a href="mailto:info@stitchdraft.co.uk">info@stitchdraft.co.uk</a></span>
     <span>&copy; 2026 StitchDraft &middot; stitchdraft.co.uk</span>
   </div>
 </footer>
