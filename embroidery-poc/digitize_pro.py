@@ -38,6 +38,7 @@ from PIL import Image
 import pyembroidery as pe
 from shapely.geometry import Polygon, MultiPolygon, LineString, box
 from shapely.ops import unary_union
+from satin import satin_column, stroke_stats, bean_stitch
 
 # ---- stitch parameters (all in mm; industry-typical defaults) ----
 FILL_ROW_SPACING = 0.40      # tatami density
@@ -53,6 +54,7 @@ SATIN_PULL_COMP = 0.10       # extra satin width each side
 RUN_STITCH_LEN = 2.0         # running / travel stitch length
 TIE_LEN = 0.6                # lock-stitch size
 MIN_FEATURE_MM = 1.0         # drop details narrower than this (needle limit)
+SATIN_MAX_STROKE = 5.0       # strokes narrower than this stitch as satin columns
 MIN_REGION_AREA_MM2 = 3.0
 UNITS = 10                   # DST units per mm (0.1mm native)
 
@@ -62,24 +64,43 @@ UNITS = 10                   # DST units per mm (0.1mm native)
 # ----------------------------------------------------------------------------
 
 def extract_regions(path, target_width_mm, n_colors=8):
-    """Return list of (color_rgb, shapely MultiPolygon in mm coords)."""
+    """Return list of (color_rgb, shapely MultiPolygon in mm coords).
+
+    Background handling: if the image has an alpha channel, transparency IS
+    the background (so white artwork on transparent survives — common in
+    logo files destined for dark garments). Otherwise the dominant border
+    colour is treated as background.
+    """
     img = Image.open(path)
-    if img.mode in ("RGBA", "LA", "P"):
-        # composite onto white so alpha becomes background
-        bg = Image.new("RGB", img.size, "white")
-        bg.paste(img.convert("RGBA"), mask=img.convert("RGBA").split()[-1])
+    alpha = None
+    if img.mode in ("RGBA", "LA") or (img.mode == "P" and "transparency" in img.info):
+        rgba = img.convert("RGBA")
+        alpha = np.array(rgba.split()[-1])
+        if alpha.min() == 255:
+            alpha = None  # fully opaque
+        # composite onto magenta (absent from real logo art) so that white
+        # or black artwork can't merge with the backdrop during quantization
+        bg = Image.new("RGB", img.size, (255, 0, 255))
+        bg.paste(rgba, mask=rgba.split()[-1])
         img = bg
     img = img.convert("RGB")
     # work at high resolution for clean contours
     if img.width < 1200:
         f = 1200 / img.width
         img = img.resize((1200, round(img.height * f)), Image.LANCZOS)
+        if alpha is not None:
+            alpha = np.array(Image.fromarray(alpha).resize(img.size, Image.LANCZOS))
 
     pal_img = img.quantize(colors=n_colors, method=Image.MEDIANCUT)
     labels = np.array(pal_img)
     palette = np.array(pal_img.getpalette()).reshape(-1, 3)[:n_colors]
-    border = np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]])
-    bg_label = np.bincount(border).argmax()
+    if alpha is not None:
+        transparent = alpha < 128
+        bg_label = -1  # no colour label is background; transparency is
+    else:
+        transparent = None
+        border = np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]])
+        bg_label = np.bincount(border).argmax()
 
     mm_per_px = target_width_mm / img.width
     regions = []
@@ -87,7 +108,21 @@ def extract_regions(path, target_width_mm, n_colors=8):
     for label in np.argsort(counts)[::-1]:
         if label == bg_label or counts[label] == 0:
             continue
+        if transparent is not None:
+            # a colour that lives mostly in the transparent zone is just the
+            # composite backdrop showing through — not artwork
+            frac = transparent[labels == label].mean()
+            if frac > 0.5:
+                continue
+        else:
+            # skip colours that are just shades of the background
+            # (antialiasing, slightly-off whites from PDF rendering, etc.)
+            bg_color = palette[bg_label].astype(int)
+            if np.abs(palette[label].astype(int) - bg_color).sum() < 90:
+                continue
         mask = (labels == label).astype(np.uint8)
+        if transparent is not None:
+            mask &= (~transparent).astype(np.uint8)
         # despeckle antialiasing fringes
         kernel = np.ones((3, 3), np.uint8)
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
@@ -364,14 +399,26 @@ def digitize(in_path, out_path, target_width_mm=80.0):
                              if p.area >= MIN_REGION_AREA_MM2])
         pts = []
         for poly in polys:
-            # needle-width guard: skip details too thin to stitch
-            if poly.buffer(-MIN_FEATURE_MM / 2).is_empty:
+            med_w, p90_w = stroke_stats(poly)
+            if med_w <= 0:
                 dropped += 1
                 continue
-            angle = principal_angle(poly)
-            comp = pull_compensate(poly, angle)
             if pts:
                 pts.append(None)
+            # classification, the way a pro would:
+            #   hairline strokes -> bean stitch (triple run)
+            #   stroke-like shapes (lettering) -> satin columns
+            #   chunky shapes -> tatami fill with satin border
+            if med_w < 1.2:
+                if bean_stitch(poly, pts):
+                    continue
+                dropped += 1
+                continue
+            if p90_w <= SATIN_MAX_STROKE:
+                if satin_column(poly, pts):
+                    continue
+            angle = principal_angle(poly)
+            comp = pull_compensate(poly, angle)
             contour_underlay(comp, pts)
             tatami_underlay(comp, angle, pts)
             tatami_fill(comp, angle, pts)
@@ -381,7 +428,8 @@ def digitize(in_path, out_path, target_width_mm=80.0):
 
     pattern.end()
     pe.write_dst(pattern, out_path)
-    pe.write_png(pattern, out_path.rsplit(".", 1)[0] + "_preview.png")
+    from render_preview import render
+    render(pattern, out_path.rsplit(".", 1)[0] + "_preview.png")
 
     check = pe.read(out_path)
     n = {k: sum(1 for s in check.stitches if s[2] == v)

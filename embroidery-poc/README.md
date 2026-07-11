@@ -79,6 +79,27 @@ Stitch audit: mean 2.4 mm, max 6.5 mm, zero over-length or micro stitches.
 Inkscape + [Ink/Stitch](https://inkstitch.org/) when you want GUI-tuned
 parameters (custom densities per fabric, manual satin direction, etc.).
 
+## v3: satin lettering + pro-calibrated parameters
+
+After forensic analysis of a professionally digitized reference file
+(`analyze_dst.py`), the engine gained the pro's core technique:
+
+- **Skeleton-based satin columns** (`satin.py`) — stroke-like shapes
+  (lettering) are traced along their medial axis with local width
+  measurement, and stitched as variable-width satin zigzag, at the
+  measured pro density of 0.4 mm
+- **Bean stitch** — details too fine for satin (thin script, hairlines)
+  get a triple-run stitch along the centre-line instead of fragmenting
+- **Per-shape classification** — hairline → bean, stroke-like → satin
+  column, chunky → tatami fill + satin border
+- **Alpha-aware background handling** — white artwork on transparent
+  backgrounds (logos destined for dark garments) survives extraction
+- **Sewn preview** (`render_preview.py`) — renders the stitch plan in
+  thread colours on a garment-coloured background
+- **Corpus miner** (`corpus_mine.py`) — batch-analyzes a folder (including
+  zips) of pro stitch files and emits `pro_profile.json` with measured
+  parameter medians to calibrate the engine against a real digitizer's style
+
 ## Honest limitations vs. professional digitizing
 
 This is auto-digitizing — good for flat, bold, few-colour logo artwork.
