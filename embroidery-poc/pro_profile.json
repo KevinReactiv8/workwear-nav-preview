@@ -1,11 +1,11 @@
 {
-  "files_analyzed": 20,
+  "files_analyzed": 26,
   "satin_density_mm": 0.41,
-  "satin_width_median_mm": 1.84,
-  "satin_width_p95_mm": 3.3,
-  "satin_share_of_stitches": 0.7,
-  "run_stitch_len_mm": 1.92,
-  "trims_per_1k_stitches": 1.55,
+  "satin_width_median_mm": 2.06,
+  "satin_width_p95_mm": 3.45,
+  "satin_share_of_stitches": 0.79,
+  "run_stitch_len_mm": 1.86,
+  "trims_per_1k_stitches": 1.85,
   "per_file": [
     {
       "file": "casepak logo.DST",
@@ -201,6 +201,96 @@
       "satin_density": null,
       "satin_share": 0.0,
       "run_len_med": 0.99
+    },
+    {
+      "file": "BALHOUSIE CARE GROUP (1).DST",
+      "stitches": 20412,
+      "size_mm": [
+        114.6,
+        95.6
+      ],
+      "colours": 11,
+      "trims_per_1k": 2.7,
+      "satin_width_med": 1.5,
+      "satin_width_p95": 2.06,
+      "satin_density": 0.4,
+      "satin_share": 0.11,
+      "run_len_med": 3.23
+    },
+    {
+      "file": "peppa B shot b.DST",
+      "stitches": 4296,
+      "size_mm": [
+        99.8,
+        52.6
+      ],
+      "colours": 1,
+      "trims_per_1k": 2.3,
+      "satin_width_med": 2.61,
+      "satin_width_p95": 4.08,
+      "satin_density": 0.41,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "peppa B shot.DST",
+      "stitches": 4148,
+      "size_mm": [
+        99.4,
+        51.0
+      ],
+      "colours": 1,
+      "trims_per_1k": 2.4,
+      "satin_width_med": 2.5,
+      "satin_width_p95": 4.03,
+      "satin_density": 0.41,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "peppa Chiken.DST",
+      "stitches": 4346,
+      "size_mm": [
+        100.4,
+        50.6
+      ],
+      "colours": 1,
+      "trims_per_1k": 3.2,
+      "satin_width_med": 2.6,
+      "satin_width_p95": 3.93,
+      "satin_density": 0.41,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "peppa Demon Girl.DST",
+      "stitches": 3777,
+      "size_mm": [
+        100.0,
+        35.8
+      ],
+      "colours": 1,
+      "trims_per_1k": 4.0,
+      "satin_width_med": 2.06,
+      "satin_width_p95": 2.73,
+      "satin_density": 0.41,
+      "satin_share": 0.84,
+      "run_len_med": 1.8
+    },
+    {
+      "file": "scilly chocolate.DST",
+      "stitches": 5114,
+      "size_mm": [
+        100.4,
+        41.8
+      ],
+      "colours": 1,
+      "trims_per_1k": 2.2,
+      "satin_width_med": 2.33,
+      "satin_width_p95": 7.18,
+      "satin_density": 0.41,
+      "satin_share": 0.98,
+      "run_len_med": 1.28
     },
     {
       "file": "sarah ppe gel.DST",
