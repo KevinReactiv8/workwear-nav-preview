@@ -1,0 +1,176 @@
+{
+  "files_analyzed": 11,
+  "satin_density_mm": 0.41,
+  "satin_width_median_mm": 1.6,
+  "satin_width_p95_mm": 2.9,
+  "satin_share_of_stitches": 0.71,
+  "run_stitch_len_mm": 1.92,
+  "trims_per_1k_stitches": 1.8,
+  "per_file": [
+    {
+      "file": "casepak logo.DST",
+      "stitches": 4276,
+      "size_mm": [
+        70.0,
+        66.5
+      ],
+      "colours": 4,
+      "trims_per_1k": 1.9,
+      "satin_width_med": 2.42,
+      "satin_width_p95": 4.37,
+      "satin_density": 0.4,
+      "satin_share": 0.8,
+      "run_len_med": 1.08
+    },
+    {
+      "file": "markovitz logo.DST",
+      "stitches": 2385,
+      "size_mm": [
+        80.4,
+        11.7
+      ],
+      "colours": 2,
+      "trims_per_1k": 2.1,
+      "satin_width_med": 2.19,
+      "satin_width_p95": 2.9,
+      "satin_density": 0.41,
+      "satin_share": 0.83,
+      "run_len_med": 2.88
+    },
+    {
+      "file": "markovitz logo E1.DST",
+      "stitches": 6183,
+      "size_mm": [
+        80.5,
+        17.2
+      ],
+      "colours": 3,
+      "trims_per_1k": 0.8,
+      "satin_width_med": 2.06,
+      "satin_width_p95": 2.7,
+      "satin_density": 0.4,
+      "satin_share": 0.32,
+      "run_len_med": 2.15
+    },
+    {
+      "file": "L&O 100 years JB.DST",
+      "stitches": 7973,
+      "size_mm": [
+        200.0,
+        33.8
+      ],
+      "colours": 9,
+      "trims_per_1k": 1.8,
+      "satin_width_med": 1.2,
+      "satin_width_p95": 3.09,
+      "satin_density": 0.4,
+      "satin_share": 0.78,
+      "run_len_med": 1.79
+    },
+    {
+      "file": "L&O 100 years LC A.DST",
+      "stitches": 4386,
+      "size_mm": [
+        100.0,
+        16.9
+      ],
+      "colours": 9,
+      "trims_per_1k": 2.5,
+      "satin_width_med": 1.12,
+      "satin_width_p95": 2.04,
+      "satin_density": 0.41,
+      "satin_share": 0.43,
+      "run_len_med": 0.73
+    },
+    {
+      "file": "L&O 100 years LC B.DST",
+      "stitches": 5325,
+      "size_mm": [
+        114.3,
+        19.4
+      ],
+      "colours": 9,
+      "trims_per_1k": 2.1,
+      "satin_width_med": 1.1,
+      "satin_width_p95": 2.2,
+      "satin_density": 0.41,
+      "satin_share": 0.51,
+      "run_len_med": 0.81
+    },
+    {
+      "file": "Deconetwork LOGO 2.DST",
+      "stitches": 2939,
+      "size_mm": [
+        90.5,
+        18.3
+      ],
+      "colours": 5,
+      "trims_per_1k": 0.7,
+      "satin_width_med": 1.6,
+      "satin_width_p95": 3.3,
+      "satin_density": 0.41,
+      "satin_share": 0.71,
+      "run_len_med": 3.0
+    },
+    {
+      "file": "Deconetwork LOGO.DST",
+      "stitches": 2087,
+      "size_mm": [
+        88.9,
+        16.4
+      ],
+      "colours": 4,
+      "trims_per_1k": 1.0,
+      "satin_width_med": 1.6,
+      "satin_width_p95": 3.3,
+      "satin_density": 0.41,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "Decopro 2.DST",
+      "stitches": 3057,
+      "size_mm": [
+        73.4,
+        31.7
+      ],
+      "colours": 2,
+      "trims_per_1k": 1.0,
+      "satin_width_med": 1.71,
+      "satin_width_p95": 2.41,
+      "satin_density": 0.41,
+      "satin_share": 0.67,
+      "run_len_med": 3.0
+    },
+    {
+      "file": "Decopro.DST",
+      "stitches": 2058,
+      "size_mm": [
+        70.6,
+        25.2
+      ],
+      "colours": 1,
+      "trims_per_1k": 1.5,
+      "satin_width_med": 1.71,
+      "satin_width_p95": 2.41,
+      "satin_density": 0.41,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "Sundays emb.DST",
+      "stitches": 3560,
+      "size_mm": [
+        100.6,
+        31.0
+      ],
+      "colours": 1,
+      "trims_per_1k": 3.4,
+      "satin_width_med": 1.6,
+      "satin_width_p95": 4.82,
+      "satin_density": 0.41,
+      "satin_share": 0.63,
+      "run_len_med": 1.92
+    }
+  ]
+}

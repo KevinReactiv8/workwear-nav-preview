@@ -38,7 +38,7 @@ from PIL import Image
 import pyembroidery as pe
 from shapely.geometry import Polygon, MultiPolygon, LineString, box
 from shapely.ops import unary_union
-from satin import satin_column, stroke_stats, bean_stitch
+from satin import satin_column, stroke_stats, bean_stitch, travel_or_break
 
 # ---- stitch parameters (all in mm; industry-typical defaults) ----
 FILL_ROW_SPACING = 0.40      # tatami density
@@ -403,8 +403,9 @@ def digitize(in_path, out_path, target_width_mm=80.0):
             if med_w <= 0:
                 dropped += 1
                 continue
-            if pts:
-                pts.append(None)
+            # no forced trim between shapes: satin_column/bean_stitch bridge
+            # small gaps with travel runs (measured pro habit, ~1.8 trims/1k)
+            # and only emit a trim on real distance
             # classification, the way a pro would:
             #   hairline strokes -> bean stitch (triple run)
             #   stroke-like shapes (lettering) -> satin columns

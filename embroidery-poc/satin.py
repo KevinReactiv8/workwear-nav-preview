@@ -21,6 +21,26 @@ MAX_SATIN_WIDTH = 7.5       # pro file maxed at 7.2mm
 SPUR_FACTOR = 1.2           # prune skeleton spurs shorter than width*this
 RUN_STITCH = 1.9            # underlay/travel run length, from pro file
 PULL_COMP = 0.15
+MAX_TRAVEL = 6.0            # connect gaps up to this with a run, else trim
+
+
+def travel_or_break(out, next_pt):
+    """Bridge to next_pt with travel run stitches when close (pro habit —
+    measured ~1.8 trims/1k stitches vs trimming every element), else mark
+    a trim+jump with the None sentinel."""
+    if not out or out[-1] is None:
+        return
+    last = out[-1]
+    gap = math.hypot(next_pt[0] - last[0], next_pt[1] - last[1])
+    if gap <= 1.0:
+        return
+    if gap <= MAX_TRAVEL:
+        n = max(2, int(gap / RUN_STITCH) + 1)
+        out.extend((last[0] + (next_pt[0] - last[0]) * t,
+                    last[1] + (next_pt[1] - last[1]) * t)
+                   for t in np.linspace(0, 1, n)[1:-1])
+    else:
+        out.append(None)
 
 
 def _rasterize(poly, px):
@@ -160,10 +180,7 @@ def satin_column(poly, out, px=RASTER_PX_PER_MM):
 
         # travel/underlay: centre run to the far end and satin back
         coords = [(p.x, p.y) for p in samples]
-        if out and out[-1] is not None:
-            gap = math.hypot(coords[0][0] - out[-1][0], coords[0][1] - out[-1][1])
-            if gap > 3.0:
-                out.append(None)
+        travel_or_break(out, coords[0])
         # centre-run underlay (also gets us to the far end)
         run = LineString(coords)
         rn = max(2, int(run.length / RUN_STITCH))
@@ -201,10 +218,7 @@ def bean_stitch(poly, out, px=RASTER_PX_PER_MM, repeats=3):
         n = max(2, int(line.length / 1.2))
         pts = [(p.x, p.y) for p in
                (line.interpolate(d) for d in np.linspace(0, line.length, n))]
-        if out and out[-1] is not None:
-            gap = math.hypot(pts[0][0] - out[-1][0], pts[0][1] - out[-1][1])
-            if gap > 3.0:
-                out.append(None)
+        travel_or_break(out, pts[0])
         for r in range(repeats):
             seq = pts if r % 2 == 0 else pts[::-1]
             out.extend(seq if r == 0 else seq[1:])
