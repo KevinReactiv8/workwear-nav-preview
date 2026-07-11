@@ -1,11 +1,11 @@
 {
-  "files_analyzed": 11,
+  "files_analyzed": 14,
   "satin_density_mm": 0.41,
-  "satin_width_median_mm": 1.6,
-  "satin_width_p95_mm": 2.9,
-  "satin_share_of_stitches": 0.71,
-  "run_stitch_len_mm": 1.92,
-  "trims_per_1k_stitches": 1.8,
+  "satin_width_median_mm": 1.67,
+  "satin_width_p95_mm": 3.0,
+  "satin_share_of_stitches": 0.69,
+  "run_stitch_len_mm": 2.04,
+  "trims_per_1k_stitches": 1.65,
   "per_file": [
     {
       "file": "casepak logo.DST",
@@ -38,6 +38,21 @@
       "run_len_med": 2.88
     },
     {
+      "file": "FIRST AID.DST",
+      "stitches": 5210,
+      "size_mm": [
+        59.8,
+        70.5
+      ],
+      "colours": 1,
+      "trims_per_1k": 0.6,
+      "satin_width_med": 2.47,
+      "satin_width_p95": 2.77,
+      "satin_density": 0.41,
+      "satin_share": 0.23,
+      "run_len_med": 2.28
+    },
+    {
       "file": "markovitz logo E1.DST",
       "stitches": 6183,
       "size_mm": [
@@ -51,6 +66,21 @@
       "satin_density": 0.4,
       "satin_share": 0.32,
       "run_len_med": 2.15
+    },
+    {
+      "file": "Advance Logistics Training Logo.DST",
+      "stitches": 7572,
+      "size_mm": [
+        100.1,
+        46.0
+      ],
+      "colours": 3,
+      "trims_per_1k": 0.4,
+      "satin_width_med": 1.84,
+      "satin_width_p95": 3.45,
+      "satin_density": 0.4,
+      "satin_share": 0.46,
+      "run_len_med": 2.69
     },
     {
       "file": "L&O 100 years JB.DST",
@@ -171,6 +201,21 @@
       "satin_density": 0.41,
       "satin_share": 0.63,
       "run_len_med": 1.92
+    },
+    {
+      "file": "CELEBRATING 100.DST",
+      "stitches": 4403,
+      "size_mm": [
+        100.3,
+        42.6
+      ],
+      "colours": 5,
+      "trims_per_1k": 1.8,
+      "satin_width_med": 1.63,
+      "satin_width_p95": 4.51,
+      "satin_density": 0.41,
+      "satin_share": 0.92,
+      "run_len_med": 0.9
     }
   ]
 }

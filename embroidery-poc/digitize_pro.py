@@ -410,7 +410,7 @@ def digitize(in_path, out_path, target_width_mm=80.0):
             #   hairline strokes -> bean stitch (triple run)
             #   stroke-like shapes (lettering) -> satin columns
             #   chunky shapes -> tatami fill with satin border
-            if med_w < 1.2:
+            if med_w < 0.65:
                 if bean_stitch(poly, pts):
                     continue
                 dropped += 1
