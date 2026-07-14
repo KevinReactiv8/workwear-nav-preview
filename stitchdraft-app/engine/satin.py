@@ -16,11 +16,11 @@ from shapely.geometry import Polygon, LineString, Point
 
 RASTER_PX_PER_MM = 8
 SATIN_DENSITY = 0.40        # same-side advance, measured from pro file
-MIN_SATIN_WIDTH = 0.8       # never throw narrower than this (thread coverage)
+MIN_SATIN_WIDTH = 1.0       # never throw narrower than this (thread coverage)
 MAX_SATIN_WIDTH = 7.5       # pro file maxed at 7.2mm
 SPUR_FACTOR = 1.2           # prune skeleton spurs shorter than width*this
 RUN_STITCH = 1.9            # underlay/travel run length, from pro file
-PULL_COMP = 0.15
+PULL_COMP = 0.2
 MAX_TRAVEL = 1.5            # bridge only near-touching gaps; visible spans get a trim
 
 
@@ -140,9 +140,22 @@ def _order_paths(paths):
     return ordered
 
 
-def satin_column(poly, out, px=RASTER_PX_PER_MM):
+def _adaptive_px(poly):
+    """Small shapes need finer rasters or their skeletons kink."""
+    minx, miny, maxx, maxy = poly.bounds
+    dim = max(maxx - minx, maxy - miny)
+    if dim < 8:
+        return 24
+    if dim < 15:
+        return 16
+    return RASTER_PX_PER_MM
+
+
+def satin_column(poly, out, px=None):
     """Emit satin stitches covering a stroke-like polygon.
     Returns False if the shape isn't suitable (caller should fill instead)."""
+    if px is None:
+        px = _adaptive_px(poly)
     mask, off = _rasterize(poly, px)
     paths, dist, junctions = _skeleton_paths(mask)
     if not paths:
@@ -182,11 +195,14 @@ def satin_column(poly, out, px=RASTER_PX_PER_MM):
     emitted = False
     for path in _order_paths(kept):
         pts_mm = np.array([(x / px + off[0], y / px + off[1]) for y, x in path])
-        # smooth the pixelated skeleton so throw angles don't wobble
-        if len(pts_mm) >= 7:
-            k = np.ones(5) / 5
-            pts_mm[2:-2, 0] = np.convolve(pts_mm[:, 0], k, mode="valid")
-            pts_mm[2:-2, 1] = np.convolve(pts_mm[:, 1], k, mode="valid")
+        # smooth the pixelated skeleton so throw angles don't wobble;
+        # window scales with raster resolution
+        win = max(5, (int(px * 0.5) | 1))
+        if len(pts_mm) >= win + 2:
+            k = np.ones(win) / win
+            h = win // 2
+            pts_mm[h:-h, 0] = np.convolve(pts_mm[:, 0], k, mode="valid")
+            pts_mm[h:-h, 1] = np.convolve(pts_mm[:, 1], k, mode="valid")
         line = LineString(pts_mm)
         if line.length < 0.8:
             continue
@@ -244,10 +260,12 @@ def satin_column(poly, out, px=RASTER_PX_PER_MM):
     return emitted
 
 
-def bean_stitch(poly, out, px=RASTER_PX_PER_MM, repeats=3):
+def bean_stitch(poly, out, px=None, repeats=3):
     """Triple-run stitch along the skeleton — how pros handle details too
     fine for satin (thin script, hairlines). Each segment is sewn forward,
     back, forward so it reads as a bold line."""
+    if px is None:
+        px = _adaptive_px(poly)
     mask, off = _rasterize(poly, px)
     paths, _, _ = _skeleton_paths(mask)
     if not paths:
@@ -291,8 +309,10 @@ def blob_stitch(poly, out):
     return True
 
 
-def stroke_stats(poly, px=RASTER_PX_PER_MM):
+def stroke_stats(poly, px=None):
     """(median_width_mm, p90_width_mm) of a polygon's local stroke widths."""
+    if px is None:
+        px = _adaptive_px(poly)
     mask, off = _rasterize(poly, px)
     skel, dist = medial_axis(mask, return_distance=True)
     ys, xs = np.nonzero(skel)
