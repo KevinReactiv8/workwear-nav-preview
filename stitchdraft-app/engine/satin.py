@@ -60,12 +60,13 @@ def _rasterize(poly, px):
 
 
 def _skeleton_paths(mask):
-    """Extract ordered pixel paths (branches) from the medial axis."""
+    """Extract ordered pixel paths (branches) from the medial axis.
+    Returns (paths, dist, junctions)."""
     skel, dist = medial_axis(mask, return_distance=True)
     ys, xs = np.nonzero(skel)
     pixels = set(zip(ys.tolist(), xs.tolist()))
     if not pixels:
-        return [], dist
+        return [], dist, set()
 
     def neighbors(p):
         y, x = p
@@ -116,7 +117,7 @@ def _skeleton_paths(mask):
         if len(path) >= 3:
             paths.append(path)
         loop_pixels -= set(path)
-    return paths, dist
+    return paths, dist, junctions
 
 
 def _order_paths(paths):
@@ -143,7 +144,7 @@ def satin_column(poly, out, px=RASTER_PX_PER_MM):
     """Emit satin stitches covering a stroke-like polygon.
     Returns False if the shape isn't suitable (caller should fill instead)."""
     mask, off = _rasterize(poly, px)
-    paths, dist = _skeleton_paths(mask)
+    paths, dist, junctions = _skeleton_paths(mask)
     if not paths:
         return False
 
@@ -156,6 +157,27 @@ def satin_column(poly, out, px=RASTER_PX_PER_MM):
             kept.append(p)
     if not kept:
         kept = [max(paths, key=len)]
+
+    # junction easing: branches that terminate at a junction stop short by
+    # ~half the local stroke width so the through-branch isn't triple-covered
+    # into a knot. The longest branch keeps its full length.
+    longest = max(kept, key=len)
+    eased = []
+    for p in kept:
+        q = list(p)
+        if p is not longest:
+            half_w_px = int(np.median([dist[y, x] for y, x in p]))
+            # ease only branches that are long relative to their width —
+            # tiny letters' strokes keep their full length
+            if len(q) > 3 * half_w_px + 6:
+                trim = min(half_w_px, len(q) // 4)
+                if trim >= 1:
+                    if q[0] in junctions:
+                        q = q[trim:]
+                    if q[-1] in junctions and len(q) > trim + 3:
+                        q = q[:-trim]
+        eased.append(q)
+    kept = eased
 
     emitted = False
     for path in _order_paths(kept):
@@ -227,7 +249,7 @@ def bean_stitch(poly, out, px=RASTER_PX_PER_MM, repeats=3):
     fine for satin (thin script, hairlines). Each segment is sewn forward,
     back, forward so it reads as a bold line."""
     mask, off = _rasterize(poly, px)
-    paths, _ = _skeleton_paths(mask)
+    paths, _, _ = _skeleton_paths(mask)
     if not paths:
         return False
     for path in _order_paths(paths):

@@ -403,6 +403,23 @@ def pull_compensate(poly, angle):
 # 3. Assembly
 # ----------------------------------------------------------------------------
 
+def split_lobes(poly, med_w):
+    """Separate wide lobes (wheel dots, bulbs) fused onto a thin stroke:
+    erode by the stroke half-width; surviving cores are the lobes."""
+    r = max(0.55 * med_w, 0.45)
+    core = poly.buffer(-r)
+    lobes = [g for g in getattr(core, "geoms", [core])
+             if isinstance(g, Polygon) and not g.is_empty and g.area >= 0.8]
+    if not lobes:
+        return None
+    lobe_regions, rest = [], poly
+    for g in lobes:
+        lr = g.buffer(r * 1.2).intersection(poly)
+        lobe_regions.append(lr)
+        rest = rest.difference(lr.buffer(0.05))
+    return lobe_regions, rest
+
+
 def order_polys(polys):
     """Nearest-neighbour ordering to minimise jumps."""
     remaining = list(polys)
@@ -479,6 +496,36 @@ def digitize(in_path, out_path, target_width_mm=80.0):
             #   hairline strokes -> bean stitch (triple run)
             #   stroke-like shapes (lettering) -> satin columns
             #   chunky shapes -> tatami fill with satin border
+            bx0, by0, bx1, by1 = poly.bounds
+            # tiny isolated blob (a dot): compact satin dot
+            if max(bx1 - bx0, by1 - by0) < 3.5:
+                if blob_stitch(poly, pts):
+                    continue
+                dropped += 1
+                continue
+            # thin stroke with much wider lobes fused on (wheels on an
+            # outline): carve the lobes out and stitch each part properly
+            if 0 < med_w < 1.5 and p90_w > max(2.2 * med_w, med_w + 1.2):
+                parts = split_lobes(poly, med_w)
+                if parts:
+                    lobes, rest = parts
+                    for lr in lobes:
+                        for g in getattr(lr, "geoms", [lr]):
+                            if isinstance(g, Polygon) and g.area > 0.5:
+                                gd = max(g.bounds[2] - g.bounds[0],
+                                         g.bounds[3] - g.bounds[1])
+                                if gd < 3.8:
+                                    blob_stitch(g, pts)
+                                else:
+                                    ga = principal_angle(g)
+                                    contour_underlay(g, pts)
+                                    tatami_fill(g, ga, pts)
+                                    satin_border(g, pts)
+                    for g in getattr(rest, "geoms", [rest]):
+                        if isinstance(g, Polygon) and g.area > 0.5:
+                            if not satin_column(g, pts):
+                                bean_stitch(g, pts)
+                    continue
             if med_w < 0.65:
                 if bean_stitch(poly, pts):
                     continue
