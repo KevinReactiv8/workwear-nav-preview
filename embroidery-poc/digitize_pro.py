@@ -103,8 +103,61 @@ def extract_regions(path, target_width_mm, n_colors=8):
         bg_label = np.bincount(border).argmax()
 
     mm_per_px = target_width_mm / img.width
-    regions = []
+
+    # ---- halo merging: antialiasing creates blend colours that sit on the
+    # RGB line between the background and a real element colour. Reassign
+    # each such label to the element it halos instead of stitching it.
     counts = np.bincount(labels.ravel(), minlength=n_colors)
+    if transparent is not None:
+        bg_rgb = np.array([255.0, 0.0, 255.0])  # magenta composite backdrop
+    else:
+        bg_rgb = palette[bg_label].astype(float)
+    order = [l for l in np.argsort(counts)[::-1] if l != bg_label and counts[l] > 0]
+    # elements = the strongest colours; halos = blends toward bg
+    merged = {}
+    for l in order:
+        c = palette[l].astype(float)
+        # near-duplicate palette entries: same colour split by the quantizer
+        for m in order:
+            if m != l and counts[m] > counts[l] and \
+                    np.linalg.norm(c - palette[m].astype(float)) < 30:
+                merged[l] = m
+                break
+        if l in merged:
+            continue
+        best, best_d = None, 55.0
+        for m in order:
+            if m == l or counts[m] < counts[l]:
+                continue
+            e = palette[m].astype(float)
+            seg = e - bg_rgb
+            denom = float(seg @ seg)
+            if denom < 1: continue
+            t = float(np.clip((c - bg_rgb) @ seg / denom, 0.15, 0.9))
+            d = float(np.linalg.norm(c - (bg_rgb + t * seg)))
+            if d < best_d and t < 0.9:
+                best, best_d = m, d
+        if best is not None:
+            merged[l] = None  # halo: drop entirely (antialiasing, not artwork)
+    if merged:
+        lut = np.arange(n_colors)
+        drop = np.zeros(n_colors, bool)
+        for l, m in merged.items():
+            while m in merged and merged[m] is not None:
+                m = merged[m]
+            if m is None or merged.get(m, 0) is None and m in merged:
+                drop[l] = True
+            else:
+                lut[l] = m
+        labels = lut[labels]
+        for l in np.nonzero(drop)[0]:
+            if transparent is not None:
+                transparent = transparent | (labels == l)
+            elif bg_label >= 0:
+                labels = np.where(labels == l, bg_label, labels)
+        counts = np.bincount(labels.ravel(), minlength=n_colors)
+
+    regions = []
     for label in np.argsort(counts)[::-1]:
         if label == bg_label or counts[label] == 0:
             continue
