@@ -158,6 +158,7 @@ def satin_column(poly, out, px=RASTER_PX_PER_MM):
         kept = [max(paths, key=len)]
 
     boundary = poly.exterior
+    emitted = False
     for path in _order_paths(kept):
         # smooth centre-line and resample at satin density
         pts_mm = [(x / px + off[0], y / px + off[1]) for y, x in path]
@@ -188,6 +189,7 @@ def satin_column(poly, out, px=RASTER_PX_PER_MM):
                    (run.interpolate(d) for d in np.linspace(0, run.length, rn)))
 
         # satin pass back from far end
+        emitted = True
         side = 1
         for k in range(len(coords) - 1, -1, -1):
             x, y = coords[k]
@@ -199,7 +201,7 @@ def satin_column(poly, out, px=RASTER_PX_PER_MM):
             half = min(max(widths[k], MIN_SATIN_WIDTH), MAX_SATIN_WIDTH) / 2 + PULL_COMP
             out.append((x + nx * half * side, y + ny * half * side))
             side = -side
-    return True
+    return emitted
 
 
 def bean_stitch(poly, out, px=RASTER_PX_PER_MM, repeats=3):
@@ -222,6 +224,30 @@ def bean_stitch(poly, out, px=RASTER_PX_PER_MM, repeats=3):
         for r in range(repeats):
             seq = pts if r % 2 == 0 else pts[::-1]
             out.extend(seq if r == 0 else seq[1:])
+    return True
+
+
+def blob_stitch(poly, out):
+    """Tiny shapes (wheel dots, full stops, eyes) — a compact satin dot:
+    a few zigzag throws across the whole shape, the way a pro spots them."""
+    minx, miny, maxx, maxy = poly.bounds
+    w, h = maxx - minx, maxy - miny
+    if max(w, h) < 1.0:
+        return False  # truly sub-needle; caller drops it
+    cx = (minx + maxx) / 2
+    # throw across the taller axis, advancing along the wider one
+    n = max(3, int(w / SATIN_DENSITY))
+    travel_or_break(out, (minx + 0.2, (miny + maxy) / 2))
+    side = 1
+    for i in range(n):
+        x = minx + (i + .5) * w / n
+        # clip throw to the shape at this x
+        cut = poly.intersection(LineString([(x, miny - 1), (x, maxy + 1)]))
+        if cut.is_empty:
+            continue
+        lo, hi = cut.bounds[1], cut.bounds[3]
+        out.append((x, hi if side > 0 else lo))
+        side = -side
     return True
 
 

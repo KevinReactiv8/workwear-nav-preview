@@ -38,7 +38,7 @@ from PIL import Image
 import pyembroidery as pe
 from shapely.geometry import Polygon, MultiPolygon, LineString, box
 from shapely.ops import unary_union
-from satin import satin_column, stroke_stats, bean_stitch, travel_or_break
+from satin import satin_column, stroke_stats, bean_stitch, travel_or_break, blob_stitch
 
 # ---- stitch parameters (all in mm; industry-typical defaults) ----
 FILL_ROW_SPACING = 0.40      # tatami density
