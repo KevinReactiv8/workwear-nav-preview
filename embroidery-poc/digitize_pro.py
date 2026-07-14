@@ -102,7 +102,23 @@ def extract_regions(path, target_width_mm, n_colors=8):
         border = np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]])
         bg_label = np.bincount(border).argmax()
 
-    mm_per_px = target_width_mm / img.width
+    # ---- auto-crop to content: the requested width means the DESIGN's
+    # width, not the file's — empty margins shouldn't shrink the stitching
+    if transparent is not None:
+        content = ~transparent
+    else:
+        content = labels != bg_label
+    ys, xs = np.nonzero(content)
+    if len(xs) > 0:
+        x0, x1 = xs.min(), xs.max() + 1
+        y0, y1 = ys.min(), ys.max() + 1
+        labels = labels[y0:y1, x0:x1]
+        if transparent is not None:
+            transparent = transparent[y0:y1, x0:x1]
+        content_w = x1 - x0
+    else:
+        content_w = img.width
+    mm_per_px = target_width_mm / content_w
 
     # ---- halo merging: antialiasing creates blend colours that sit on the
     # RGB line between the background and a real element colour. Reassign
