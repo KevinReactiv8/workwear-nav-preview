@@ -21,7 +21,7 @@ MAX_SATIN_WIDTH = 7.5       # pro file maxed at 7.2mm
 SPUR_FACTOR = 1.2           # prune skeleton spurs shorter than width*this
 RUN_STITCH = 1.9            # underlay/travel run length, from pro file
 PULL_COMP = 0.15
-MAX_TRAVEL = 6.0            # connect gaps up to this with a run, else trim
+MAX_TRAVEL = 1.5            # bridge only near-touching gaps; visible spans get a trim
 
 
 def travel_or_break(out, next_pt):
@@ -157,11 +157,14 @@ def satin_column(poly, out, px=RASTER_PX_PER_MM):
     if not kept:
         kept = [max(paths, key=len)]
 
-    boundary = poly.exterior
     emitted = False
     for path in _order_paths(kept):
-        # smooth centre-line and resample at satin density
-        pts_mm = [(x / px + off[0], y / px + off[1]) for y, x in path]
+        pts_mm = np.array([(x / px + off[0], y / px + off[1]) for y, x in path])
+        # smooth the pixelated skeleton so throw angles don't wobble
+        if len(pts_mm) >= 7:
+            k = np.ones(5) / 5
+            pts_mm[2:-2, 0] = np.convolve(pts_mm[:, 0], k, mode="valid")
+            pts_mm[2:-2, 1] = np.convolve(pts_mm[:, 1], k, mode="valid")
         line = LineString(pts_mm)
         if line.length < 0.8:
             continue
@@ -169,37 +172,52 @@ def satin_column(poly, out, px=RASTER_PX_PER_MM):
         # target same-side advance
         n = max(3, int(line.length / (SATIN_DENSITY / 2)))
         samples = [line.interpolate(d) for d in np.linspace(0, line.length, n)]
-        widths = []
-        for s in samples:
-            j = int((s.y - off[1]) * px)
-            i = int((s.x - off[0]) * px)
-            j = np.clip(j, 0, dist.shape[0] - 1)
-            i = np.clip(i, 0, dist.shape[1] - 1)
-            widths.append(2 * dist[j, i] / px)
-        # smooth widths to avoid jagged columns
-        widths = np.convolve(widths, np.ones(5) / 5, mode="same")
+        coords = [(p.x, p.y) for p in samples]
 
         # travel/underlay: centre run to the far end and satin back
-        coords = [(p.x, p.y) for p in samples]
         travel_or_break(out, coords[0])
-        # centre-run underlay (also gets us to the far end)
         run = LineString(coords)
         rn = max(2, int(run.length / RUN_STITCH))
         out.extend((p.x, p.y) for p in
                    (run.interpolate(d) for d in np.linspace(0, run.length, rn)))
 
-        # satin pass back from far end
+        # satin pass back: tangents over a wide baseline, throws clipped to
+        # the letter's true outline for crisp edges
         emitted = True
         side = 1
-        for k in range(len(coords) - 1, -1, -1):
+        REACH = MAX_SATIN_WIDTH  # max half-throw searched
+        m = len(coords)
+        for k in range(m - 1, -1, -1):
             x, y = coords[k]
-            k0, k1 = max(k - 1, 0), min(k + 1, len(coords) - 1)
+            k0, k1 = max(k - 2, 0), min(k + 2, m - 1)
             tx = coords[k1][0] - coords[k0][0]
             ty = coords[k1][1] - coords[k0][1]
             d = math.hypot(tx, ty) or 1.0
             nx, ny = -ty / d, tx / d
-            half = min(max(widths[k], MIN_SATIN_WIDTH), MAX_SATIN_WIDTH) / 2 + PULL_COMP
-            out.append((x + nx * half * side, y + ny * half * side))
+            a, b = None, None
+            probe = LineString([(x - nx * REACH, y - ny * REACH),
+                                (x + nx * REACH, y + ny * REACH)])
+            cut = poly.intersection(probe)
+            centre = Point(x, y)
+            for g in getattr(cut, "geoms", [cut]):
+                if isinstance(g, LineString) and g.distance(centre) < 0.3:
+                    (ax, ay), (bx, by) = g.coords[0], g.coords[-1]
+                    a, b = (ax, ay), (bx, by)
+                    break
+            if a is None:
+                half = MIN_SATIN_WIDTH / 2 + PULL_COMP
+                a = (x - nx * half, y - ny * half)
+                b = (x + nx * half, y + ny * half)
+            else:
+                # pull compensation: extend past the true edge
+                a = (a[0] - nx * PULL_COMP, a[1] - ny * PULL_COMP)
+                b = (b[0] + nx * PULL_COMP, b[1] + ny * PULL_COMP)
+                # never throw wider than the cap
+                if math.hypot(b[0]-a[0], b[1]-a[1]) > MAX_SATIN_WIDTH:
+                    cxm, cym = (a[0]+b[0])/2, (a[1]+b[1])/2
+                    a = (cxm - nx * MAX_SATIN_WIDTH/2, cym - ny * MAX_SATIN_WIDTH/2)
+                    b = (cxm + nx * MAX_SATIN_WIDTH/2, cym + ny * MAX_SATIN_WIDTH/2)
+            out.append(a if side > 0 else b)
             side = -side
     return emitted
 
