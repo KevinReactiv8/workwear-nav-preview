@@ -84,10 +84,17 @@ def extract_regions(path, target_width_mm, n_colors=8):
         bg.paste(rgba, mask=rgba.split()[-1])
         img = bg
     img = img.convert("RGB")
-    # work at high resolution for clean contours
+    # work at high resolution for clean contours — but bounded both ways:
+    # tiny inputs are upscaled for clean edges, huge inputs are downscaled
+    # (2200px across a 100-300mm design is still >7px/mm, well past what
+    # contour tracing needs, and it keeps peak memory in check)
+    f = None
     if img.width < 1200:
         f = 1200 / img.width
-        img = img.resize((1200, round(img.height * f)), Image.LANCZOS)
+    elif max(img.size) > 2200:
+        f = 2200 / max(img.size)
+    if f is not None:
+        img = img.resize((round(img.width * f), round(img.height * f)), Image.LANCZOS)
         if alpha is not None:
             alpha = np.array(Image.fromarray(alpha).resize(img.size, Image.LANCZOS))
 

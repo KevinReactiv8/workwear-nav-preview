@@ -10,6 +10,7 @@ folders. The engine code never leaves the server.
 
 Run:  uvicorn app:app --host 0.0.0.0 --port 8000
 """
+import asyncio
 import hashlib
 import hmac
 import json
@@ -44,6 +45,25 @@ TENANTS = json.loads(TENANTS_FILE.read_text())
 
 MAX_UPLOAD_MB = 15
 ALLOWED_EXT = {".png", ".jpg", ".jpeg", ".webp", ".pdf"}
+
+# One engine run at a time: the host has a hard memory ceiling, and two
+# concurrent digitize jobs would double the peak. Extra requests queue here.
+ENGINE_SEM = asyncio.Semaphore(1)
+
+# Keep the numeric libraries single-threaded in the engine subprocess —
+# thread pools in numpy/scipy/opencv cost real memory and help nothing
+# for one job at a time.
+ENGINE_ENV = {**os.environ,
+              "OMP_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1", "OPENCV_OPENCL_RUNTIME": "disabled"}
+
+
+def run_engine(src, jdir, width):
+    return subprocess.run(
+        [sys.executable, str(BASE / "engine" / "digitize_pro.py"),
+         str(src), str(jdir / "draft.dst"), str(width)],
+        capture_output=True, text=True, timeout=300, cwd=str(BASE / "engine"),
+        env=ENGINE_ENV)
 
 app = FastAPI(title="StitchDraft Studio")
 
@@ -236,17 +256,21 @@ async def digitize_route(request: Request, art: UploadFile = File(...),
         if not shutil.which("pdftocairo"):
             return page('<div class="err">PDF support is not enabled on this server — upload PNG or JPG.</div>'
                         '<a class="btn ghost" href="/studio">Back</a>', tenant)
-        subprocess.run(["pdftocairo", "-png", "-transp", "-r", "600",
-                        "-singlefile", str(src), str(jdir / "input_pdf")], check=True)
+        # 300 DPI keeps an A4 page around 2500px — plenty for contour
+        # tracing, and half the memory of 600 DPI in every later stage
+        await asyncio.to_thread(
+            subprocess.run,
+            ["pdftocairo", "-png", "-transp", "-r", "300",
+             "-singlefile", str(src), str(jdir / "input_pdf")], check=True)
         src = jdir / "input_pdf.png"
 
     width = max(20.0, min(300.0, float(width)))
     try:
-        # run the engine in a subprocess so a bad file can't take the app down
-        r = subprocess.run(
-            [sys.executable, str(BASE / "engine" / "digitize_pro.py"),
-             str(src), str(jdir / "draft.dst"), str(width)],
-            capture_output=True, text=True, timeout=300, cwd=str(BASE / "engine"))
+        # run the engine in a subprocess so a bad file can't take the app
+        # down; serialized and off the event loop so the site stays
+        # responsive while a job stitches
+        async with ENGINE_SEM:
+            r = await asyncio.to_thread(run_engine, src, jdir, width)
         if r.returncode != 0 or not (jdir / "draft.dst").exists():
             raise RuntimeError(r.stderr.strip().splitlines()[-1] if r.stderr.strip() else "engine error")
     except Exception as e:
