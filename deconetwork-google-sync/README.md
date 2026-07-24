@@ -126,3 +126,31 @@ gated. The normalizer therefore accepts many candidate names (e.g.
 `image_url`/`images[]`). If your account uses a key we don't recognise, add it
 to the candidate lists in `src/transform.js` — the run is already validated to
 catch anything that didn't map.
+
+### Product URLs (`/blank_product/`)
+
+DecoNetwork uses a **non-standard** product-page URL that the `manage_products`
+API does not return ready-made:
+
+```
+https://<store>/blank_product/<product_id>/<name-slug>
+e.g. https://www.workwear-direct.com/blank_product/229073308/Roma-Hoodie
+```
+
+Google Shopping requires a resolvable `link`, so when the API doesn't provide
+one the app **constructs** it (`buildProductUrl` / `slugify` in
+`src/transform.js`). The slug rule was reverse-engineered from live store URLs:
+every non-alphanumeric character (spaces, apostrophes, punctuation) becomes a
+single hyphen, with no trimming or collapsing — the classic PHP
+`preg_replace('/[^a-zA-Z0-9]/', '-', $name)`. Examples verified byte-for-byte:
+
+| Product name | Constructed slug |
+|---|---|
+| `Roma Hoodie` | `Roma-Hoodie` |
+| `FW34 Steelite Lusum Safety Trainer S1P HRO Orange` | `FW34-Steelite-Lusum-Safety-Trainer-S1P-HRO-Orange` |
+| `POLLYFIELD Coolviz Ultra Women's Sleeved Polo Shirt ` | `POLLYFIELD-Coolviz-Ultra-Women-s-Sleeved-Polo-Shirt-` |
+
+The slug is cosmetic — DecoNetwork resolves the page by the numeric id — so an
+imperfect slug still redirects to the canonical page. Override the shape with
+`DECONETWORK_PRODUCT_URL_PATTERN` (placeholders `{base}` `{id}` `{slug}`) if your
+store differs.

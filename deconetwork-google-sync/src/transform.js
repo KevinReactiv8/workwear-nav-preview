@@ -83,20 +83,36 @@ export function normalizeDecoNetworkProduct(raw, config) {
     ]) ?? ''
   ).trim();
 
-  const title = String(
+  // Keep the raw name for URL slugging (DecoNetwork slugs the stored name
+  // verbatim, incl. trailing spaces); use the trimmed name as the Google title.
+  const rawTitle = String(
     pick(raw, [
       'name', 'title', 'product_name', 'productName', 'Product Name', 'item_name',
     ]) ?? ''
-  ).trim();
+  );
+  const title = rawTitle.trim();
 
   const descriptionRaw = pick(raw, [
     'description', 'long_description', 'short_description', 'summary', 'details',
   ]);
   const description = stripHtml(String(descriptionRaw ?? title)).trim();
 
-  const link = String(
+  // Prefer a URL the API hands back; otherwise construct DecoNetwork's
+  // non-standard /blank_product/<id>/<slug> product URL from the id + name.
+  const numericId = pick(raw, [
+    'product_id', 'productId', 'ProductID', 'Product ID', 'id',
+  ]);
+  let link = String(
     pick(raw, ['url', 'link', 'product_url', 'productUrl', 'permalink', 'store_url']) ?? ''
   ).trim();
+  if (!link) {
+    link = buildProductUrl(
+      config.deconetwork?.productUrlPattern,
+      config.deconetwork?.baseUrl,
+      numericId,
+      rawTitle
+    );
+  }
 
   const imagesArr = firstArray(
     raw.images, raw.image_urls, raw.imageUrls, raw.media, raw.photos
@@ -162,6 +178,33 @@ function normalizeCategory(value) {
   }
   if (typeof value === 'object') return pick(value, ['name', 'title', 'label']);
   return String(value);
+}
+
+// Slugify a product name the way DecoNetwork builds its /blank_product/ URLs.
+// Reverse-engineered from real store URLs: every non-alphanumeric character
+// (spaces, apostrophes, punctuation) becomes a single hyphen, with NO trimming
+// of leading/trailing hyphens and NO collapsing of runs — i.e. the classic
+// PHP `preg_replace('/[^a-zA-Z0-9]/', '-', $name)`. Verified against:
+//   "Roma Hoodie" -> "Roma-Hoodie"
+//   "FW34 Steelite Lusum Safety Trainer S1P HRO Orange"
+//        -> "FW34-Steelite-Lusum-Safety-Trainer-S1P-HRO-Orange"
+//   "POLLYFIELD Coolviz Ultra Women's Sleeved Polo Shirt "  (trailing space)
+//        -> "POLLYFIELD-Coolviz-Ultra-Women-s-Sleeved-Polo-Shirt-"
+// Note: this ASCII rule maps accented letters to hyphens too (unverified — no
+// accented example seen). The slug is cosmetic: DecoNetwork resolves the page
+// by the numeric id, so a near-miss still redirects to the canonical page.
+export function slugify(name) {
+  return String(name || '').replace(/[^A-Za-z0-9]/g, '-');
+}
+
+// Build a DecoNetwork product URL from a pattern with {base} {id} {slug}.
+// Returns '' when we lack the base URL or a product id.
+export function buildProductUrl(pattern, base, id, title) {
+  if (!pattern || !base || id === undefined || id === null || id === '') return '';
+  return pattern
+    .replace('{base}', String(base).replace(/\/+$/, ''))
+    .replace('{id}', String(id))
+    .replace('{slug}', slugify(title));
 }
 
 function stripHtml(s) {

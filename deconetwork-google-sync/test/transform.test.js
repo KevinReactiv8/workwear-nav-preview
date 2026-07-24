@@ -4,6 +4,8 @@ import {
   normalizeDecoNetworkProduct,
   validateNormalizedProduct,
   toMerchantProductInput,
+  slugify,
+  buildProductUrl,
 } from '../src/transform.js';
 import { loadConfig } from '../src/config.js';
 
@@ -100,6 +102,80 @@ test('declares identifierExists=false when no gtin and no mpn+brand', () => {
   p.brand = '';
   const input = toMerchantProductInput(p, config);
   assert.equal(input.productAttributes.identifierExists, false);
+});
+
+test('slugify matches DecoNetwork blank_product slugs (real examples)', () => {
+  assert.equal(slugify('Roma Hoodie'), 'Roma-Hoodie');
+  assert.equal(
+    slugify('FW34 Steelite Lusum Safety Trainer S1P HRO Orange'),
+    'FW34-Steelite-Lusum-Safety-Trainer-S1P-HRO-Orange'
+  );
+  // Apostrophe -> hyphen, trailing space -> trailing hyphen (no trimming).
+  assert.equal(slugify("Women's"), 'Women-s');
+  assert.equal(slugify('Polo Shirt '), 'Polo-Shirt-');
+  assert.equal(
+    slugify("POLLYFIELD Coolviz Ultra Women's Sleeved Polo Shirt "),
+    'POLLYFIELD-Coolviz-Ultra-Women-s-Sleeved-Polo-Shirt-'
+  );
+});
+
+test('constructs the real /blank_product/ URL when the API returns none', () => {
+  const cfg = loadConfig({ DECONETWORK_API_BASE: 'https://www.workwear-direct.com' });
+
+  const hoodie = normalizeDecoNetworkProduct(
+    { product_id: 229073308, name: 'Roma Hoodie', price: 19.99, image_url: 'https://x/i.jpg' },
+    cfg
+  );
+  assert.equal(
+    hoodie.link,
+    'https://www.workwear-direct.com/blank_product/229073308/Roma-Hoodie'
+  );
+
+  const trainer = normalizeDecoNetworkProduct(
+    {
+      product_id: 232992066,
+      name: 'FW34 Steelite Lusum Safety Trainer S1P HRO Orange',
+      price: 29.5,
+      image_url: 'https://x/i.jpg',
+    },
+    cfg
+  );
+  assert.equal(
+    trainer.link,
+    'https://www.workwear-direct.com/blank_product/232992066/FW34-Steelite-Lusum-Safety-Trainer-S1P-HRO-Orange'
+  );
+
+  // Slug uses the raw (untrimmed) name, so a trailing space -> trailing hyphen,
+  // and the apostrophe becomes a hyphen — matching the real store URL exactly.
+  const polo = normalizeDecoNetworkProduct(
+    {
+      product_id: 242252641,
+      name: "POLLYFIELD Coolviz Ultra Women's Sleeved Polo Shirt ",
+      price: 8.5,
+      image_url: 'https://x/i.jpg',
+    },
+    cfg
+  );
+  assert.equal(
+    polo.link,
+    'https://www.workwear-direct.com/blank_product/242252641/POLLYFIELD-Coolviz-Ultra-Women-s-Sleeved-Polo-Shirt-'
+  );
+  // ...but the Google title is the clean, trimmed name.
+  assert.equal(polo.title, "POLLYFIELD Coolviz Ultra Women's Sleeved Polo Shirt");
+});
+
+test('prefers an API-provided URL over construction', () => {
+  const cfg = loadConfig({ DECONETWORK_API_BASE: 'https://www.workwear-direct.com' });
+  const p = normalizeDecoNetworkProduct(
+    { product_id: 1, name: 'X', price: 1, url: 'https://custom/link', image_url: 'i' },
+    cfg
+  );
+  assert.equal(p.link, 'https://custom/link');
+});
+
+test('buildProductUrl returns empty without base or id', () => {
+  assert.equal(buildProductUrl('{base}/blank_product/{id}/{slug}', '', 5, 'X'), '');
+  assert.equal(buildProductUrl('{base}/blank_product/{id}/{slug}', 'https://b', '', 'X'), '');
 });
 
 test('price micros rounds correctly', () => {

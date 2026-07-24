@@ -26,6 +26,13 @@ export function loadConfig(env = process.env) {
       productsPath: env.DECONETWORK_PRODUCTS_PATH || '/api/json/manage_products/find',
       // DecoNetwork caps results at 100 per request; page with offset.
       pageSize: Math.min(num(env.DECONETWORK_PAGE_SIZE, 100), 100),
+      // DecoNetwork product pages use a non-standard URL shape:
+      //   https://<store>/blank_product/<product_id>/<name-slug>
+      // The API returns the id + name but not this URL, so we build it. The
+      // pattern is overridable in case a store uses a different segment.
+      // Placeholders: {base} {id} {slug}
+      productUrlPattern:
+        env.DECONETWORK_PRODUCT_URL_PATTERN || '{base}/blank_product/{id}/{slug}',
     },
 
     // ---- Google Shopping (destination) — Merchant API v1 ----
