@@ -66,6 +66,13 @@ export function loadConfig(env = process.env) {
     // contains the full catalogue — Google feeds are full snapshots.
     incremental: bool(env.INCREMENTAL, false),
     statePath: env.STATE_PATH || 'output/.sync-state.json',
+    // Delete from Google any product that was synced previously but is no
+    // longer in DecoNetwork. Opt-in because it is destructive.
+    cleanupStale: bool(env.CLEANUP_STALE, false),
+    // Safety rail: if a run would delete more than this fraction of the
+    // previously-synced catalogue, skip cleanup and warn — this usually means
+    // an incomplete DecoNetwork fetch, not a genuine mass removal.
+    cleanupMaxFraction: num(env.CLEANUP_MAX_FRACTION, 0.5),
     currency: env.CURRENCY || 'GBP',
     defaultBrand: env.DEFAULT_BRAND || '',
     defaultCondition: env.DEFAULT_CONDITION || 'new',

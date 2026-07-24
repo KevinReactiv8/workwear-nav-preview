@@ -46,6 +46,18 @@ jobs:
       - name: Run tests
         run: npm test
 
+      # Persist the incremental/cleanup state file across scheduled runs.
+      # Unique key each run + prefix restore-keys = rolling "latest" cache.
+      # If the cache is ever evicted, the app simply does a full sync that
+      # run (self-healing), so this is an optimisation, not a dependency.
+      - name: Restore sync state
+        uses: actions/cache@v4
+        with:
+          path: deconetwork-google-sync/output/.sync-state.json
+          key: dn-sync-state-${{ github.run_id }}
+          restore-keys: |
+            dn-sync-state-
+
       - name: Sync products
         env:
           # ---- DecoNetwork (source) ----
@@ -62,6 +74,11 @@ jobs:
           PRODUCT_SOURCE: ${{ secrets.DECONETWORK_API_BASE && 'deconetwork' || 'fixture' }}
           SYNC_MODE: ${{ github.event.inputs.sync_mode || 'both' }}
           DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          # Push only changed products (efficient); flip cleanup on to also
+          # remove products deleted from DecoNetwork. Configure via repo vars.
+          INCREMENTAL: ${{ vars.INCREMENTAL || 'true' }}
+          CLEANUP_STALE: ${{ vars.CLEANUP_STALE || 'false' }}
+          STATE_PATH: output/.sync-state.json
           CURRENCY: ${{ vars.CURRENCY || 'GBP' }}
           GOOGLE_FEED_LABEL: ${{ vars.GOOGLE_FEED_LABEL || 'GB' }}
           GOOGLE_CONTENT_LANGUAGE: ${{ vars.GOOGLE_CONTENT_LANGUAGE || 'en' }}

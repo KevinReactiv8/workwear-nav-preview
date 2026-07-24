@@ -5,7 +5,7 @@ import { logger } from './logger.js';
 import { getProducts } from './deconetwork.js';
 import { validateNormalizedProduct } from './transform.js';
 import { buildFeed } from './feed.js';
-import { pushProducts } from './google.js';
+import { pushProducts, deleteProducts } from './google.js';
 import { loadState, saveState, changedSince } from './state.js';
 
 /**
@@ -64,10 +64,16 @@ export async function runSync(options = {}) {
   }
   logger.info('Product validation complete', { valid: valid.length, invalid: invalid.length });
 
+  // Load prior state when either incremental push or stale cleanup is on.
+  const usesState = config.incremental || config.cleanupStale;
+  const state = usesState ? await loadState(config.statePath) : {};
+  const lastSyncAt = state.lastSyncAt;
+  // Presence tracking uses ALL extracted ids (not just valid ones) so a
+  // product that's still in DecoNetwork but temporarily invalid isn't deleted.
+  const currentIds = [...new Set(products.map((p) => p.id).filter(Boolean))];
+
   // Incremental mode: narrow the push set to products changed since the last
   // successful run. The feed (below) still uses the full valid set.
-  const state = config.incremental ? await loadState(config.statePath) : {};
-  const lastSyncAt = state.lastSyncAt;
   const toPush = config.incremental
     ? valid.filter((p) => changedSince(p.modifiedAt, lastSyncAt))
     : valid;
@@ -93,6 +99,7 @@ export async function runSync(options = {}) {
     invalidSamples: invalid.slice(0, 10),
     feed: null,
     push: null,
+    cleanup: null,
   };
 
   // 3. Feed output (feed | both).
@@ -130,19 +137,54 @@ export async function runSync(options = {}) {
     }
   }
 
-  // 5. Persist state so the next incremental run has a cutoff. Guard rails:
-  //    - never write during a dry run (nothing was actually pushed), and
+  // 5. Stale cleanup (api | both): remove from Google any product we synced
+  //    before that is no longer present in DecoNetwork.
+  if (config.cleanupStale && (config.syncMode === 'api' || config.syncMode === 'both')) {
+    const previousIds = Array.isArray(state.activeIds) ? state.activeIds : [];
+    const currentSet = new Set(currentIds);
+    const staleIds = previousIds.filter((id) => !currentSet.has(id));
+
+    if (!previousIds.length) {
+      logger.info('Cleanup skipped — no prior catalogue recorded yet');
+    } else if (staleIds.length === 0) {
+      logger.info('Cleanup: nothing stale to remove');
+    } else if (staleIds.length > previousIds.length * config.cleanupMaxFraction) {
+      // Guard against mass deletion from an incomplete fetch.
+      logger.warn('Cleanup skipped — stale set exceeds safety threshold', {
+        stale: staleIds.length,
+        previous: previousIds.length,
+        maxFraction: config.cleanupMaxFraction,
+      });
+      summary.cleanup = { skipped: true, reason: 'exceeds-safety-threshold', stale: staleIds.length };
+    } else {
+      const del = await deleteProducts(config, staleIds);
+      summary.cleanup = del;
+      if (strict && del.failed > 0) {
+        const err = new Error(`${del.failed} stale deletion(s) failed (STRICT mode)`);
+        err.summary = summary;
+        throw err;
+      }
+    }
+  }
+
+  // 6. Persist state. Guard rails:
+  //    - never write during a dry run (nothing was actually changed), and
   //    - if any push failed, keep the previous watermark so the changed set
   //      (including the failures) is retried next run rather than skipped.
-  if (config.incremental && !config.dryRun) {
+  if (usesState && !config.dryRun) {
     const hadFailures = (summary.push?.failed ?? 0) > 0;
+    // Only record the catalogue snapshot if the fetch looked complete enough
+    // to trust — never overwrite a known catalogue with an empty one.
+    const activeIds = currentIds.length ? currentIds : (state.activeIds || []);
     await saveState(config.statePath, {
       lastSyncAt: hadFailures ? (lastSyncAt || null) : now,
+      activeIds,
       lastRun: {
         at: now,
         extracted: summary.extracted,
         pushed: summary.push?.succeeded ?? 0,
         failed: summary.push?.failed ?? 0,
+        deleted: summary.cleanup?.deleted ?? 0,
         advancedWatermark: !hadFailures,
       },
     });

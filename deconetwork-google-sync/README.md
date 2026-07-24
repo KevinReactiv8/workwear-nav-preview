@@ -80,7 +80,9 @@ All configuration is via environment variables (see `.env.example`).
 | `GOOGLE_CONTENT_LANGUAGE` | | Default `en` |
 | `SYNC_MODE` | | `api` \| `feed` \| `both` (default `api`) |
 | `INCREMENTAL` | | `true` to push only products changed since the last run |
-| `STATE_PATH` | | Where the incremental watermark is stored |
+| `CLEANUP_STALE` | | `true` to delete products removed from DecoNetwork |
+| `CLEANUP_MAX_FRACTION` | | Skip cleanup if it would delete more than this fraction (default `0.5`) |
+| `STATE_PATH` | | Where the watermark + catalogue snapshot are stored |
 | `DRY_RUN` | | `true` to skip writing to Google |
 | `PRODUCT_SOURCE` | | `deconetwork` \| `fixture` |
 | `CURRENCY` | | Default `GBP` |
@@ -115,6 +117,25 @@ Safety rules:
 - Dry runs never move the watermark.
 - The XML feed always contains the **full** catalogue (Google feeds are
   snapshots), regardless of incremental mode.
+
+## Stale-product cleanup
+
+With `CLEANUP_STALE=true`, the app remembers which product ids it synced and,
+on the next run, deletes from Google any that have disappeared from DecoNetwork
+— so you don't accumulate dead listings. Safety rules:
+
+- Presence is tracked against **all** extracted ids, so a product that's still
+  in DecoNetwork but temporarily invalid is never deleted.
+- If a run would delete more than `CLEANUP_MAX_FRACTION` (default 50%) of the
+  known catalogue, cleanup is **skipped** with a warning — this usually signals
+  an incomplete fetch, not a genuine mass removal.
+- A "not found" on delete is treated as already-gone (success).
+- Nothing is deleted on the first run (no prior catalogue to compare against),
+  or during a dry run.
+
+In GitHub Actions the state file is persisted with a rolling `actions/cache`
+so incremental/cleanup work across scheduled runs; if the cache is evicted the
+app simply does a full sync that run.
 
 ## Scheduling (every 24 hours)
 

@@ -55,9 +55,26 @@ export async function createGoogleClient(config) {
         { label: `insert ${productInput.offerId}`, shouldRetry: isTransientError }
       );
     },
+    async remove(offerId) {
+      const name = productInputName(config, offerId);
+      return withRetry(
+        async () => {
+          await client.deleteProductInput({ name, dataSource });
+          return true;
+        },
+        { label: `delete ${offerId}`, shouldRetry: isTransientError }
+      );
+    },
     parent,
     dataSource,
   };
+}
+
+// Merchant API product-input resource name:
+//   accounts/{account}/productInputs/{contentLanguage}~{feedLabel}~{offerId}
+export function productInputName(config, offerId) {
+  const { merchantId, contentLanguage, feedLabel } = config.google;
+  return `accounts/${merchantId}/productInputs/${contentLanguage}~${feedLabel}~${offerId}`;
 }
 
 // Run tasks with a bounded concurrency pool.
@@ -111,6 +128,44 @@ export async function pushProducts(config, products) {
 
   logger.info('Merchant API push complete', { succeeded, failed: failures.length });
   return { succeeded, failed: failures.length, failures };
+}
+
+/**
+ * Delete products from Google Merchant Center by offerId (used to remove
+ * listings that no longer exist in DecoNetwork). Per-id error isolation; a
+ * "not found" is treated as already-gone (success), not a failure.
+ */
+export async function deleteProducts(config, offerIds) {
+  if (!offerIds.length) return { deleted: 0, failed: 0, failures: [] };
+  if (config.dryRun) {
+    logger.info('DRY_RUN enabled — not deleting from the Merchant API', { count: offerIds.length });
+    return { deleted: 0, failed: 0, failures: [], skipped: offerIds.length };
+  }
+
+  const client = await createGoogleClient(config);
+  logger.info('Deleting stale products from Google Merchant API', { count: offerIds.length });
+
+  let deleted = 0;
+  const failures = [];
+
+  await mapWithConcurrency(offerIds, config.google.concurrency, async (offerId) => {
+    try {
+      await client.remove(offerId);
+      deleted += 1;
+    } catch (err) {
+      const status = err?.code || err?.status;
+      // 5 = NOT_FOUND (gRPC) / 404: the product is already gone — that's fine.
+      if (status === 5 || status === 404) {
+        deleted += 1;
+        return;
+      }
+      failures.push({ id: offerId, error: err?.message || String(err) });
+      logger.error('Failed to delete product', { id: offerId, error: err?.message || String(err) });
+    }
+  });
+
+  logger.info('Merchant API delete complete', { deleted, failed: failures.length });
+  return { deleted, failed: failures.length, failures };
 }
 
 // Exposed for tests / callers that want to preview the request bodies.
