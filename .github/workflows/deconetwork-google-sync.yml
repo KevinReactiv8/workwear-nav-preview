@@ -1,0 +1,79 @@
+name: DecoNetwork → Google Shopping Sync
+
+# Runs every 24 hours. Extracts products from DecoNetwork and syncs them into
+# Google Shopping (Merchant API). Also runnable on demand from the Actions tab.
+on:
+  schedule:
+    - cron: '0 3 * * *' # 03:00 UTC daily
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (do not write to Google)'
+        type: boolean
+        default: false
+      sync_mode:
+        description: 'Sync mode'
+        type: choice
+        options: [api, feed, both]
+        default: both
+
+# Prevent overlapping runs if one takes longer than expected.
+concurrency:
+  group: deconetwork-google-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: deconetwork-google-sync
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: deconetwork-google-sync/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Sync products
+        env:
+          # ---- DecoNetwork (source) ----
+          DECONETWORK_API_BASE: ${{ secrets.DECONETWORK_API_BASE }}
+          DECONETWORK_USERNAME: ${{ secrets.DECONETWORK_USERNAME }}
+          DECONETWORK_PASSWORD: ${{ secrets.DECONETWORK_PASSWORD }}
+          # ---- Google Shopping (destination) ----
+          GOOGLE_MERCHANT_ID: ${{ secrets.GOOGLE_MERCHANT_ID }}
+          GOOGLE_DATA_SOURCE_ID: ${{ secrets.GOOGLE_DATA_SOURCE_ID }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          # ---- Behaviour ----
+          # Use the live DecoNetwork API when credentials are present; otherwise
+          # the app skips cleanly (keeping this job green) until secrets are set.
+          PRODUCT_SOURCE: ${{ secrets.DECONETWORK_API_BASE && 'deconetwork' || 'fixture' }}
+          SYNC_MODE: ${{ github.event.inputs.sync_mode || 'both' }}
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          CURRENCY: ${{ vars.CURRENCY || 'GBP' }}
+          GOOGLE_FEED_LABEL: ${{ vars.GOOGLE_FEED_LABEL || 'GB' }}
+          GOOGLE_CONTENT_LANGUAGE: ${{ vars.GOOGLE_CONTENT_LANGUAGE || 'en' }}
+          FEED_OUTPUT_PATH: output/google-shopping-feed.xml
+          LOG_LEVEL: info
+        run: npm run sync
+
+      - name: Upload feed artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: google-shopping-feed
+          path: deconetwork-google-sync/output/google-shopping-feed.xml
+          if-no-files-found: ignore
+          retention-days: 14
