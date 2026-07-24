@@ -86,7 +86,24 @@ All configuration is via environment variables (see `.env.example`).
 | `DRY_RUN` | | `true` to skip writing to Google |
 | `PRODUCT_SOURCE` | | `deconetwork` \| `fixture` |
 | `CURRENCY` | | Default `GBP` |
+| `GOOGLE_CATEGORY_MAP` | | Path to the DecoNetwork→Google category rules file |
+| `REPORT_PATH` | | Markdown run-report path (empty to disable) |
 | `STRICT` | | `true` to fail instead of skipping on problems |
+
+### Google product categories
+
+Products are tagged with a Google product-category (`google_product_category`)
+via editable rules in `config/google-category-map.json` — keyword → Google
+taxonomy path, first match wins, falling back to `GOOGLE_DEFAULT_CATEGORY`.
+Correct categories cut Merchant Center disapprovals. Verify the paths against
+Google's official taxonomy and tweak the file for your catalogue; no code
+change needed.
+
+### Run report
+
+Each run writes a Markdown summary to `REPORT_PATH`
+(`output/last-run-report.md`) — counts extracted/valid/pushed/deleted plus any
+invalid products and push failures — and it's uploaded as a CI artifact.
 
 ### Getting the credentials
 

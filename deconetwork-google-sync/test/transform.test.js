@@ -6,8 +6,18 @@ import {
   toMerchantProductInput,
   slugify,
   buildProductUrl,
+  mapGoogleCategory,
 } from '../src/transform.js';
 import { loadConfig } from '../src/config.js';
+
+const CATEGORY_MAP = {
+  rules: [
+    { keywords: ['hi-vis', 'hivis'], category: 'Business & Industrial > Work Safety Protective Gear' },
+    { keywords: ['boot', 'trainer', 'footwear'], category: 'Apparel & Accessories > Shoes' },
+    { keywords: ['glove'], category: 'Apparel & Accessories > Clothing Accessories > Gloves & Mittens' },
+    { keywords: ['polo', 'shirt', 'tee'], category: 'Apparel & Accessories > Clothing > Shirts & Tops' },
+  ],
+};
 
 const config = loadConfig({ CURRENCY: 'GBP', GOOGLE_FEED_LABEL: 'GB' });
 
@@ -171,6 +181,38 @@ test('prefers an API-provided URL over construction', () => {
     cfg
   );
   assert.equal(p.link, 'https://custom/link');
+});
+
+test('mapGoogleCategory matches keywords first-hit-wins, else fallback', () => {
+  assert.equal(
+    mapGoogleCategory('Safety Boot S3', CATEGORY_MAP, 'Apparel & Accessories'),
+    'Apparel & Accessories > Shoes'
+  );
+  assert.equal(
+    mapGoogleCategory('Hi-Vis Vest', CATEGORY_MAP, 'Apparel & Accessories'),
+    'Business & Industrial > Work Safety Protective Gear'
+  );
+  assert.equal(
+    mapGoogleCategory('Classic Piqué Polo Shirt', CATEGORY_MAP, 'Apparel & Accessories'),
+    'Apparel & Accessories > Clothing > Shirts & Tops'
+  );
+  // no match -> fallback
+  assert.equal(
+    mapGoogleCategory('Mystery Widget', CATEGORY_MAP, 'Apparel & Accessories'),
+    'Apparel & Accessories'
+  );
+  // no map -> fallback
+  assert.equal(mapGoogleCategory('Boot', null, 'Fallback'), 'Fallback');
+});
+
+test('normalizer applies the category map to the product', () => {
+  const cfg = loadConfig({});
+  cfg.google.categoryMap = CATEGORY_MAP;
+  const p = normalizeDecoNetworkProduct(
+    { id: 'b1', name: 'Steel-Toe Safety Boot', price: 25, url: 'u', image_url: 'i', category: 'Safety Footwear' },
+    cfg
+  );
+  assert.equal(p.googleProductCategory, 'Apparel & Accessories > Shoes');
 });
 
 test('buildProductUrl returns empty without base or id', () => {

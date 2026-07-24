@@ -1,12 +1,24 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
-import { loadConfig, validateConfig } from './config.js';
+import { loadConfig, validateConfig, loadCategoryMap } from './config.js';
 import { logger } from './logger.js';
 import { getProducts } from './deconetwork.js';
 import { validateNormalizedProduct } from './transform.js';
 import { buildFeed } from './feed.js';
 import { pushProducts, deleteProducts } from './google.js';
 import { loadState, saveState, changedSince } from './state.js';
+import { renderReport } from './report.js';
+
+async function writeReport(config, summary) {
+  if (!config.reportPath) return;
+  try {
+    await mkdir(dirname(config.reportPath), { recursive: true });
+    await writeFile(config.reportPath, renderReport(summary), 'utf8');
+    logger.info('Wrote run report', { path: config.reportPath });
+  } catch (err) {
+    logger.warn('Could not write run report', { error: err.message });
+  }
+}
 
 /**
  * Run one full sync. Designed to never throw for routine conditions (missing
@@ -42,8 +54,13 @@ export async function runSync(options = {}) {
     logger.warn('Configuration incomplete — skipping this run (set STRICT=true to fail instead)', {
       problems,
     });
-    return { skipped: true, reason: 'incomplete-config', problems, now };
+    const skipSummary = { skipped: true, reason: 'incomplete-config', problems, now };
+    await writeReport(config, skipSummary);
+    return skipSummary;
   }
+
+  // Enrich config with the (optional) category map before normalization.
+  await loadCategoryMap(config);
 
   // 1. Extract products from the source.
   const products = await getProducts(config);
@@ -189,6 +206,8 @@ export async function runSync(options = {}) {
       },
     });
   }
+
+  await writeReport(config, summary);
 
   logger.info('Sync finished', {
     extracted: summary.extracted,

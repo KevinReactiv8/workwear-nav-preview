@@ -86,11 +86,13 @@ jobs:
           LOG_LEVEL: info
         run: npm run sync
 
-      - name: Upload feed artifact
+      - name: Upload feed + report artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: google-shopping-feed
-          path: deconetwork-google-sync/output/google-shopping-feed.xml
+          name: sync-output
+          path: |
+            deconetwork-google-sync/output/google-shopping-feed.xml
+            deconetwork-google-sync/output/last-run-report.md
           if-no-files-found: ignore
           retention-days: 14

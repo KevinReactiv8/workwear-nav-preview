@@ -1,0 +1,18 @@
+{
+  "_comment": "Maps DecoNetwork categories/product names to Google product taxonomy paths. Rules are matched top-to-bottom; the first rule whose keyword appears (case-insensitive) in the product's category or title wins. Values must match Google's official taxonomy (https://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt) — verify/adjust for your catalogue. Anything unmatched falls back to GOOGLE_DEFAULT_CATEGORY.",
+  "rules": [
+    { "keywords": ["hi-vis", "hi vis", "hivis", "high visibility", "high vis"], "category": "Business & Industrial > Work Safety Protective Gear" },
+    { "keywords": ["safety glass", "goggle", "eyewear", "safety spec", "over-spec", "over spec"], "category": "Business & Industrial > Work Safety Protective Gear > Protective Eyewear" },
+    { "keywords": ["helmet", "bump cap", "hard hat", "hardhat"], "category": "Business & Industrial > Work Safety Protective Gear > Hardhats" },
+    { "keywords": ["boot", "trainer", "footwear", "shoe", "welly", "wellington"], "category": "Apparel & Accessories > Shoes" },
+    { "keywords": ["glove", "mitten"], "category": "Apparel & Accessories > Clothing Accessories > Gloves & Mittens" },
+    { "keywords": ["hat", "cap", "beanie", "headwear", "zandana", "skull cap"], "category": "Apparel & Accessories > Clothing Accessories > Hats" },
+    { "keywords": ["hoodie", "sweatshirt", "sweat", "fleece"], "category": "Apparel & Accessories > Clothing > Activewear" },
+    { "keywords": ["jacket", "coat", "bomber", "parka", "gilet", "bodywarmer", "softshell"], "category": "Apparel & Accessories > Clothing > Outerwear > Coats & Jackets" },
+    { "keywords": ["trouser", "pant", "legwear", "short", "jean", "cargo"], "category": "Apparel & Accessories > Clothing > Pants" },
+    { "keywords": ["overall", "coverall", "boilersuit", "boiler suit", "dungaree"], "category": "Apparel & Accessories > Clothing > One-Pieces > Jumpsuits & Rompers" },
+    { "keywords": ["apron", "tabard"], "category": "Apparel & Accessories > Clothing > Aprons" },
+    { "keywords": ["scrub", "tunic", "healthcare", "chef", "hospitality"], "category": "Apparel & Accessories > Clothing > Uniforms" },
+    { "keywords": ["polo", "t-shirt", "tee", "shirt", "top"], "category": "Apparel & Accessories > Clothing > Shirts & Tops" }
+  ]
+}

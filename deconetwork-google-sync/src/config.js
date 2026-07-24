@@ -51,6 +51,10 @@ export function loadConfig(env = process.env) {
       feedLabel: env.GOOGLE_FEED_LABEL || env.GOOGLE_TARGET_COUNTRY || 'GB',
       // Default Google product category for products missing one.
       defaultProductCategory: env.GOOGLE_DEFAULT_CATEGORY || 'Apparel & Accessories',
+      // Path to an editable DecoNetwork→Google category map (loaded at runtime).
+      categoryMapPath: env.GOOGLE_CATEGORY_MAP || 'config/google-category-map.json',
+      // Populated by loadCategoryMap() before products are normalized.
+      categoryMap: null,
       // Concurrency for productInputs:insert calls.
       concurrency: num(env.GOOGLE_CONCURRENCY, 5),
     },
@@ -77,6 +81,8 @@ export function loadConfig(env = process.env) {
     defaultBrand: env.DEFAULT_BRAND || '',
     defaultCondition: env.DEFAULT_CONDITION || 'new',
     feedOutputPath: env.FEED_OUTPUT_PATH || 'output/google-shopping-feed.xml',
+    // Markdown run report (empty string disables it).
+    reportPath: env.REPORT_PATH ?? 'output/last-run-report.md',
     // Where to source products from: 'deconetwork' (live API) or 'fixture'
     // (bundled sample data — used for demos/tests and as a safe default when
     // no DecoNetwork credentials are present).
@@ -84,6 +90,23 @@ export function loadConfig(env = process.env) {
     fixturePath: env.FIXTURE_PATH || 'fixtures/deconetwork-products.sample.json',
   };
 
+  return config;
+}
+
+// Load the DecoNetwork→Google category map and attach it to the config. A
+// missing/broken map is non-fatal — the app falls back to the default
+// category. Returns the config for convenience.
+export async function loadCategoryMap(config) {
+  const path = config.google.categoryMapPath;
+  if (!path) return config;
+  try {
+    const { readFile } = await import('node:fs/promises');
+    const text = await readFile(path, 'utf8');
+    const parsed = JSON.parse(text);
+    if (parsed && Array.isArray(parsed.rules)) config.google.categoryMap = parsed;
+  } catch {
+    // fall back to default category silently — this is an optional enrichment
+  }
   return config;
 }
 

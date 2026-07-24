@@ -168,10 +168,35 @@ export function normalizeDecoNetworkProduct(raw, config) {
     brand,
     gtin: gtin ? String(gtin).trim() : undefined,
     mpn: mpn ? String(mpn).trim() : undefined,
-    googleProductCategory: config.google?.defaultProductCategory,
+    googleProductCategory: mapGoogleCategory(
+      `${productType || ''} ${title}`,
+      config.google?.categoryMap,
+      config.google?.defaultProductCategory
+    ),
     productType,
     modifiedAt: modifiedAt ? String(modifiedAt) : undefined,
   };
+}
+
+/**
+ * Choose a Google product-category path for a product by matching its
+ * category/title text against a rules list (first keyword hit wins). Falls
+ * back to `fallback` when nothing matches or no map is provided.
+ * @param {string} text
+ * @param {{rules?: Array<{keywords: string[], category: string}>}} [map]
+ * @param {string} [fallback]
+ */
+export function mapGoogleCategory(text, map, fallback) {
+  const rules = map?.rules;
+  if (!Array.isArray(rules) || !rules.length) return fallback;
+  const haystack = String(text || '').toLowerCase();
+  for (const rule of rules) {
+    if (!rule || !Array.isArray(rule.keywords)) continue;
+    if (rule.keywords.some((kw) => kw && haystack.includes(String(kw).toLowerCase()))) {
+      return rule.category;
+    }
+  }
+  return fallback;
 }
 
 function normalizeCategory(value) {
