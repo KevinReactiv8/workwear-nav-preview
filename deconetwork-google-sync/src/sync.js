@@ -6,6 +6,7 @@ import { getProducts } from './deconetwork.js';
 import { validateNormalizedProduct } from './transform.js';
 import { buildFeed } from './feed.js';
 import { pushProducts } from './google.js';
+import { loadState, saveState, changedSince } from './state.js';
 
 /**
  * Run one full sync. Designed to never throw for routine conditions (missing
@@ -63,14 +64,32 @@ export async function runSync(options = {}) {
   }
   logger.info('Product validation complete', { valid: valid.length, invalid: invalid.length });
 
+  // Incremental mode: narrow the push set to products changed since the last
+  // successful run. The feed (below) still uses the full valid set.
+  const state = config.incremental ? await loadState(config.statePath) : {};
+  const lastSyncAt = state.lastSyncAt;
+  const toPush = config.incremental
+    ? valid.filter((p) => changedSince(p.modifiedAt, lastSyncAt))
+    : valid;
+  if (config.incremental) {
+    logger.info('Incremental mode', {
+      lastSyncAt: lastSyncAt || '(none — full push)',
+      changed: toPush.length,
+      unchanged: valid.length - toPush.length,
+    });
+  }
+
   const summary = {
     now,
     source: config.source,
     syncMode: config.syncMode,
     dryRun: config.dryRun,
+    incremental: config.incremental,
+    lastSyncAt: lastSyncAt || null,
     extracted: products.length,
     valid: valid.length,
     invalid: invalid.length,
+    toPush: toPush.length,
     invalidSamples: invalid.slice(0, 10),
     feed: null,
     push: null,
@@ -92,14 +111,14 @@ export async function runSync(options = {}) {
 
   // 4. Merchant API push (api | both).
   if (config.syncMode === 'api' || config.syncMode === 'both') {
-    const result = await pushProducts(config, valid);
+    const result = await pushProducts(config, toPush);
     summary.push = result;
 
     // A systemic failure (every product failed) is a real error worth a
     // non-zero exit; partial failures are logged but don't sink the run.
-    if (!config.dryRun && valid.length > 0 && result.failed === valid.length) {
+    if (!config.dryRun && toPush.length > 0 && result.failed === toPush.length) {
       const err = new Error(
-        `All ${valid.length} product pushes failed — treating as systemic failure`
+        `All ${toPush.length} product pushes failed — treating as systemic failure`
       );
       err.summary = summary;
       throw err;
@@ -109,6 +128,24 @@ export async function runSync(options = {}) {
       err.summary = summary;
       throw err;
     }
+  }
+
+  // 5. Persist state so the next incremental run has a cutoff. Guard rails:
+  //    - never write during a dry run (nothing was actually pushed), and
+  //    - if any push failed, keep the previous watermark so the changed set
+  //      (including the failures) is retried next run rather than skipped.
+  if (config.incremental && !config.dryRun) {
+    const hadFailures = (summary.push?.failed ?? 0) > 0;
+    await saveState(config.statePath, {
+      lastSyncAt: hadFailures ? (lastSyncAt || null) : now,
+      lastRun: {
+        at: now,
+        extracted: summary.extracted,
+        pushed: summary.push?.succeeded ?? 0,
+        failed: summary.push?.failed ?? 0,
+        advancedWatermark: !hadFailures,
+      },
+    });
   }
 
   logger.info('Sync finished', {

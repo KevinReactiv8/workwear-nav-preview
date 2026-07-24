@@ -149,6 +149,11 @@ export function normalizeDecoNetworkProduct(raw, config) {
     pick(raw, ['category', 'categories', 'category_path', 'product_type', 'productType'])
   );
 
+  const modifiedAt = pick(raw, [
+    'date_modified', 'dateModified', 'Date Modified', 'modified', 'modified_at',
+    'modifiedAt', 'updated_at', 'updatedAt', 'last_modified', 'lastModified',
+  ]);
+
   return {
     id,
     title,
@@ -165,6 +170,7 @@ export function normalizeDecoNetworkProduct(raw, config) {
     mpn: mpn ? String(mpn).trim() : undefined,
     googleProductCategory: config.google?.defaultProductCategory,
     productType,
+    modifiedAt: modifiedAt ? String(modifiedAt) : undefined,
   };
 }
 

@@ -61,6 +61,11 @@ export function loadConfig(env = process.env) {
     // 'both' -> do both
     syncMode: (env.SYNC_MODE || 'api').toLowerCase(),
     dryRun: bool(env.DRY_RUN, false),
+    // Incremental mode only pushes products changed since the last successful
+    // run (tracked in the state file). The XML feed, when produced, always
+    // contains the full catalogue — Google feeds are full snapshots.
+    incremental: bool(env.INCREMENTAL, false),
+    statePath: env.STATE_PATH || 'output/.sync-state.json',
     currency: env.CURRENCY || 'GBP',
     defaultBrand: env.DEFAULT_BRAND || '',
     defaultCondition: env.DEFAULT_CONDITION || 'new',

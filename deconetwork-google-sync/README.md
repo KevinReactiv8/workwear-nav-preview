@@ -79,6 +79,8 @@ All configuration is via environment variables (see `.env.example`).
 | `GOOGLE_FEED_LABEL` | | Target grouping, usually the country code (default `GB`) |
 | `GOOGLE_CONTENT_LANGUAGE` | | Default `en` |
 | `SYNC_MODE` | | `api` \| `feed` \| `both` (default `api`) |
+| `INCREMENTAL` | | `true` to push only products changed since the last run |
+| `STATE_PATH` | | Where the incremental watermark is stored |
 | `DRY_RUN` | | `true` to skip writing to Google |
 | `PRODUCT_SOURCE` | | `deconetwork` \| `fixture` |
 | `CURRENCY` | | Default `GBP` |
@@ -99,6 +101,20 @@ Console in the DecoNetwork admin that shows the exact request/response JSON.
 4. The API scope used is `https://www.googleapis.com/auth/content`.
 
 ---
+
+## Incremental sync
+
+With `INCREMENTAL=true`, each run records a timestamp in `STATE_PATH` and the
+next run only pushes products whose modified date is at/after that watermark —
+so the daily job isn't re-sending the entire catalogue to Google every time.
+Safety rules:
+
+- Products with no known modified date are always pushed (fail-safe).
+- The watermark only advances on a clean run; if any push failed, it's held
+  back so the failures retry next time rather than being skipped.
+- Dry runs never move the watermark.
+- The XML feed always contains the **full** catalogue (Google feeds are
+  snapshots), regardless of incremental mode.
 
 ## Scheduling (every 24 hours)
 
