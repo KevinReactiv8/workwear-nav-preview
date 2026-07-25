@@ -32,6 +32,7 @@ Deps: pip install pyembroidery pillow numpy opencv-python-headless shapely
 """
 import sys
 import math
+from pathlib import Path
 import numpy as np
 import cv2
 from PIL import Image
@@ -477,10 +478,42 @@ def emit(pattern, pts):
                                         (prev[0] + f) * UNITS, prev[1] * UNITS)
 
 
+def write_svg(regions, svg_path):
+    """Colour-separated vector artwork (mm units, holes preserved).
+
+    This is the editable companion to the .dst draft: digitizing packages
+    (Wilcom, Hatch, Pulse) import it as clean pre-traced artwork, so a
+    digitizer can rebuild any element as native objects without re-tracing.
+    """
+    minx = miny = float("inf"); maxx = maxy = float("-inf")
+    for _, mp in regions:
+        x0, y0, x1, y1 = mp.bounds
+        minx, miny = min(minx, x0), min(miny, y0)
+        maxx, maxy = max(maxx, x1), max(maxy, y1)
+    w, h = maxx - minx, maxy - miny
+
+    def ring(coords):
+        return "M " + " L ".join(f"{x - minx:.2f} {y - miny:.2f}" for x, y in coords) + " Z"
+
+    parts = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w:.2f}mm" '
+             f'height="{h:.2f}mm" viewBox="0 0 {w:.2f} {h:.2f}">']
+    for color, mp in regions:
+        fill = "#%02x%02x%02x" % tuple(color)
+        d = " ".join(ring(p.exterior.coords) + " " +
+                     " ".join(ring(i.coords) for i in p.interiors)
+                     for p in mp.geoms)
+        parts.append(f'<path d="{d}" fill="{fill}" fill-rule="evenodd"/>')
+    parts.append("</svg>")
+    with open(svg_path, "w") as f:
+        f.write("\n".join(parts))
+    print(f"wrote {svg_path}")
+
+
 def digitize(in_path, out_path, target_width_mm=80.0):
     regions = extract_regions(in_path, target_width_mm)
     if not regions:
         raise SystemExit("no stitchable regions found (is the image flat artwork?)")
+    write_svg(regions, str(Path(out_path).with_suffix(".svg")))
 
     pattern = pe.EmbPattern()
     dropped = 0

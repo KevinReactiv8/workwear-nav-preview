@@ -328,9 +328,13 @@ def job_page(request: Request, job_id: str):
       {warn}
       <div style="margin-top:1.4rem">
         <a class="btn" href="/job/{job_id}/draft.dst">Download .DST</a>
+        <a class="btn" href="/job/{job_id}/draft.svg">Download .SVG</a>
         {verdict_ui}
         <a class="btn ghost" href="/studio">New job</a>
-      </div>""", tenant)
+      </div>
+      <p class="muted" style="margin-top:.8rem">To edit in Wilcom: open the .DST
+      with object/outline recognition for editable stitch objects, or import the
+      .SVG as pre-traced vector artwork and save as .EMB from there.</p>""", tenant)
 
 
 @app.post("/job/{job_id}/verdict")
@@ -356,6 +360,18 @@ def download_dst(request: Request, job_id: str):
     j = get_job(tenant, job_id)
     return FileResponse(tenant_dir(tenant) / job_id / "draft.dst",
                         filename=f"{j['name']}.dst", media_type="application/octet-stream")
+
+
+@app.get("/job/{job_id}/draft.svg")
+def download_svg(request: Request, job_id: str):
+    tenant = current_tenant(request)
+    if not tenant or not get_job(tenant, job_id):
+        return RedirectResponse("/")
+    j = get_job(tenant, job_id)
+    svg = tenant_dir(tenant) / job_id / "draft.svg"
+    if not svg.exists():
+        return RedirectResponse(f"/job/{job_id}")
+    return FileResponse(svg, filename=f"{j['name']}.svg", media_type="image/svg+xml")
 
 
 @app.get("/job/{job_id}/preview.png")
