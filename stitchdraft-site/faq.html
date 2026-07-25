@@ -180,7 +180,15 @@
       <summary>What stitch file formats do you output?</summary>
       <div class="answer">
         <p>Native output is <span class="mono">.DST</span> (Tajima) — the universal production format every commercial machine and every major digitizing suite reads. Conversions to <span class="mono">.PES</span>, <span class="mono">.EXP</span>, <span class="mono">.JEF</span> and other machine formats are included.</p>
-        <p>We don&rsquo;t write <span class="mono">.EMB</span> — that&rsquo;s Wilcom&rsquo;s sealed proprietary format. Wilcom imports our <span class="mono">.DST</span> directly, which is the standard industry route.</p>
+        <p>We don&rsquo;t write <span class="mono">.EMB</span> — that&rsquo;s Wilcom&rsquo;s sealed proprietary format, and nothing outside Wilcom can create it. Machines don&rsquo;t need it: they stitch <span class="mono">.DST</span> natively. For editing, every job also ships the artwork as clean, colour-separated <span class="mono">.SVG</span> vectors at true stitch size — the clean route to a native .EMB (see the next answer).</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Can our digitizers edit a draft in Wilcom?</summary>
+      <div class="answer">
+        <p>Yes — the honest way. Converting a .DST to .EMB gives you stitches, not objects; recognition can&rsquo;t reliably rebuild fragmented elements, and no software fixes that — the object data simply isn&rsquo;t in a stitch file. So we never ask your team to convert stitches.</p>
+        <p>Instead they import the job&rsquo;s <span class="mono">.SVG</span> into Wilcom as pre-traced, colour-separated artwork at final size and punch native objects straight over it, with the draft&rsquo;s sewn preview as the stitch plan. The result is a clean first-generation .EMB — and the slow front of the job (cleanup, tracing, separation) is already done before they start.</p>
       </div>
     </details>
 
@@ -205,7 +213,7 @@
     <details>
       <summary>Is this going to replace my digitizers?</summary>
       <div class="answer">
-        <p>It replaces the mechanical 80% of the job, not the judgement. Shops running StitchDraft point the same team at several times the volume: the engine drafts, experts approve and fix the genuinely hard work. Faster turnaround becomes something you sell; your experts spend the day on work worth their skill.</p>
+        <p>It removes the front of every job and the whole of many. Simple work ships from the draft with a review click; harder work starts from finished art prep and a working stitch plan instead of a blank screen. The same team points at several times the volume — and the share of jobs that ship untouched grows with every correction your experts feed back. Faster turnaround becomes something you sell; your experts spend the day on work worth their skill.</p>
         <p>What it does change: growth stops requiring you to find and hire scarce digitizers.</p>
       </div>
     </details>
