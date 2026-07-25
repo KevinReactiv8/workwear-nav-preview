@@ -332,9 +332,11 @@ def job_page(request: Request, job_id: str):
         {verdict_ui}
         <a class="btn ghost" href="/studio">New job</a>
       </div>
-      <p class="muted" style="margin-top:.8rem">To edit in Wilcom: open the .DST
-      with object/outline recognition for editable stitch objects, or import the
-      .SVG as pre-traced vector artwork and save as .EMB from there.</p>""", tenant)
+      <p class="muted" style="margin-top:.8rem">To edit in Wilcom: import the
+      .SVG — the artwork pre-vectorized, colour-separated and at final size —
+      and digitize native objects over it (clean first-generation .EMB, no
+      stitch conversion). The .DST is the stitch-plan reference and the direct
+      machine file for jobs that need no editing.</p>""", tenant)
 
 
 @app.post("/job/{job_id}/verdict")
