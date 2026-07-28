@@ -21,7 +21,7 @@ MAX_SATIN_WIDTH = 7.5       # pro file maxed at 7.2mm
 SPUR_FACTOR = 1.2           # prune skeleton spurs shorter than width*this
 RUN_STITCH = 1.9            # underlay/travel run length, from pro file
 PULL_COMP = 0.2
-MAX_TRAVEL = 1.5            # bridge only near-touching gaps; visible spans get a trim
+MAX_TRAVEL = 3.0            # calibration suite: pros travel this far before trimming (7 trims/12k-st crest)
 
 
 def travel_or_break(out, next_pt):
@@ -283,6 +283,25 @@ def bean_stitch(poly, out, px=None, repeats=3):
             seq = pts if r % 2 == 0 else pts[::-1]
             out.extend(seq if r == 0 else seq[1:])
     return True
+
+
+def outline_run(poly, out):
+    """Run-stitch outline of the shape — the measured pro fallback for
+    glyphs too small to satin (calibration sheet 11: the R-in-ring is
+    simplified to a clean outline at 8mm and below, never mushed,
+    never dropped)."""
+    emitted = False
+    for ring in [poly.exterior, *poly.interiors]:
+        L = ring.length
+        if L < 2.0:
+            continue
+        n = max(4, int(L / 1.2))
+        pts = [ring.interpolate(i * L / n) for i in range(n + 1)]
+        seq = [(p.x, p.y) for p in pts]
+        travel_or_break(out, seq[0])
+        out.extend(seq)
+        emitted = True
+    return emitted
 
 
 def blob_stitch(poly, out):

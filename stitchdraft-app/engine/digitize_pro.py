@@ -39,7 +39,7 @@ from PIL import Image
 import pyembroidery as pe
 from shapely.geometry import Polygon, MultiPolygon, LineString, box
 from shapely.ops import unary_union
-from satin import satin_column, stroke_stats, bean_stitch, travel_or_break, blob_stitch
+from satin import satin_column, stroke_stats, bean_stitch, travel_or_break, blob_stitch, outline_run
 
 # ---- stitch parameters (all in mm; industry-typical defaults) ----
 FILL_ROW_SPACING = 0.40      # tatami density
@@ -55,7 +55,7 @@ SATIN_PULL_COMP = 0.10       # extra satin width each side
 RUN_STITCH_LEN = 2.0         # running / travel stitch length
 TIE_LEN = 0.6                # lock-stitch size
 MIN_FEATURE_MM = 1.0         # drop details narrower than this (needle limit)
-SATIN_MAX_STROKE = 5.0       # strokes narrower than this stitch as satin columns
+SATIN_MAX_STROKE = 7.5       # calibration suite: pro satins bars up to 8mm before switching to fill
 MIN_REGION_AREA_MM2 = 3.0
 UNITS = 10                   # DST units per mm (0.1mm native)
 
@@ -537,12 +537,25 @@ def digitize(in_path, out_path, target_width_mm=80.0):
             #   stroke-like shapes (lettering) -> satin columns
             #   chunky shapes -> tatami fill with satin border
             bx0, by0, bx1, by1 = poly.bounds
-            # tiny isolated blob (a dot): compact satin dot
-            if max(bx1 - bx0, by1 - by0) < 3.5:
-                if blob_stitch(poly, pts):
+            bd = max(bx1 - bx0, by1 - by0)
+            # tiny isolated blob (a dot): compact satin dot. A tiny but
+            # NON-compact shape (a small glyph) is outlined instead —
+            # the measured pro fallback from calibration sheet 11
+            if bd < 3.5:
+                compact = poly.area / max((bx1 - bx0) * (by1 - by0), 1e-6) > 0.45
+                if compact and blob_stitch(poly, pts):
+                    continue
+                if outline_run(poly, pts):
                     continue
                 dropped += 1
                 continue
+            # small thin glyph below reliable satin size: centreline bean
+            # first (script reads as a single stroke), outline as last resort
+            if bd < 6.0 and med_w < 1.1:
+                if bean_stitch(poly, pts):
+                    continue
+                if outline_run(poly, pts):
+                    continue
             # thin stroke with much wider lobes fused on (wheels on an
             # outline): carve the lobes out and stitch each part properly
             if 0 < med_w < 1.5 and p90_w > max(2.2 * med_w, med_w + 1.2):
@@ -569,10 +582,15 @@ def digitize(in_path, out_path, target_width_mm=80.0):
             if med_w < 0.65:
                 if bean_stitch(poly, pts):
                     continue
+                if outline_run(poly, pts):
+                    continue
                 dropped += 1
                 continue
-            if p90_w <= SATIN_MAX_STROKE:
+            uniform = p90_w <= max(2.2 * med_w, med_w + 1.0)
+            if p90_w <= 5.0 or (p90_w <= SATIN_MAX_STROKE and uniform):
                 if satin_column(poly, pts):
+                    continue
+                if bd < 8.0 and outline_run(poly, pts):
                     continue
             angle = principal_angle(poly)
             comp = pull_compensate(poly, angle)
