@@ -1,0 +1,176 @@
+{
+  "files_analyzed": 11,
+  "satin_density_mm": 0.4,
+  "satin_width_median_mm": 2.21,
+  "satin_width_p95_mm": 3.61,
+  "satin_share_of_stitches": 0.8,
+  "run_stitch_len_mm": 2.91,
+  "trims_per_1k_stitches": 4.4,
+  "per_file": [
+    {
+      "file": "Workwear (1).DST",
+      "stitches": 4720,
+      "size_mm": [
+        88.0,
+        37.0
+      ],
+      "colours": 1,
+      "trims_per_1k": 4.7,
+      "satin_width_med": 1.7,
+      "satin_width_p95": 3.41,
+      "satin_density": 0.42,
+      "satin_share": 0.68,
+      "run_len_med": 0.94
+    },
+    {
+      "file": "Workwear.DST",
+      "stitches": 4073,
+      "size_mm": [
+        88.2,
+        32.8
+      ],
+      "colours": 1,
+      "trims_per_1k": 5.6,
+      "satin_width_med": 2.24,
+      "satin_width_p95": 3.3,
+      "satin_density": 0.41,
+      "satin_share": 0.7,
+      "run_len_med": 1.26
+    },
+    {
+      "file": "alphabet sans.DST",
+      "stitches": 7737,
+      "size_mm": [
+        152.4,
+        82.6
+      ],
+      "colours": 1,
+      "trims_per_1k": 5.3,
+      "satin_width_med": 2.4,
+      "satin_width_p95": 3.11,
+      "satin_density": 0.41,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "alphabet serif.DST",
+      "stitches": 9166,
+      "size_mm": [
+        152.6,
+        79.4
+      ],
+      "colours": 1,
+      "trims_per_1k": 4.4,
+      "satin_width_med": 1.58,
+      "satin_width_p95": 3.13,
+      "satin_density": 0.4,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "composite.DST",
+      "stitches": 12361,
+      "size_mm": [
+        89.0,
+        79.0
+      ],
+      "colours": 9,
+      "trims_per_1k": 0.6,
+      "satin_width_med": 2.31,
+      "satin_width_p95": 6.07,
+      "satin_density": 0.45,
+      "satin_share": 0.28,
+      "run_len_med": 3.51
+    },
+    {
+      "file": "curves.DST",
+      "stitches": 2763,
+      "size_mm": [
+        114.4,
+        48.0
+      ],
+      "colours": 2,
+      "trims_per_1k": 1.1,
+      "satin_width_med": 2.21,
+      "satin_width_p95": 4.89,
+      "satin_density": 0.36,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "dots rings.DST",
+      "stitches": 1544,
+      "size_mm": [
+        71.0,
+        27.8
+      ],
+      "colours": 1,
+      "trims_per_1k": 8.4,
+      "satin_width_med": 2.12,
+      "satin_width_p95": 3.61,
+      "satin_density": 0.45,
+      "satin_share": 0.78,
+      "run_len_med": 2.91
+    },
+    {
+      "file": "junctions.DST",
+      "stitches": 3585,
+      "size_mm": [
+        101.8,
+        62.0
+      ],
+      "colours": 1,
+      "trims_per_1k": 2.0,
+      "satin_width_med": 3.45,
+      "satin_width_p95": 5.8,
+      "satin_density": 0.4,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "micro_emblems.DST",
+      "stitches": 2999,
+      "size_mm": [
+        81.8,
+        48.8
+      ],
+      "colours": 1,
+      "trims_per_1k": 5.0,
+      "satin_width_med": 1.61,
+      "satin_width_p95": 2.63,
+      "satin_density": 0.4,
+      "satin_share": 0.98,
+      "run_len_med": 1.12
+    },
+    {
+      "file": "stroke ladder.DST",
+      "stitches": 5584,
+      "size_mm": [
+        79.8,
+        57.2
+      ],
+      "colours": 1,
+      "trims_per_1k": 1.6,
+      "satin_width_med": 1.94,
+      "satin_width_p95": 3.62,
+      "satin_density": 0.4,
+      "satin_share": 0.56,
+      "run_len_med": 4.7
+    },
+    {
+      "file": "touching_elements.DST",
+      "stitches": 3723,
+      "size_mm": [
+        102.2,
+        56.0
+      ],
+      "colours": 4,
+      "trims_per_1k": 1.6,
+      "satin_width_med": 2.42,
+      "satin_width_p95": 4.32,
+      "satin_density": 0.4,
+      "satin_share": 0.8,
+      "run_len_med": 4.2
+    }
+  ]
+}
