@@ -161,13 +161,26 @@ def satin_column(poly, out, px=None):
     if not paths:
         return False
 
-    # prune spurs: branches much shorter than the local stroke width
+    # calibration guard: the pro satins up to ~8mm ONLY on simple ribbon
+    # strokes. A wide shape WITH junctions (a big letter F) satins badly —
+    # hand it back for fill+border instead
+    w_med_mm = 2 * np.median([dist[y, x] for pth in paths for y, x in pth]) / px
+    if junctions and w_med_mm > 4.5:
+        return False
+
+    # prune spurs — but ONLY true whiskers: a branch with one end free and
+    # the other on a junction, much shorter than the stroke is wide. The
+    # old any-short-path rule amputated real letter arms and serifs
+    # (regression found on Cambridge lettering — every glyph lost chunks)
     kept = []
     for p in paths:
         length_mm = len(p) / px
         w_mm = 2 * np.median([dist[y, x] for y, x in p]) / px
-        if length_mm >= max(w_mm * SPUR_FACTOR, 1.0):
-            kept.append(p)
+        is_whisker = (p[0] in junctions) != (p[-1] in junctions)
+        if is_whisker and len(paths) > 1 and \
+                length_mm < max(w_mm * 0.6, 0.8):
+            continue
+        kept.append(p)
     if not kept:
         kept = [max(paths, key=len)]
 

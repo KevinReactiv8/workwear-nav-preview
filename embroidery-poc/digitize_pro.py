@@ -416,8 +416,18 @@ def split_lobes(poly, med_w):
     erode by the stroke half-width; surviving cores are the lobes."""
     r = max(0.55 * med_w, 0.45)
     core = poly.buffer(-r)
-    lobes = [g for g in getattr(core, "geoms", [core])
-             if isinstance(g, Polygon) and not g.is_empty and g.area >= 0.8]
+    lobes = []
+    for g in getattr(core, "geoms", [core]):
+        if not isinstance(g, Polygon) or g.is_empty or g.area < 0.8:
+            continue
+        # a true lobe (wheel, bulb) erodes to a ROUND core; letter strokes
+        # erode to elongated slivers — splitting those shreds lettering
+        # (regression found on Cambridge artwork)
+        circ = 4 * math.pi * g.area / max(g.length ** 2, 1e-9)
+        gx0, gy0, gx1, gy1 = g.bounds
+        if circ < 0.55 or min(gx1 - gx0, gy1 - gy0) < 1.2 * med_w:
+            continue
+        lobes.append(g)
     if not lobes:
         return None
     lobe_regions, rest = [], poly
