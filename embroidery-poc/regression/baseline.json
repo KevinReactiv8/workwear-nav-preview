@@ -1,51 +1,51 @@
 {
   "cambridge.png": {
-    "stitches": 2606,
-    "trims": 56,
+    "stitches": 2474,
+    "trims": 35,
     "colours": 3,
     "w_mm": 111.8,
     "h_mm": 22.8
   },
   "cf_badge.png": {
-    "stitches": 6665,
-    "trims": 135,
+    "stitches": 6193,
+    "trims": 65,
     "colours": 3,
     "w_mm": 99.5,
     "h_mm": 73.6
   },
   "01_letter_ladder_sans.png": {
-    "stitches": 3311,
-    "trims": 92,
+    "stitches": 3119,
+    "trims": 61,
     "colours": 2,
-    "w_mm": 91.1,
+    "w_mm": 91.3,
     "h_mm": 66.1
   },
   "05_stroke_ladder.png": {
-    "stitches": 7017,
-    "trims": 21,
+    "stitches": 6984,
+    "trims": 17,
     "colours": 2,
     "w_mm": 91.5,
     "h_mm": 69.3
   },
   "07_junctions.png": {
-    "stitches": 3815,
-    "trims": 97,
+    "stitches": 3476,
+    "trims": 48,
     "colours": 2,
-    "w_mm": 101.4,
+    "w_mm": 101.3,
     "h_mm": 61.3
   },
   "09_touching_elements.png": {
-    "stitches": 3289,
+    "stitches": 3287,
     "trims": 18,
     "colours": 4,
     "w_mm": 100.9,
-    "h_mm": 52.7
+    "h_mm": 52.9
   },
   "11_micro_emblems.png": {
-    "stitches": 3148,
-    "trims": 35,
+    "stitches": 3051,
+    "trims": 20,
     "colours": 2,
-    "w_mm": 99.9,
+    "w_mm": 99.8,
     "h_mm": 68.0
   }
 }

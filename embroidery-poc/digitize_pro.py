@@ -39,7 +39,7 @@ from PIL import Image
 import pyembroidery as pe
 from shapely.geometry import Polygon, MultiPolygon, LineString, box
 from shapely.ops import unary_union
-from satin import satin_column, stroke_stats, bean_stitch, travel_or_break, blob_stitch, outline_run
+from satin import satin_column, stroke_stats, bean_stitch, travel_or_break, blob_stitch, outline_run, INTRA_TRAVEL
 
 # ---- stitch parameters (all in mm; industry-typical defaults) ----
 FILL_ROW_SPACING = 0.40      # tatami density
@@ -308,30 +308,98 @@ def scanline_rows(poly, angle, spacing):
 
 def tatami_fill(poly, angle, out, spacing=FILL_ROW_SPACING,
                 stitch_len=FILL_STITCH_LEN, stagger=True):
-    """Serpentine tatami fill with brick-pattern stagger.
-    Travels between disjoint segments with a jump marker (None sentinel)."""
-    rows = scanline_rows(poly, angle, spacing)
-    forward = True
-    for ri, row in enumerate(rows):
-        segs = row if forward else row[::-1]
-        for seg in segs:
-            pts = resample(seg, stitch_len)
-            # brick stagger: offset interior stitch penetrations per row
-            if stagger and len(pts) > 2:
-                frac = STAGGER_FRACTIONS[ri % len(STAGGER_FRACTIONS)]
-                shift = stitch_len * frac
-                line = LineString(seg)
-                ds = [min(d + shift, line.length)
-                      for d in np.linspace(0, line.length, len(pts))[1:-1]]
-                pts = [pts[0]] + [line.interpolate(d).coords[0] for d in ds] + [pts[-1]]
-            if not forward:
-                pts = pts[::-1]
-            if out and out[-1] is not None:
-                gap = math.hypot(pts[0][0] - out[-1][0], pts[0][1] - out[-1][1])
-                if gap > stitch_len * 1.5:
-                    out.append(None)  # jump
-            out.extend(pts)
-        forward = not forward
+    """Column-decomposed tatami fill. The old whole-shape serpentine
+    trimmed every time a row crossed a concavity (the mouth of a C cost a
+    trim per row); pros fill one connected column at a time and travel
+    between columns. Segments are stacked by row-overlap, each stack sewn
+    as its own serpentine, stacks visited nearest-first."""
+    origin = poly.centroid.coords[0]
+    rot = Polygon(rotate(poly.exterior.coords, -angle, origin),
+                  [rotate(h.coords, -angle, origin) for h in poly.interiors])
+    if not rot.is_valid:
+        rot = rot.buffer(0)
+    minx, miny, maxx, maxy = rot.bounds
+    rows = []
+    y = miny + spacing / 2
+    while y < maxy:
+        cut = rot.intersection(LineString([(minx - 1, y), (maxx + 1, y)]))
+        segs = []
+        for g in getattr(cut, "geoms", [cut]):
+            if isinstance(g, LineString) and g.length >= MIN_FEATURE_MM / 2:
+                xs = [pt[0] for pt in g.coords]
+                segs.append({"x0": min(xs), "x1": max(xs), "y": y})
+        if segs:
+            segs.sort(key=lambda s: s["x0"])
+            rows.append(segs)
+        y += spacing
+    if not rows:
+        return
+
+    def overlap(a, b):
+        return min(a["x1"], b["x1"]) - max(a["x0"], b["x0"])
+
+    unvisited = {(ri, si) for ri, r in enumerate(rows) for si in range(len(r))}
+    stacks = []
+    for ri0 in range(len(rows)):
+        for si0 in range(len(rows[ri0])):
+            if (ri0, si0) not in unvisited:
+                continue
+            stack = [(ri0, si0)]
+            unvisited.discard((ri0, si0))
+            ri, seg = ri0, rows[ri0][si0]
+            while ri + 1 < len(rows):
+                cands = [(si, rows[ri + 1][si]) for si in range(len(rows[ri + 1]))
+                         if (ri + 1, si) in unvisited
+                         and overlap(seg, rows[ri + 1][si]) > 0.2]
+                if not cands:
+                    break
+                si, nxt = max(cands, key=lambda c: overlap(seg, c[1]))
+                stack.append((ri + 1, si))
+                unvisited.discard((ri + 1, si))
+                ri, seg = ri + 1, nxt
+            stacks.append(stack)
+
+    def row_pts(s, gri, forward):
+        line = LineString([(s["x0"], s["y"]), (s["x1"], s["y"])])
+        pts = resample(list(line.coords), stitch_len)
+        if stagger and len(pts) > 2:
+            frac = STAGGER_FRACTIONS[gri % len(STAGGER_FRACTIONS)]
+            shift = stitch_len * frac
+            ds = [min(dd + shift, line.length)
+                  for dd in np.linspace(0, line.length, len(pts))[1:-1]]
+            pts = [pts[0]] + [line.interpolate(dd).coords[0] for dd in ds] + [pts[-1]]
+        return pts if forward else pts[::-1]
+
+    def needle_rot():
+        if out and out[-1] is not None:
+            return rotate([out[-1]], -angle, origin)[0]
+        return None
+
+    remaining = list(stacks)
+    while remaining:
+        pos = needle_rot()
+        if pos is None:
+            stack = remaining.pop(0)
+        else:
+            def entry_d(st):
+                s = rows[st[0][0]][st[0][1]]
+                return min(math.hypot(s["x0"] - pos[0], s["y"] - pos[1]),
+                           math.hypot(s["x1"] - pos[0], s["y"] - pos[1]))
+            stack = min(remaining, key=entry_d)
+            remaining.remove(stack)
+        first_seg = rows[stack[0][0]][stack[0][1]]
+        forward = True
+        if pos is not None:
+            forward = (math.hypot(first_seg["x0"] - pos[0], first_seg["y"] - pos[1]) <=
+                       math.hypot(first_seg["x1"] - pos[0], first_seg["y"] - pos[1]))
+        entry = (first_seg["x0"], first_seg["y"]) if forward else (first_seg["x1"], first_seg["y"])
+        travel_or_break(out, rotate([entry], angle, origin)[0], INTRA_TRAVEL,
+                        within=poly)
+        for (ri, si) in stack:
+            s = rows[ri][si]
+            pts = row_pts(s, ri, forward)
+            out.extend(rotate(pts, angle, origin))
+            forward = not forward
 
 
 def contour_underlay(poly, out):
@@ -341,9 +409,9 @@ def contour_underlay(poly, out):
     for g in geoms:
         if g.is_empty or not isinstance(g, Polygon):
             continue
-        if out and out[-1] is not None:
-            out.append(None)
-        run_along(list(g.exterior.coords), out)
+        coords = list(g.exterior.coords)
+        travel_or_break(out, coords[0], INTRA_TRAVEL)
+        run_along(coords, out)
 
 
 def tatami_underlay(poly, angle, out):
@@ -356,8 +424,6 @@ def tatami_underlay(poly, angle, out):
     geoms = getattr(inner, "geoms", [inner])
     for g in geoms:
         if isinstance(g, Polygon) and not g.is_empty:
-            if out and out[-1] is not None:
-                out.append(None)
             tatami_fill(g, angle + math.pi / 2, out,
                         spacing=UNDERLAY_ROW_SPACING,
                         stitch_len=UNDERLAY_STITCH_LEN, stagger=False)
@@ -375,8 +441,7 @@ def satin_border(poly, out):
         if len(path) < 4:
             continue
         # edge-run underlay along the centre line
-        if out and out[-1] is not None:
-            out.append(None)
+        travel_or_break(out, path[0], INTRA_TRAVEL)
         run_along(path, out)
         # zigzag: alternate perpendicular offsets left/right of the path
         n = len(path)

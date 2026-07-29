@@ -22,19 +22,29 @@ SPUR_FACTOR = 1.2           # prune skeleton spurs shorter than width*this
 RUN_STITCH = 1.9            # underlay/travel run length, from pro file
 PULL_COMP = 0.2
 MAX_TRAVEL = 3.0            # calibration suite: pros travel this far before trimming (7 trims/12k-st crest)
+INTRA_TRAVEL = 6.0          # travel limit while inside one shape (runs get covered by later satin)
 
 
-def travel_or_break(out, next_pt):
+def travel_or_break(out, next_pt, limit=None, within=None):
     """Bridge to next_pt with travel run stitches when close (pro habit —
     measured ~1.8 trims/1k stitches vs trimming every element), else mark
-    a trim+jump with the None sentinel."""
+    a trim+jump with the None sentinel. limit=INTRA_TRAVEL allows longer
+    travels while stitching one shape — but only if `within` (the shape)
+    contains the straight path, so a travel never crosses open fabric
+    (the visible-stray-runs bug on lettering)."""
+    if limit is None:
+        limit = MAX_TRAVEL
     if not out or out[-1] is None:
         return
     last = out[-1]
     gap = math.hypot(next_pt[0] - last[0], next_pt[1] - last[1])
     if gap <= 1.0:
         return
-    if gap <= MAX_TRAVEL:
+    if gap > MAX_TRAVEL and gap <= limit and within is not None:
+        if not LineString([last, next_pt]).within(within.buffer(0.3)):
+            out.append(None)
+            return
+    if gap <= limit:
         n = max(2, int(gap / RUN_STITCH) + 1)
         out.extend((last[0] + (next_pt[0] - last[0]) * t,
                     last[1] + (next_pt[1] - last[1]) * t)
@@ -120,12 +130,26 @@ def _skeleton_paths(mask):
     return paths, dist, junctions
 
 
-def _order_paths(paths):
-    """Greedy nearest-neighbour chaining of branch paths."""
+def _order_paths(paths, start=None):
+    """Greedy nearest-neighbour chaining of branch paths. start (y, x)
+    picks the first path (and direction) nearest the needle's current
+    position so entering a shape doesn't jump across it."""
     if not paths:
         return []
     remaining = list(paths)
-    ordered = [remaining.pop(0)]
+    if start is None:
+        ordered = [remaining.pop(0)]
+    else:
+        sp = np.array(start)
+        best, flip, bd = None, False, None
+        for p in remaining:
+            d0 = np.hypot(*(np.array(p[0]) - sp))
+            d1 = np.hypot(*(np.array(p[-1]) - sp))
+            d = min(d0, d1)
+            if bd is None or d < bd:
+                bd, best, flip = d, p, d1 < d0
+        remaining.remove(best)
+        ordered = [best[::-1] if flip else best]
     while remaining:
         tail = np.array(ordered[-1][-1])
         best, flip, bd = None, False, None
@@ -206,7 +230,11 @@ def satin_column(poly, out, px=None):
     kept = eased
 
     emitted = False
-    for path in _order_paths(kept):
+    start = None
+    if out and out[-1] is not None:
+        start = ((out[-1][1] - off[1]) * px, (out[-1][0] - off[0]) * px)
+    first_entry = True
+    for path in _order_paths(kept, start):
         pts_mm = np.array([(x / px + off[0], y / px + off[1]) for y, x in path])
         # smooth the pixelated skeleton so throw angles don't wobble;
         # window scales with raster resolution
@@ -226,7 +254,10 @@ def satin_column(poly, out, px=None):
         coords = [(p.x, p.y) for p in samples]
 
         # travel/underlay: centre run to the far end and satin back
-        travel_or_break(out, coords[0])
+        travel_or_break(out, coords[0],
+                        None if first_entry else INTRA_TRAVEL,
+                        within=None if first_entry else poly)
+        first_entry = False
         run = LineString(coords)
         rn = max(2, int(run.length / RUN_STITCH))
         out.extend((p.x, p.y) for p in
@@ -283,7 +314,11 @@ def bean_stitch(poly, out, px=None, repeats=3):
     paths, _, _ = _skeleton_paths(mask)
     if not paths:
         return False
-    for path in _order_paths(paths):
+    start = None
+    if out and out[-1] is not None:
+        start = ((out[-1][1] - off[1]) * px, (out[-1][0] - off[0]) * px)
+    first_entry = True
+    for path in _order_paths(paths, start):
         pts_mm = [(x / px + off[0], y / px + off[1]) for y, x in path]
         line = LineString(pts_mm)
         if line.length < 1.0:
@@ -291,7 +326,10 @@ def bean_stitch(poly, out, px=None, repeats=3):
         n = max(2, int(line.length / 1.2))
         pts = [(p.x, p.y) for p in
                (line.interpolate(d) for d in np.linspace(0, line.length, n))]
-        travel_or_break(out, pts[0])
+        travel_or_break(out, pts[0],
+                        None if first_entry else INTRA_TRAVEL,
+                        within=None if first_entry else poly)
+        first_entry = False
         for r in range(repeats):
             seq = pts if r % 2 == 0 else pts[::-1]
             out.extend(seq if r == 0 else seq[1:])
@@ -311,7 +349,8 @@ def outline_run(poly, out):
         n = max(4, int(L / 1.2))
         pts = [ring.interpolate(i * L / n) for i in range(n + 1)]
         seq = [(p.x, p.y) for p in pts]
-        travel_or_break(out, seq[0])
+        travel_or_break(out, seq[0], INTRA_TRAVEL if emitted else None,
+                        within=poly if emitted else None)
         out.extend(seq)
         emitted = True
     return emitted
