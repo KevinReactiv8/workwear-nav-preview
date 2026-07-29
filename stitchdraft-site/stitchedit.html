@@ -1,0 +1,428 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>StitchEdit — fix the stitch file yourself</title>
+<style>
+  :root {
+    --fabric: #2e353b;
+    --panel: #3a4147;
+    --panel-2: #333a40;
+    --thread: #ece5d8;
+    --thread-dim: #c9c2b4;
+    --steel: #97a1a8;
+    --accent: #3ab5a5;
+    --accent-deep: #2c8d81;
+    --family: #ef7c1a;
+    --sans: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--fabric); color: var(--thread);
+    font-family: var(--sans); font-size: 17px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 0 24px; }
+  a { color: var(--accent); }
+  h1, h2, h3 { line-height: 1.15; text-wrap: balance; margin: 0 0 .6em; }
+  h1 { font-size: clamp(2.1rem, 5.2vw, 3.4rem); font-weight: 800; letter-spacing: -.015em; }
+  h2 { font-size: clamp(1.5rem, 3.4vw, 2.2rem); font-weight: 800; letter-spacing: -.01em; }
+  h3 { font-size: 1.05rem; font-weight: 700; }
+  p { margin: 0 0 1em; }
+  .lede { font-size: 1.15rem; color: var(--thread-dim); max-width: 46ch; }
+  .eyebrow {
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .24em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 1rem;
+  }
+  .mono { font-family: var(--mono); }
+
+  /* running-stitch divider — the family motif */
+  .stitchrule { border: 0; height: 0; margin: 0;
+    border-top: 3px dashed var(--accent); opacity: .55; }
+  section { padding: 4.2rem 0; }
+  section + section .stitchrule-top { margin-bottom: 4.2rem; }
+
+  /* ---------------- nav ---------------- */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 0;
+  }
+  .wordmark { font-weight: 800; font-size: 1.25rem; letter-spacing: -.01em;
+    color: var(--thread); text-decoration: none; }
+  .wordmark b { color: var(--accent); font-weight: 800; }
+  .navlinks { display: flex; gap: 1rem; align-items: center; }
+  .chip {
+    font-family: var(--mono); font-size: .78rem; letter-spacing: .06em;
+    color: var(--fabric); background: var(--accent); text-decoration: none;
+    padding: .5rem .95rem; border-radius: 999px; font-weight: 700;
+  }
+  .chip:focus-visible, a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--thread); outline-offset: 3px;
+  }
+
+  /* ---------------- hero ---------------- */
+  .hero { padding: 3.2rem 0 4rem; }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 3rem;
+    align-items: center; }
+  @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  .demo {
+    background: var(--panel); border-radius: 14px; padding: 1.2rem;
+    box-shadow: 0 18px 50px rgba(0,0,0,.35);
+  }
+  .demo canvas { width: 100%; height: auto; display: block; border-radius: 8px;
+    background: #262c31; }
+  .demo-head { display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: .8rem; gap: 1rem; }
+  .demo-head .t { font-family: var(--mono); font-size: .72rem; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--steel); }
+  .readout { font-family: var(--mono); font-variant-numeric: tabular-nums;
+    font-size: .95rem; color: var(--accent); font-weight: 700; }
+  .fabrics { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1rem; }
+  .fabrics button {
+    font-family: var(--mono); font-size: .78rem; letter-spacing: .04em;
+    background: var(--panel-2); color: var(--thread-dim);
+    border: 1px solid #4a525a; border-radius: 999px; padding: .48rem .9rem;
+    cursor: pointer; transition: all .18s ease;
+  }
+  .fabrics button[aria-pressed="true"] {
+    background: var(--accent); border-color: var(--accent);
+    color: var(--fabric); font-weight: 700;
+  }
+  .demo-cap { font-size: .85rem; color: var(--steel); margin: .9rem 0 0; }
+
+  /* ---------------- tiles / cards ---------------- */
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem;
+    margin-top: 2.2rem; }
+  @media (max-width: 760px) { .tiles { grid-template-columns: 1fr; } }
+  .tile {
+    background: var(--panel); border-radius: 12px; padding: 1.5rem 1.4rem;
+  }
+  .tile h3 { color: var(--accent); margin-bottom: .5rem; }
+  .tile p { font-size: .95rem; color: var(--thread-dim); margin: 0; }
+  .tile .big { font-size: 1.9rem; font-weight: 800; color: var(--thread);
+    font-variant-numeric: tabular-nums; display: block; margin-bottom: .35rem; }
+
+  /* ---------------- steps ---------------- */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+    margin-top: 2.2rem; counter-reset: st; }
+  @media (max-width: 860px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+  .step { background: var(--panel); border-radius: 12px; padding: 1.3rem 1.2rem; }
+  .step::before {
+    counter-increment: st; content: counter(st, decimal-leading-zero);
+    font-family: var(--mono); color: var(--accent); font-size: .8rem;
+    letter-spacing: .15em; display: block; margin-bottom: .55rem;
+  }
+  .step h3 { margin-bottom: .35rem; }
+  .step p { font-size: .92rem; color: var(--thread-dim); margin: 0; }
+
+  .fineprint { font-size: .88rem; color: var(--steel); max-width: 62ch; }
+  .fineprint .mono { color: var(--thread-dim); }
+
+  /* ---------------- CTA ---------------- */
+  .cta {
+    background: var(--panel); border-radius: 16px; padding: 2.6rem 2.2rem;
+    display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; align-items: center;
+  }
+  @media (max-width: 760px) { .cta { grid-template-columns: 1fr; } }
+  .cta .btns { display: flex; flex-direction: column; gap: .8rem; }
+  .btn {
+    display: block; text-align: center; text-decoration: none; font-weight: 700;
+    padding: .85rem 1.2rem; border-radius: 10px; font-size: 1rem;
+  }
+  .btn.solid { background: var(--accent); color: var(--fabric); }
+  .btn.ghost { border: 1.5px solid var(--accent); color: var(--accent); }
+
+  footer { padding: 3rem 0 3.5rem; }
+  footer .fam { color: var(--steel); font-size: .9rem; }
+  footer .fam a { color: var(--family); font-weight: 700; text-decoration: none; }
+  footer .fam a:hover { text-decoration: underline; }
+
+  /* ---------------- reveals ---------------- */
+  .rv { opacity: 0; transform: translateY(14px);
+    transition: opacity .6s ease, transform .6s ease; }
+  .rv.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .rv { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+
+<div class="wrap">
+  <nav>
+    <a class="wordmark" href="#top">Stitch<b>Edit</b></a>
+    <div class="navlinks">
+      <a class="chip" href="#early">Early access</a>
+    </div>
+  </nav>
+</div>
+
+<header class="hero wrap" id="top">
+  <div class="hero-grid">
+    <div>
+      <p class="eyebrow">StitchEdit &middot; in the browser &middot; early access</p>
+      <h1>Rush job. Wrong fabric. Digitizer&rsquo;s offline.</h1>
+      <p class="lede">StitchEdit lets any embroidery shop make the simple fixes
+      themselves — density, size, fabric tuning — on the stitch file you already
+      have. In a browser. In minutes. No digitizing software, no waiting until
+      tomorrow.</p>
+    </div>
+    <div class="demo">
+      <div class="demo-head">
+        <span class="t">Live &middot; density retune</span>
+        <span class="readout"><span id="fabName">Cotton twill</span> &middot; <span id="fabDen">0.40</span>mm</span>
+      </div>
+      <canvas id="satin" width="880" height="360" role="img"
+        aria-label="Animated satin stitches opening and closing as different garment fabrics are selected"></canvas>
+      <div class="fabrics" id="fabricChips" role="group" aria-label="Fabric presets">
+        <button type="button" data-f="twill" aria-pressed="true">Cotton twill</button>
+        <button type="button" data-f="pique" aria-pressed="false">Polo piqu&eacute;</button>
+        <button type="button" data-f="soft" aria-pressed="false">Softshell</button>
+        <button type="button" data-f="cap" aria-pressed="false">Structured cap</button>
+      </div>
+      <p class="demo-cap">One design, four garments — same file, retuned per fabric.
+      Pick one, watch the thread spacing follow.</p>
+    </div>
+  </div>
+</header>
+
+<hr class="stitchrule">
+
+<section class="wrap rv">
+  <p class="eyebrow">The problem</p>
+  <h2>The tweak costs more than the tweak.</h2>
+  <p class="lede">Every shop knows the moment: the file is fine, the fabric isn&rsquo;t.
+  And the smallest change means going back to the digitizer.</p>
+  <div class="tiles">
+    <div class="tile">
+      <span class="big">3 garments</span>
+      <p>Same logo on a twill jacket, a piqu&eacute; polo and a softshell —
+      each wants a different stitch density. Today that&rsquo;s three requests
+      to the digitizer, or one file sewn wrong twice.</p>
+    </div>
+    <div class="tile">
+      <span class="big">4pm</span>
+      <p>The rush order is hooped and the digitizer is asleep in another
+      timezone. The job either waits until tomorrow or ships imperfect.</p>
+    </div>
+    <div class="tile">
+      <span class="big">1 day</span>
+      <p>The typical round-trip for a change a machine operator could
+      describe in one sentence. StitchEdit turns that sentence into a slider.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="stitchrule">
+
+<section class="wrap rv">
+  <p class="eyebrow">What you can change</p>
+  <h2>The fixes shops actually need, and nothing you can break.</h2>
+  <div class="tiles">
+    <div class="tile">
+      <h3>Fabric presets</h3>
+      <p>One click retunes density and pull compensation for the garment on
+      the machine — twill, piqu&eacute;, softshell, caps. The presets carry
+      the judgement so the operator doesn&rsquo;t have to.</p>
+    </div>
+    <div class="tile">
+      <h3>Density, dialled</h3>
+      <p>Open the stitching up so it doesn&rsquo;t perforate a light shell,
+      or pack it down for full coverage on fleece — with a sewn preview
+      before anything touches thread.</p>
+    </div>
+    <div class="tile">
+      <h3>Resize that holds</h3>
+      <p>Scale a left-chest logo up for a bag panel without the stitching
+      thinning out — density is recalculated as the size changes, not
+      stretched with it.</p>
+    </div>
+  </div>
+  <p class="fineprint" style="margin-top:1.6rem">Works on the machine files every
+  job already has — <span class="mono">.DST</span>, <span class="mono">.PES</span>,
+  <span class="mono">.EXP</span>. No native design file needed: if it sews,
+  StitchEdit can tune it.</p>
+</section>
+
+<hr class="stitchrule">
+
+<section class="wrap rv">
+  <p class="eyebrow">How it works</p>
+  <h2>Upload to sewing in four moves.</h2>
+  <div class="steps">
+    <div class="step"><h3>Upload the file</h3>
+      <p>Drag in the stitch file from the job folder — the one that runs
+      on your machine.</p></div>
+    <div class="step"><h3>Pick the fabric</h3>
+      <p>Choose the garment it&rsquo;s going on, or set density and size
+      by hand.</p></div>
+    <div class="step"><h3>Check the preview</h3>
+      <p>A sewn preview and stitch counts show exactly what changed
+      before you commit.</p></div>
+    <div class="step"><h3>Download &amp; sew</h3>
+      <p>A fresh machine file, straight back to the USB stick. The rush
+      job ships tonight.</p></div>
+  </div>
+</section>
+
+<hr class="stitchrule">
+
+<section class="wrap rv">
+  <p class="eyebrow">Who it&rsquo;s for</p>
+  <h2>No digitizing suite. No dongle. No training course.</h2>
+  <p class="lede" style="max-width:56ch">StitchEdit is built for the shop floor,
+  not the digitizing desk. If you can run the machine, you can make the fix —
+  the browser is the software. Complex changes still belong with your digitizer;
+  StitchEdit handles the ones that shouldn&rsquo;t need them.</p>
+</section>
+
+<hr class="stitchrule">
+
+<section class="wrap rv" id="early">
+  <div class="cta">
+    <div>
+      <p class="eyebrow" style="margin-bottom:.6rem">Early access</p>
+      <h2 style="margin-bottom:.4rem">Be first on the machine.</h2>
+      <p style="color:var(--thread-dim); margin:0">StitchEdit is in private build
+      on the StitchDraft engine. Join the early-access list and we&rsquo;ll bring
+      you in as pilot places open.</p>
+    </div>
+    <div class="btns">
+      <a class="btn solid" href="mailto:info@stitchdraft.co.uk?subject=StitchEdit%20early%20access">Join the early-access list</a>
+      <a class="btn ghost" href="https://wa.me/447770593555">WhatsApp us</a>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <hr class="stitchrule" style="margin-bottom:2rem">
+  <p class="fam">StitchEdit is part of the <a href="https://stitchdraft.co.uk">StitchDraft</a>
+  family — the style-calibrated digitizing engine. &nbsp;&middot;&nbsp;
+  info@stitchdraft.co.uk &nbsp;&middot;&nbsp; +44&nbsp;7770&nbsp;593555</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- fabric presets: density in mm between satin throws ---- */
+  var FABRICS = {
+    twill: { name: "Cotton twill",   den: 0.40 },
+    pique: { name: "Polo piqué", den: 0.44 },
+    soft:  { name: "Softshell",      den: 0.48 },
+    cap:   { name: "Structured cap", den: 0.38 }
+  };
+  var order = ["twill", "pique", "soft", "cap"];
+
+  var cv = document.getElementById("satin");
+  var ctx = cv.getContext("2d");
+  var W = cv.width, H = cv.height;
+
+  var nameEl = document.getElementById("fabName");
+  var denEl = document.getElementById("fabDen");
+  var chips = document.getElementById("fabricChips");
+
+  var current = 0.40, target = 0.40, activeKey = "twill";
+  var PX_PER_MM = 26;               /* demo scale */
+
+  function rails(x) {
+    /* gentle S-sweep so the column reads as real satin, not a ruler */
+    var t = x / W;
+    var mid = H / 2 + Math.sin(t * Math.PI * 1.35 - 0.4) * H * 0.13;
+    var half = H * 0.26 + Math.sin(t * Math.PI * 2.2) * H * 0.02;
+    return [mid - half, mid + half];
+  }
+
+  function draw(denMM) {
+    ctx.clearRect(0, 0, W, H);
+
+    /* faint fabric weave */
+    ctx.fillStyle = "rgba(236,229,216,0.045)";
+    for (var gy = 8; gy < H; gy += 16)
+      for (var gx = 8 + (gy % 32 ? 8 : 0); gx < W; gx += 16)
+        ctx.fillRect(gx, gy, 2, 2);
+
+    var spacing = denMM * PX_PER_MM;
+    var x = 14, up = true, prev = null;
+
+    while (x < W - 14) {
+      var r = rails(x);
+      var pt = up ? [x, r[0]] : [x, r[1]];
+      if (prev) {
+        var grad = ctx.createLinearGradient(prev[0], prev[1], pt[0], pt[1]);
+        grad.addColorStop(0, "#46cdbb");
+        grad.addColorStop(0.5, "#2fa294");
+        grad.addColorStop(1, "#46cdbb");
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 3.1;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(prev[0], prev[1]);
+        ctx.lineTo(pt[0], pt[1]);
+        ctx.stroke();
+      }
+      prev = pt; up = !up; x += spacing / 2;   /* alternate sides each throw */
+    }
+
+    /* needle penetration points on the rails */
+    ctx.fillStyle = "rgba(236,229,216,0.5)";
+    var px = 14; var pup = true;
+    while (px < W - 14) {
+      var rr = rails(px);
+      var py = pup ? rr[0] : rr[1];
+      ctx.beginPath(); ctx.arc(px, py, 1.6, 0, 7); ctx.fill();
+      pup = !pup; px += spacing / 2;
+    }
+  }
+
+  function setFabric(key, fromUser) {
+    activeKey = key;
+    target = FABRICS[key].den;
+    nameEl.textContent = FABRICS[key].name;
+    Array.prototype.forEach.call(chips.querySelectorAll("button"), function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-f") === key ? "true" : "false");
+    });
+    if (fromUser) userTouched = true;
+    if (reduced) { current = target; draw(current); denEl.textContent = target.toFixed(2); }
+  }
+
+  chips.addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (b) setFabric(b.getAttribute("data-f"), true);
+  });
+
+  var userTouched = false;
+  var lastCycle = 0;
+
+  function tick(ts) {
+    if (!userTouched && ts - lastCycle > 3000) {
+      lastCycle = ts;
+      var next = order[(order.indexOf(activeKey) + 1) % order.length];
+      setFabric(next, false);
+    }
+    current += (target - current) * 0.055;
+    if (Math.abs(target - current) < 0.0004) current = target;
+    draw(current);
+    denEl.textContent = current.toFixed(2);
+    requestAnimationFrame(tick);
+  }
+
+  draw(current);
+  if (!reduced) requestAnimationFrame(tick);
+
+  /* ---- scroll reveals ---- */
+  var obs = ("IntersectionObserver" in window) && !reduced
+    ? new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add("in"); obs.unobserve(en.target); }
+        });
+      }, { threshold: 0.12 })
+    : null;
+  Array.prototype.forEach.call(document.querySelectorAll(".rv"), function (el) {
+    if (obs) obs.observe(el); else el.classList.add("in");
+  });
+})();
+</script>
