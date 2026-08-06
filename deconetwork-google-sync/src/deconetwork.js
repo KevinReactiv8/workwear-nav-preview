@@ -100,6 +100,9 @@ export async function fetchDecoNetworkProducts(config) {
     const page = extractProducts(body);
     if (total === undefined) total = totalCount(body);
     if (!page.length) break;
+
+    if (offset === 0) logDiagnostics(page[0], config);
+
     raw.push(...page);
 
     if (total !== undefined) {
@@ -114,6 +117,23 @@ export async function fetchDecoNetworkProducts(config) {
   return raw.map((r) => normalizeDecoNetworkProduct(r, config));
 }
 
+// One-time diagnostic on the first product: surface the real field names and a
+// normalized preview so the live mapping can be confirmed from the run logs.
+function logDiagnostics(rawProduct, config) {
+  if (!config.diagnose || !rawProduct) return;
+  logger.info('DIAGNOSE: raw product field names', { keys: Object.keys(rawProduct) });
+  logger.info('DIAGNOSE: raw product sample', {
+    sample: JSON.stringify(rawProduct).slice(0, 2000),
+  });
+  const preview = normalizeDecoNetworkProduct(rawProduct, config);
+  logger.info('DIAGNOSE: normalized preview', {
+    id: preview.id, title: preview.title, price: preview.price,
+    link: preview.link, imageLink: preview.imageLink,
+    availability: preview.availability, brand: preview.brand,
+    googleProductCategory: preview.googleProductCategory,
+  });
+}
+
 /** Load products from a bundled fixture file (used for demos/tests/dry runs). */
 export async function loadFixtureProducts(config) {
   const path = config.fixturePath;
@@ -121,6 +141,7 @@ export async function loadFixtureProducts(config) {
   const text = await readFile(path, 'utf8');
   const body = JSON.parse(text);
   const raw = extractProducts(body);
+  logDiagnostics(raw[0], config);
   return raw.map((r) => normalizeDecoNetworkProduct(r, config));
 }
 

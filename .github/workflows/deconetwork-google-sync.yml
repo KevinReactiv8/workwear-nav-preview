@@ -16,6 +16,10 @@ on:
         type: choice
         options: [api, feed, both]
         default: both
+      diagnose:
+        description: 'Log the real DecoNetwork field names on the first product'
+        type: boolean
+        default: false
 
 # Prevent overlapping runs if one takes longer than expected.
 concurrency:
@@ -74,6 +78,7 @@ jobs:
           PRODUCT_SOURCE: ${{ secrets.DECONETWORK_API_BASE && 'deconetwork' || 'fixture' }}
           SYNC_MODE: ${{ github.event.inputs.sync_mode || 'both' }}
           DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          DIAGNOSE: ${{ github.event.inputs.diagnose || 'false' }}
           # Push only changed products (efficient); flip cleanup on to also
           # remove products deleted from DecoNetwork. Configure via repo vars.
           INCREMENTAL: ${{ vars.INCREMENTAL || 'true' }}

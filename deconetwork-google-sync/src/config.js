@@ -65,6 +65,10 @@ export function loadConfig(env = process.env) {
     // 'both' -> do both
     syncMode: (env.SYNC_MODE || 'api').toLowerCase(),
     dryRun: bool(env.DRY_RUN, false),
+    // One-time diagnostic: log the raw field names/shape of the first product
+    // returned by DecoNetwork so the live field mapping can be confirmed from
+    // the run logs. Safe to leave off in normal operation.
+    diagnose: bool(env.DIAGNOSE, false),
     // Incremental mode only pushes products changed since the last successful
     // run (tracked in the state file). The XML feed, when produced, always
     // contains the full catalogue — Google feeds are full snapshots.
