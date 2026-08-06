@@ -1,0 +1,1335 @@
+{
+  "total": 83,
+  "page": 1,
+  "per_page": 83,
+  "products": [
+    {
+      "product_id": 1000,
+      "sku": "RX101",
+      "name": "Pro RTX Pro Piqué Polo Shirt",
+      "description": "Pro RTX Pro Piqué Polo Shirt. Pro RTX polo shirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 5.95,
+      "currency": "GBP",
+      "brand": "Pro RTX",
+      "category": "Polo Shirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/polo1",
+      "image_url": "https://shop.workwear-direct.com/img/polo1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/polo1.jpg"
+      ]
+    },
+    {
+      "product_id": 1001,
+      "sku": "RX105F",
+      "name": "Pro RTX Ladies Pro Polyester Polo Shirt",
+      "description": "Pro RTX Ladies Pro Polyester Polo Shirt. Pro RTX polo shirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 6.36,
+      "currency": "GBP",
+      "brand": "Pro RTX",
+      "category": "Polo Shirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/polo2",
+      "image_url": "https://shop.workwear-direct.com/img/polo2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/polo2.jpg"
+      ]
+    },
+    {
+      "product_id": 1002,
+      "sku": "RX105",
+      "name": "Pro RTX Pro Polyester Polo Shirt",
+      "description": "Pro RTX Pro Polyester Polo Shirt. Pro RTX polo shirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 7.99,
+      "currency": "GBP",
+      "brand": "Pro RTX",
+      "category": "Polo Shirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/polo3",
+      "image_url": "https://shop.workwear-direct.com/img/polo3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/polo3.jpg"
+      ]
+    },
+    {
+      "product_id": 1003,
+      "sku": "RX110",
+      "name": "Pro RTX Pro Premium Piqué Polo Shirt",
+      "description": "Pro RTX Pro Premium Piqué Polo Shirt. Pro RTX polo shirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 9.1,
+      "currency": "GBP",
+      "brand": "Pro RTX",
+      "category": "Polo Shirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/polo4",
+      "image_url": "https://shop.workwear-direct.com/img/polo4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/polo4.jpg"
+      ]
+    },
+    {
+      "product_id": 1004,
+      "sku": "RX109",
+      "name": "Pro RTX Pro Wicking Piqué Polo Shirt",
+      "description": "Pro RTX Pro Wicking Piqué Polo Shirt. Pro RTX polo shirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 11.56,
+      "currency": "GBP",
+      "brand": "Pro RTX",
+      "category": "Polo Shirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/polo5",
+      "image_url": "https://shop.workwear-direct.com/img/polo5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/polo5.jpg"
+      ]
+    },
+    {
+      "product_id": 1005,
+      "sku": "RX102",
+      "name": "Pro RTX Pro Long Sleeve Piqué Polo Shirt",
+      "description": "Pro RTX Pro Long Sleeve Piqué Polo Shirt. Pro RTX polo shirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 9.27,
+      "currency": "GBP",
+      "brand": "Pro RTX",
+      "category": "Polo Shirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/polo6",
+      "image_url": "https://shop.workwear-direct.com/img/polo6.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/polo6.jpg"
+      ]
+    },
+    {
+      "product_id": 1006,
+      "sku": "RX152",
+      "name": "Pro RTX Pro Long Sleeve T-Shirt",
+      "description": "Pro RTX Pro Long Sleeve T-Shirt. Pro RTX t-shirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 7.14,
+      "currency": "GBP",
+      "brand": "Pro RTX",
+      "category": "T-Shirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/tee1",
+      "image_url": "https://shop.workwear-direct.com/img/tee1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/tee1.jpg"
+      ]
+    },
+    {
+      "product_id": 1007,
+      "sku": "UC314",
+      "name": "Long Sleeve Classic T-Shirt",
+      "description": "Long Sleeve Classic T-Shirt. Workwear Direct t-shirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 5.7,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "T-Shirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/tee2",
+      "image_url": "https://shop.workwear-direct.com/img/tee2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/tee2.jpg"
+      ]
+    },
+    {
+      "product_id": 1008,
+      "sku": "UC302",
+      "name": "Premium T-shirt",
+      "description": "Premium T-shirt. Workwear Direct t-shirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 4.85,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "T-Shirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/tee3",
+      "image_url": "https://shop.workwear-direct.com/img/tee3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/tee3.jpg"
+      ]
+    },
+    {
+      "product_id": 1009,
+      "sku": "UC315",
+      "name": "Mens Ultra Cool T-Shirt",
+      "description": "Mens Ultra Cool T-Shirt. Workwear Direct t-shirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 4.42,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "T-Shirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/tee4",
+      "image_url": "https://shop.workwear-direct.com/img/tee4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/tee4.jpg"
+      ]
+    },
+    {
+      "product_id": 1010,
+      "sku": "UC316",
+      "name": "Ladies Ultra Cool T-Shirt",
+      "description": "Ladies Ultra Cool T-Shirt. Workwear Direct t-shirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 4.34,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "T-Shirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/tee5",
+      "image_url": "https://shop.workwear-direct.com/img/tee5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/tee5.jpg"
+      ]
+    },
+    {
+      "product_id": 1011,
+      "sku": "UC301",
+      "name": "Classic T-shirt",
+      "description": "Classic T-shirt. Workwear Direct t-shirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 3.57,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "T-Shirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/tee6",
+      "image_url": "https://shop.workwear-direct.com/img/tee6.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/tee6.jpg"
+      ]
+    },
+    {
+      "product_id": 1012,
+      "sku": "RX350",
+      "name": "Pro RTX Pro Hoodie",
+      "description": "Pro RTX Pro Hoodie. Pro RTX hoodies available for custom branding and embroidery from Workwear Direct.",
+      "price": 14.28,
+      "currency": "GBP",
+      "brand": "Pro RTX",
+      "category": "Hoodies",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hoodie1",
+      "image_url": "https://shop.workwear-direct.com/img/hoodie1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hoodie1.jpg"
+      ]
+    },
+    {
+      "product_id": 1013,
+      "sku": "UX4",
+      "name": "The UX Hoodie",
+      "description": "The UX Hoodie. Workwear Direct hoodies available for custom branding and embroidery from Workwear Direct.",
+      "price": 11.14,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hoodies",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hoodie2",
+      "image_url": "https://shop.workwear-direct.com/img/hoodie2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hoodie2.jpg"
+      ]
+    },
+    {
+      "product_id": 1014,
+      "sku": "UC503",
+      "name": "Childrens Classic Hooded Sweatshirt",
+      "description": "Childrens Classic Hooded Sweatshirt. Workwear Direct hoodies available for custom branding and embroidery from Workwear Direct.",
+      "price": 12.41,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hoodies",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hoodie3",
+      "image_url": "https://shop.workwear-direct.com/img/hoodie3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hoodie3.jpg"
+      ]
+    },
+    {
+      "product_id": 1015,
+      "sku": "UC510",
+      "name": "Ladies Deluxe Hooded Sweatshirt",
+      "description": "Ladies Deluxe Hooded Sweatshirt. Workwear Direct hoodies available for custom branding and embroidery from Workwear Direct.",
+      "price": 12.67,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hoodies",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hoodie4",
+      "image_url": "https://shop.workwear-direct.com/img/hoodie4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hoodie4.jpg"
+      ]
+    },
+    {
+      "product_id": 1016,
+      "sku": "UX5",
+      "name": "The UX Full Zip Fleece",
+      "description": "The UX Full Zip Fleece. Workwear Direct hoodies available for custom branding and embroidery from Workwear Direct.",
+      "price": 12.84,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hoodies",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hoodie5",
+      "image_url": "https://shop.workwear-direct.com/img/hoodie5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hoodie5.jpg"
+      ]
+    },
+    {
+      "product_id": 1017,
+      "sku": "JH014",
+      "name": "AWDis Camo Hoodie",
+      "description": "AWDis Camo Hoodie. AWDis hoodies available for custom branding and embroidery from Workwear Direct.",
+      "price": 25.16,
+      "currency": "GBP",
+      "brand": "AWDis",
+      "category": "Hoodies",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hoodie6",
+      "image_url": "https://shop.workwear-direct.com/img/hoodie6.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hoodie6.jpg"
+      ]
+    },
+    {
+      "product_id": 1018,
+      "sku": "JH093",
+      "name": "AWDis Washed Sweatshirt",
+      "description": "AWDis Washed Sweatshirt. AWDis sweatshirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 3.4,
+      "currency": "GBP",
+      "brand": "AWDis",
+      "category": "Sweatshirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/sweat1",
+      "image_url": "https://shop.workwear-direct.com/img/sweat1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/sweat1.jpg"
+      ]
+    },
+    {
+      "product_id": 1019,
+      "sku": "JH036",
+      "name": "AWDis Ladies Fashion Sweatshirt",
+      "description": "AWDis Ladies Fashion Sweatshirt. AWDis sweatshirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 6.78,
+      "currency": "GBP",
+      "brand": "AWDis",
+      "category": "Sweatshirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/sweat2",
+      "image_url": "https://shop.workwear-direct.com/img/sweat2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/sweat2.jpg"
+      ]
+    },
+    {
+      "product_id": 1020,
+      "sku": "UC204",
+      "name": "V Neck Sweatshirt",
+      "description": "V Neck Sweatshirt. Workwear Direct sweatshirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 8.5,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Sweatshirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/sweat3",
+      "image_url": "https://shop.workwear-direct.com/img/sweat3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/sweat3.jpg"
+      ]
+    },
+    {
+      "product_id": 1021,
+      "sku": "UX3",
+      "name": "The UX Sweatshirt",
+      "description": "The UX Sweatshirt. Workwear Direct sweatshirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 8.84,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Sweatshirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/sweat4",
+      "image_url": "https://shop.workwear-direct.com/img/sweat4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/sweat4.jpg"
+      ]
+    },
+    {
+      "product_id": 1022,
+      "sku": "UX3",
+      "name": "The UX Sweatshirt",
+      "description": "The UX Sweatshirt. Workwear Direct sweatshirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 8.84,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Sweatshirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/sweat5",
+      "image_url": "https://shop.workwear-direct.com/img/sweat5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/sweat5.jpg"
+      ]
+    },
+    {
+      "product_id": 1023,
+      "sku": "260M",
+      "name": "Russell Authentic Melange Sweatshirt",
+      "description": "Russell Authentic Melange Sweatshirt. Russell sweatshirts available for custom branding and embroidery from Workwear Direct.",
+      "price": 9.45,
+      "currency": "GBP",
+      "brand": "Russell",
+      "category": "Sweatshirts",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/sweat6",
+      "image_url": "https://shop.workwear-direct.com/img/sweat6.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/sweat6.jpg"
+      ]
+    },
+    {
+      "product_id": 1024,
+      "sku": "UC606",
+      "name": "Childrens Reversible Fleece Jacket",
+      "description": "Childrens Reversible Fleece Jacket. Workwear Direct jackets available for custom branding and embroidery from Workwear Direct.",
+      "price": 8.5,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Jackets",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/jacket1",
+      "image_url": "https://shop.workwear-direct.com/img/jacket1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/jacket1.jpg"
+      ]
+    },
+    {
+      "product_id": 1025,
+      "sku": "RS227",
+      "name": "Result Core Waterproof Over Jacket",
+      "description": "Result Core Waterproof Over Jacket. Result jackets available for custom branding and embroidery from Workwear Direct.",
+      "price": 11.56,
+      "currency": "GBP",
+      "brand": "Result",
+      "category": "Jackets",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/jacket2",
+      "image_url": "https://shop.workwear-direct.com/img/jacket2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/jacket2.jpg"
+      ]
+    },
+    {
+      "product_id": 1026,
+      "sku": "UC603",
+      "name": "Childrens Classic Full Zip Fleece Jacket",
+      "description": "Childrens Classic Full Zip Fleece Jacket. Workwear Direct jackets available for custom branding and embroidery from Workwear Direct.",
+      "price": 12.16,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Jackets",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/jacket3",
+      "image_url": "https://shop.workwear-direct.com/img/jacket3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/jacket3.jpg"
+      ]
+    },
+    {
+      "product_id": 1027,
+      "sku": "UC212",
+      "name": "Deluxe Unisex Sweat Jacket",
+      "description": "Deluxe Unisex Sweat Jacket. Workwear Direct jackets available for custom branding and embroidery from Workwear Direct.",
+      "price": 12.67,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Jackets",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/jacket4",
+      "image_url": "https://shop.workwear-direct.com/img/jacket4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/jacket4.jpg"
+      ]
+    },
+    {
+      "product_id": 1028,
+      "sku": "RS907",
+      "name": "Result Recycled Micro Fleece Jacket",
+      "description": "Result Recycled Micro Fleece Jacket. Result jackets available for custom branding and embroidery from Workwear Direct.",
+      "price": 14.71,
+      "currency": "GBP",
+      "brand": "Result",
+      "category": "Jackets",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/jacket5",
+      "image_url": "https://shop.workwear-direct.com/img/jacket5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/jacket5.jpg"
+      ]
+    },
+    {
+      "product_id": 1029,
+      "sku": "UC608",
+      "name": "Ladies Classic Full Zip Fleece Jacket",
+      "description": "Ladies Classic Full Zip Fleece Jacket. Workwear Direct jackets available for custom branding and embroidery from Workwear Direct.",
+      "price": 13.09,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Jackets",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/jacket6",
+      "image_url": "https://shop.workwear-direct.com/img/jacket6.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/jacket6.jpg"
+      ]
+    },
+    {
+      "product_id": 1030,
+      "sku": "RS226",
+      "name": "Result Core Waterproof Overtrousers",
+      "description": "Result Core Waterproof Overtrousers. Result trousers & legwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 7.14,
+      "currency": "GBP",
+      "brand": "Result",
+      "category": "Trousers & Legwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/trouser1",
+      "image_url": "https://shop.workwear-direct.com/img/trouser1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/trouser1.jpg"
+      ]
+    },
+    {
+      "product_id": 1031,
+      "sku": "PW167",
+      "name": "Portwest Classic Rain Trousers",
+      "description": "Portwest Classic Rain Trousers. Portwest trousers & legwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 12.24,
+      "currency": "GBP",
+      "brand": "Portwest",
+      "category": "Trousers & Legwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/trouser2",
+      "image_url": "https://shop.workwear-direct.com/img/trouser2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/trouser2.jpg"
+      ]
+    },
+    {
+      "product_id": 1032,
+      "sku": "2085",
+      "name": "Wakefield Trousers",
+      "description": "Wakefield Trousers. Workwear Direct trousers & legwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 9.9,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Trousers & Legwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/trouser3",
+      "image_url": "https://shop.workwear-direct.com/img/trouser3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/trouser3.jpg"
+      ]
+    },
+    {
+      "product_id": 1033,
+      "sku": "RG212",
+      "name": "Regatta Pro Stormbreak Waterproof Overtrousers",
+      "description": "Regatta Pro Stormbreak Waterproof Overtrousers. Regatta trousers & legwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 13.26,
+      "currency": "GBP",
+      "brand": "Regatta",
+      "category": "Trousers & Legwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/trouser4",
+      "image_url": "https://shop.workwear-direct.com/img/trouser4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/trouser4.jpg"
+      ]
+    },
+    {
+      "product_id": 1034,
+      "sku": "BZ30",
+      "name": "Bizweld FR Trousers",
+      "description": "Bizweld FR Trousers. Bizweld trousers & legwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 26.6,
+      "currency": "GBP",
+      "brand": "Bizweld",
+      "category": "Trousers & Legwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/trouser5",
+      "image_url": "https://shop.workwear-direct.com/img/trouser5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/trouser5.jpg"
+      ]
+    },
+    {
+      "product_id": 1035,
+      "sku": "UC905",
+      "name": "Ladies Cargo Trousers",
+      "description": "Ladies Cargo Trousers. Workwear Direct trousers & legwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 13.52,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Trousers & Legwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/trouser6",
+      "image_url": "https://shop.workwear-direct.com/img/trouser6.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/trouser6.jpg"
+      ]
+    },
+    {
+      "product_id": 1036,
+      "sku": "WR100",
+      "name": "Warrior S1P Chukka Boots",
+      "description": "Warrior S1P Chukka Boots. Warrior safety footwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 23.21,
+      "currency": "GBP",
+      "brand": "Warrior",
+      "category": "Safety Footwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/boot1",
+      "image_url": "https://shop.workwear-direct.com/img/boot1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/boot1.jpg"
+      ]
+    },
+    {
+      "product_id": 1037,
+      "sku": "PW863",
+      "name": "Portwest Steeliteâ„¢ S1P Protector Boots",
+      "description": "Portwest Steeliteâ„¢ S1P Protector Boots. Portwest safety footwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 22.78,
+      "currency": "GBP",
+      "brand": "Portwest",
+      "category": "Safety Footwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/boot2",
+      "image_url": "https://shop.workwear-direct.com/img/boot2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/boot2.jpg"
+      ]
+    },
+    {
+      "product_id": 1038,
+      "sku": "FW05",
+      "name": "Steelite Fur Lined Protector Boot S3 CI",
+      "description": "Steelite Fur Lined Protector Boot S3 CI. Steelite safety footwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 25.93,
+      "currency": "GBP",
+      "brand": "Steelite",
+      "category": "Safety Footwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/boot3",
+      "image_url": "https://shop.workwear-direct.com/img/boot3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/boot3.jpg"
+      ]
+    },
+    {
+      "product_id": 1039,
+      "sku": "FW03",
+      "name": "Steel Action Leather Ankle Boot S3 SR",
+      "description": "Steel Action Leather Ankle Boot S3 SR. Workwear Direct safety footwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 28.35,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Safety Footwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/boot4",
+      "image_url": "https://shop.workwear-direct.com/img/boot4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/boot4.jpg"
+      ]
+    },
+    {
+      "product_id": 1040,
+      "sku": "C3 - FW13",
+      "name": "C3 - Steelite Rigger Boot",
+      "description": "C3 - Steelite Rigger Boot. Steelite safety footwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 26.4,
+      "currency": "GBP",
+      "brand": "Steelite",
+      "category": "Safety Footwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/boot5",
+      "image_url": "https://shop.workwear-direct.com/img/boot5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/boot5.jpg"
+      ]
+    },
+    {
+      "product_id": 1041,
+      "sku": "FW11",
+      "name": "Steel Leather Ankle Boot S3 SR",
+      "description": "Steel Leather Ankle Boot S3 SR. Workwear Direct safety footwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 31.41,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Safety Footwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/boot6",
+      "image_url": "https://shop.workwear-direct.com/img/boot6.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/boot6.jpg"
+      ]
+    },
+    {
+      "product_id": 1042,
+      "sku": "A315",
+      "name": "Grip 13 Full Coating Nitrile Glove",
+      "description": "Grip 13 Full Coating Nitrile Glove. Workwear Direct gloves available for custom branding and embroidery from Workwear Direct.",
+      "price": 1.21,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Gloves",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/glove1",
+      "image_url": "https://shop.workwear-direct.com/img/glove1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/glove1.jpg"
+      ]
+    },
+    {
+      "product_id": 1043,
+      "sku": "A641",
+      "name": "Juba Gloves - Box Qty 216",
+      "description": "Juba Gloves - Box Qty 216. Juba gloves available for custom branding and embroidery from Workwear Direct.",
+      "price": 0.92,
+      "currency": "GBP",
+      "brand": "Juba",
+      "category": "Gloves",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/glove2",
+      "image_url": "https://shop.workwear-direct.com/img/glove2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/glove2.jpg"
+      ]
+    },
+    {
+      "product_id": 1044,
+      "sku": "A915",
+      "name": "Latex Gloves - Box Qty 100",
+      "description": "Latex Gloves - Box Qty 100. Workwear Direct gloves available for custom branding and embroidery from Workwear Direct.",
+      "price": 4.99,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Gloves",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/glove3",
+      "image_url": "https://shop.workwear-direct.com/img/glove3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/glove3.jpg"
+      ]
+    },
+    {
+      "product_id": 1045,
+      "sku": "A700",
+      "name": "Mechanic 80 Glove",
+      "description": "Mechanic 80 Glove. Workwear Direct gloves available for custom branding and embroidery from Workwear Direct.",
+      "price": 5.9,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Gloves",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/glove4",
+      "image_url": "https://shop.workwear-direct.com/img/glove4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/glove4.jpg"
+      ]
+    },
+    {
+      "product_id": 1046,
+      "sku": "a750",
+      "name": "freezer gloves",
+      "description": "freezer gloves. Workwear Direct gloves available for custom branding and embroidery from Workwear Direct.",
+      "price": 10.75,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Gloves",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/glove5",
+      "image_url": "https://shop.workwear-direct.com/img/glove5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/glove5.jpg"
+      ]
+    },
+    {
+      "product_id": 1047,
+      "sku": "BB10",
+      "name": "Beechfield Original 5 Panel Cap",
+      "description": "Beechfield Original 5 Panel Cap. Beechfield headwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 4.25,
+      "currency": "GBP",
+      "brand": "Beechfield",
+      "category": "Headwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hat1",
+      "image_url": "https://shop.workwear-direct.com/img/hat1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hat1.jpg"
+      ]
+    },
+    {
+      "product_id": 1048,
+      "sku": "BB645",
+      "name": "Beechfield Vintage Snapback Trucker Cap",
+      "description": "Beechfield Vintage Snapback Trucker Cap. Beechfield headwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 4.51,
+      "currency": "GBP",
+      "brand": "Beechfield",
+      "category": "Headwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hat2",
+      "image_url": "https://shop.workwear-direct.com/img/hat2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hat2.jpg"
+      ]
+    },
+    {
+      "product_id": 1049,
+      "sku": "BB58",
+      "name": "Beechfield Low Profile Heavy Cotton Drill Cap",
+      "description": "Beechfield Low Profile Heavy Cotton Drill Cap. Beechfield headwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 4.68,
+      "currency": "GBP",
+      "brand": "Beechfield",
+      "category": "Headwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hat3",
+      "image_url": "https://shop.workwear-direct.com/img/hat3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hat3.jpg"
+      ]
+    },
+    {
+      "product_id": 1050,
+      "sku": "BB640",
+      "name": "Beechfield Snapback Trucker Cap",
+      "description": "Beechfield Snapback Trucker Cap. Beechfield headwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 4.68,
+      "currency": "GBP",
+      "brand": "Beechfield",
+      "category": "Headwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hat4",
+      "image_url": "https://shop.workwear-direct.com/img/hat4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hat4.jpg"
+      ]
+    },
+    {
+      "product_id": 1051,
+      "sku": "BB610",
+      "name": "Beechfield 5 Panel Snapback Rapper Cap",
+      "description": "Beechfield 5 Panel Snapback Rapper Cap. Beechfield headwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 4.68,
+      "currency": "GBP",
+      "brand": "Beechfield",
+      "category": "Headwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hat5",
+      "image_url": "https://shop.workwear-direct.com/img/hat5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hat5.jpg"
+      ]
+    },
+    {
+      "product_id": 1052,
+      "sku": "BB15",
+      "name": "Beechfield Ultimate 5 Panel Cap",
+      "description": "Beechfield Ultimate 5 Panel Cap. Beechfield headwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 4.76,
+      "currency": "GBP",
+      "brand": "Beechfield",
+      "category": "Headwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hat6",
+      "image_url": "https://shop.workwear-direct.com/img/hat6.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hat6.jpg"
+      ]
+    },
+    {
+      "product_id": 1053,
+      "sku": "PW20",
+      "name": "Direct Vent safety goggles",
+      "description": "Direct Vent safety goggles. Workwear Direct eyewear & ppe available for custom branding and embroidery from Workwear Direct.",
+      "price": 0.95,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Eyewear & PPE",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/glasses1",
+      "image_url": "https://shop.workwear-direct.com/img/glasses1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/glasses1.jpg"
+      ]
+    },
+    {
+      "product_id": 1054,
+      "sku": "C3- PW20",
+      "name": "C3 Direct Vent safety goggles",
+      "description": "C3 Direct Vent safety goggles. Workwear Direct eyewear & ppe available for custom branding and embroidery from Workwear Direct.",
+      "price": 0.95,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Eyewear & PPE",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/glasses2",
+      "image_url": "https://shop.workwear-direct.com/img/glasses2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/glasses2.jpg"
+      ]
+    },
+    {
+      "product_id": 1055,
+      "sku": "PW33",
+      "name": "Over Glasses",
+      "description": "Over Glasses. Workwear Direct eyewear & ppe available for custom branding and embroidery from Workwear Direct.",
+      "price": 1.2,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Eyewear & PPE",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/glasses3",
+      "image_url": "https://shop.workwear-direct.com/img/glasses3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/glasses3.jpg"
+      ]
+    },
+    {
+      "product_id": 1056,
+      "sku": "PR32",
+      "name": "Wrap Around safety glasses",
+      "description": "Wrap Around safety glasses. Workwear Direct eyewear & ppe available for custom branding and embroidery from Workwear Direct.",
+      "price": 1.85,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Eyewear & PPE",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/glasses4",
+      "image_url": "https://shop.workwear-direct.com/img/glasses4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/glasses4.jpg"
+      ]
+    },
+    {
+      "product_id": 1057,
+      "sku": "PW036",
+      "name": "Indirect vent goggles (PW21)",
+      "description": "Indirect vent goggles (PW21). Workwear Direct eyewear & ppe available for custom branding and embroidery from Workwear Direct.",
+      "price": 2.13,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Eyewear & PPE",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/glasses5",
+      "image_url": "https://shop.workwear-direct.com/img/glasses5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/glasses5.jpg"
+      ]
+    },
+    {
+      "product_id": 1058,
+      "sku": "PS04",
+      "name": "Anti Fog Safety Glasses",
+      "description": "Anti Fog Safety Glasses. Workwear Direct eyewear & ppe available for custom branding and embroidery from Workwear Direct.",
+      "price": 3.4,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Eyewear & PPE",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/glasses6",
+      "image_url": "https://shop.workwear-direct.com/img/glasses6.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/glasses6.jpg"
+      ]
+    },
+    {
+      "product_id": 1059,
+      "sku": "W11-Y-LEO",
+      "name": "Lynton Hi Vis Vest",
+      "description": "Lynton Hi Vis Vest. Workwear Direct hi-vis vests available for custom branding and embroidery from Workwear Direct.",
+      "price": 3.45,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hi-Vis Vests",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hivis1",
+      "image_url": "https://shop.workwear-direct.com/img/hivis1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hivis1.jpg"
+      ]
+    },
+    {
+      "product_id": 1060,
+      "sku": "W22-O",
+      "name": "Barnstaple Orange",
+      "description": "Barnstaple Orange. Workwear Direct hi-vis vests available for custom branding and embroidery from Workwear Direct.",
+      "price": 5.9,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hi-Vis Vests",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hivis2",
+      "image_url": "https://shop.workwear-direct.com/img/hivis2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hivis2.jpg"
+      ]
+    },
+    {
+      "product_id": 1061,
+      "sku": "W22-Y",
+      "name": "Barnstaple",
+      "description": "Barnstaple. Workwear Direct hi-vis vests available for custom branding and embroidery from Workwear Direct.",
+      "price": 5.9,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hi-Vis Vests",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hivis3",
+      "image_url": "https://shop.workwear-direct.com/img/hivis3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hivis3.jpg"
+      ]
+    },
+    {
+      "product_id": 1062,
+      "sku": "WL11-Y/NV-LEO",
+      "name": "LYNMOUTH Women's Superior Waistcoat",
+      "description": "LYNMOUTH Women's Superior Waistcoat. Workwear Direct hi-vis vests available for custom branding and embroidery from Workwear Direct.",
+      "price": 12,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hi-Vis Vests",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hivis4",
+      "image_url": "https://shop.workwear-direct.com/img/hivis4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hivis4.jpg"
+      ]
+    },
+    {
+      "product_id": 1063,
+      "sku": "C405",
+      "name": "Hi-Vis Vest Visitor",
+      "description": "Hi-Vis Vest Visitor. Workwear Direct hi-vis vests available for custom branding and embroidery from Workwear Direct.",
+      "price": 1.82,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hi-Vis Vests",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hivis5",
+      "image_url": "https://shop.workwear-direct.com/img/hivis5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hivis5.jpg"
+      ]
+    },
+    {
+      "product_id": 1064,
+      "sku": "C370",
+      "name": "Hi-Vis Mesh Band and Brace Vest",
+      "description": "Hi-Vis Mesh Band and Brace Vest. Workwear Direct hi-vis vests available for custom branding and embroidery from Workwear Direct.",
+      "price": 3.85,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hi-Vis Vests",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hivis6",
+      "image_url": "https://shop.workwear-direct.com/img/hivis6.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hivis6.jpg"
+      ]
+    },
+    {
+      "product_id": 1065,
+      "sku": "YK105",
+      "name": "Yoko Hi-Vis Long Sleeve Jacket",
+      "description": "Yoko Hi-Vis Long Sleeve Jacket. Yoko hi-vis jackets available for custom branding and embroidery from Workwear Direct.",
+      "price": 8.5,
+      "currency": "GBP",
+      "brand": "Yoko",
+      "category": "Hi-Vis Jackets",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hivisjkt1",
+      "image_url": "https://shop.workwear-direct.com/img/hivisjkt1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hivisjkt1.jpg"
+      ]
+    },
+    {
+      "product_id": 1066,
+      "sku": "PW166",
+      "name": "Portwest Classic Rain Jacket",
+      "description": "Portwest Classic Rain Jacket. Portwest hi-vis jackets available for custom branding and embroidery from Workwear Direct.",
+      "price": 14.71,
+      "currency": "GBP",
+      "brand": "Portwest",
+      "category": "Hi-Vis Jackets",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hivisjkt2",
+      "image_url": "https://shop.workwear-direct.com/img/hivisjkt2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hivisjkt2.jpg"
+      ]
+    },
+    {
+      "product_id": 1067,
+      "sku": "UC803",
+      "name": "Hi Vis Road Safety Jacket",
+      "description": "Hi Vis Road Safety Jacket. Workwear Direct hi-vis jackets available for custom branding and embroidery from Workwear Direct.",
+      "price": 23.63,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hi-Vis Jackets",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hivisjkt3",
+      "image_url": "https://shop.workwear-direct.com/img/hivisjkt3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hivisjkt3.jpg"
+      ]
+    },
+    {
+      "product_id": 1068,
+      "sku": "UC804",
+      "name": "High Visibility Bomber Jacket",
+      "description": "High Visibility Bomber Jacket. Workwear Direct hi-vis jackets available for custom branding and embroidery from Workwear Direct.",
+      "price": 23.63,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hi-Vis Jackets",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hivisjkt4",
+      "image_url": "https://shop.workwear-direct.com/img/hivisjkt4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hivisjkt4.jpg"
+      ]
+    },
+    {
+      "product_id": 1069,
+      "sku": "PW011",
+      "name": "Portwest Hi-Vis Rain Jacket",
+      "description": "Portwest Hi-Vis Rain Jacket. Portwest hi-vis jackets available for custom branding and embroidery from Workwear Direct.",
+      "price": 26.01,
+      "currency": "GBP",
+      "brand": "Portwest",
+      "category": "Hi-Vis Jackets",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hivisjkt5",
+      "image_url": "https://shop.workwear-direct.com/img/hivisjkt5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hivisjkt5.jpg"
+      ]
+    },
+    {
+      "product_id": 1070,
+      "sku": "RG558",
+      "name": "Regatta High Visibility Pro Contract Thor Fleece Jacket",
+      "description": "Regatta High Visibility Pro Contract Thor Fleece Jacket. Regatta hi-vis jackets available for custom branding and embroidery from Workwear Direct.",
+      "price": 28.14,
+      "currency": "GBP",
+      "brand": "Regatta",
+      "category": "Hi-Vis Jackets",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/hivisjkt6",
+      "image_url": "https://shop.workwear-direct.com/img/hivisjkt6.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/hivisjkt6.jpg"
+      ]
+    },
+    {
+      "product_id": 1071,
+      "sku": "WD-HEALTH1",
+      "name": "Epaulettes Pair",
+      "description": "Epaulettes Pair. Workwear Direct healthcare & beauty available for custom branding and embroidery from Workwear Direct.",
+      "price": 1.87,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Healthcare & Beauty",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/health1",
+      "image_url": "https://shop.workwear-direct.com/img/health1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/health1.jpg"
+      ]
+    },
+    {
+      "product_id": 1072,
+      "sku": "BEH-3522M",
+      "name": "Pique Mens Polo",
+      "description": "Pique Mens Polo. Workwear Direct healthcare & beauty available for custom branding and embroidery from Workwear Direct.",
+      "price": 5.02,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Healthcare & Beauty",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/health2",
+      "image_url": "https://shop.workwear-direct.com/img/health2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/health2.jpg"
+      ]
+    },
+    {
+      "product_id": 1073,
+      "sku": "BEH-4469L",
+      "name": "Pique Womens Polo",
+      "description": "Pique Womens Polo. Workwear Direct healthcare & beauty available for custom branding and embroidery from Workwear Direct.",
+      "price": 5.02,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Healthcare & Beauty",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/health3",
+      "image_url": "https://shop.workwear-direct.com/img/health3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/health3.jpg"
+      ]
+    },
+    {
+      "product_id": 1074,
+      "sku": "NSB",
+      "name": "Scrub Bottom Reversible",
+      "description": "Scrub Bottom Reversible. Workwear Direct healthcare & beauty available for custom branding and embroidery from Workwear Direct.",
+      "price": 8.84,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Healthcare & Beauty",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/health4",
+      "image_url": "https://shop.workwear-direct.com/img/health4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/health4.jpg"
+      ]
+    },
+    {
+      "product_id": 1075,
+      "sku": "NST",
+      "name": "Scrub Top Reversible",
+      "description": "Scrub Top Reversible. Workwear Direct healthcare & beauty available for custom branding and embroidery from Workwear Direct.",
+      "price": 8.84,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Healthcare & Beauty",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/health5",
+      "image_url": "https://shop.workwear-direct.com/img/health5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/health5.jpg"
+      ]
+    },
+    {
+      "product_id": 1076,
+      "sku": "NT",
+      "name": "Tabard",
+      "description": "Tabard. Workwear Direct healthcare & beauty available for custom branding and embroidery from Workwear Direct.",
+      "price": 9.78,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Healthcare & Beauty",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/health6",
+      "image_url": "https://shop.workwear-direct.com/img/health6.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/health6.jpg"
+      ]
+    },
+    {
+      "product_id": 1077,
+      "sku": "PR648",
+      "name": "Turn-up chef's hat",
+      "description": "Turn-up chef's hat. Workwear Direct hospitality & chefwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 6.12,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hospitality & Chefwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/chef1",
+      "image_url": "https://shop.workwear-direct.com/img/chef1.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/chef1.jpg"
+      ]
+    },
+    {
+      "product_id": 1078,
+      "sku": "PR653",
+      "name": "Premier Chef's Skull Cap",
+      "description": "Premier Chef's Skull Cap. Premier hospitality & chefwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 3.03,
+      "currency": "GBP",
+      "brand": "Premier",
+      "category": "Hospitality & Chefwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/chef2",
+      "image_url": "https://shop.workwear-direct.com/img/chef2.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/chef2.jpg"
+      ]
+    },
+    {
+      "product_id": 1079,
+      "sku": "PR648",
+      "name": "Premier Turn-Up Chef's Hat",
+      "description": "Premier Turn-Up Chef's Hat. Premier hospitality & chefwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 7.31,
+      "currency": "GBP",
+      "brand": "Premier",
+      "category": "Hospitality & Chefwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/chef3",
+      "image_url": "https://shop.workwear-direct.com/img/chef3.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/chef3.jpg"
+      ]
+    },
+    {
+      "product_id": 1080,
+      "sku": "PR658",
+      "name": "Chef's zandana",
+      "description": "Chef's zandana. Workwear Direct hospitality & chefwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 6.72,
+      "currency": "GBP",
+      "brand": "Workwear Direct",
+      "category": "Hospitality & Chefwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/chef4",
+      "image_url": "https://shop.workwear-direct.com/img/chef4.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/chef4.jpg"
+      ]
+    },
+    {
+      "product_id": 1081,
+      "sku": "PR658",
+      "name": "Premier Chef's Zandana",
+      "description": "Premier Chef's Zandana. Premier hospitality & chefwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 7.99,
+      "currency": "GBP",
+      "brand": "Premier",
+      "category": "Hospitality & Chefwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/chef5",
+      "image_url": "https://shop.workwear-direct.com/img/chef5.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/chef5.jpg"
+      ]
+    },
+    {
+      "product_id": 1082,
+      "sku": "PR649",
+      "name": "Premier Coolchecker® Chef's T-Shirt",
+      "description": "Premier Coolchecker® Chef's T-Shirt. Premier hospitality & chefwear available for custom branding and embroidery from Workwear Direct.",
+      "price": 9.35,
+      "currency": "GBP",
+      "brand": "Premier",
+      "category": "Hospitality & Chefwear",
+      "in_stock": true,
+      "url": "https://shop.workwear-direct.com/products/chef6",
+      "image_url": "https://shop.workwear-direct.com/img/chef6.jpg",
+      "images": [
+        "https://shop.workwear-direct.com/img/chef6.jpg"
+      ]
+    }
+  ]
+}
