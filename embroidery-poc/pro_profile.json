@@ -1,0 +1,401 @@
+{
+  "files_analyzed": 26,
+  "satin_density_mm": 0.41,
+  "satin_width_median_mm": 2.06,
+  "satin_width_p95_mm": 3.45,
+  "satin_share_of_stitches": 0.79,
+  "run_stitch_len_mm": 1.86,
+  "trims_per_1k_stitches": 1.85,
+  "per_file": [
+    {
+      "file": "casepak logo.DST",
+      "stitches": 4276,
+      "size_mm": [
+        70.0,
+        66.5
+      ],
+      "colours": 4,
+      "trims_per_1k": 1.9,
+      "satin_width_med": 2.42,
+      "satin_width_p95": 4.37,
+      "satin_density": 0.4,
+      "satin_share": 0.8,
+      "run_len_med": 1.08
+    },
+    {
+      "file": "markovitz logo.DST",
+      "stitches": 2385,
+      "size_mm": [
+        80.4,
+        11.7
+      ],
+      "colours": 2,
+      "trims_per_1k": 2.1,
+      "satin_width_med": 2.19,
+      "satin_width_p95": 2.9,
+      "satin_density": 0.41,
+      "satin_share": 0.83,
+      "run_len_med": 2.88
+    },
+    {
+      "file": "FIRST AID.DST",
+      "stitches": 5210,
+      "size_mm": [
+        59.8,
+        70.5
+      ],
+      "colours": 1,
+      "trims_per_1k": 0.6,
+      "satin_width_med": 2.47,
+      "satin_width_p95": 2.77,
+      "satin_density": 0.41,
+      "satin_share": 0.23,
+      "run_len_med": 2.28
+    },
+    {
+      "file": "markovitz logo E1.DST",
+      "stitches": 6183,
+      "size_mm": [
+        80.5,
+        17.2
+      ],
+      "colours": 3,
+      "trims_per_1k": 0.8,
+      "satin_width_med": 2.06,
+      "satin_width_p95": 2.7,
+      "satin_density": 0.4,
+      "satin_share": 0.32,
+      "run_len_med": 2.15
+    },
+    {
+      "file": "Advance Logistics Training Logo.DST",
+      "stitches": 7572,
+      "size_mm": [
+        100.1,
+        46.0
+      ],
+      "colours": 3,
+      "trims_per_1k": 0.4,
+      "satin_width_med": 1.84,
+      "satin_width_p95": 3.45,
+      "satin_density": 0.4,
+      "satin_share": 0.46,
+      "run_len_med": 2.69
+    },
+    {
+      "file": "L&O 100 years JB.DST",
+      "stitches": 7973,
+      "size_mm": [
+        200.0,
+        33.8
+      ],
+      "colours": 9,
+      "trims_per_1k": 1.8,
+      "satin_width_med": 1.2,
+      "satin_width_p95": 3.09,
+      "satin_density": 0.4,
+      "satin_share": 0.78,
+      "run_len_med": 1.79
+    },
+    {
+      "file": "L&O 100 years LC A.DST",
+      "stitches": 4386,
+      "size_mm": [
+        100.0,
+        16.9
+      ],
+      "colours": 9,
+      "trims_per_1k": 2.5,
+      "satin_width_med": 1.12,
+      "satin_width_p95": 2.04,
+      "satin_density": 0.41,
+      "satin_share": 0.43,
+      "run_len_med": 0.73
+    },
+    {
+      "file": "L&O 100 years LC B.DST",
+      "stitches": 5325,
+      "size_mm": [
+        114.3,
+        19.4
+      ],
+      "colours": 9,
+      "trims_per_1k": 2.1,
+      "satin_width_med": 1.1,
+      "satin_width_p95": 2.2,
+      "satin_density": 0.41,
+      "satin_share": 0.51,
+      "run_len_med": 0.81
+    },
+    {
+      "file": "Deconetwork LOGO 2.DST",
+      "stitches": 2939,
+      "size_mm": [
+        90.5,
+        18.3
+      ],
+      "colours": 5,
+      "trims_per_1k": 0.7,
+      "satin_width_med": 1.6,
+      "satin_width_p95": 3.3,
+      "satin_density": 0.41,
+      "satin_share": 0.71,
+      "run_len_med": 3.0
+    },
+    {
+      "file": "Deconetwork LOGO.DST",
+      "stitches": 2087,
+      "size_mm": [
+        88.9,
+        16.4
+      ],
+      "colours": 4,
+      "trims_per_1k": 1.0,
+      "satin_width_med": 1.6,
+      "satin_width_p95": 3.3,
+      "satin_density": 0.41,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "Decopro 2.DST",
+      "stitches": 3057,
+      "size_mm": [
+        73.4,
+        31.7
+      ],
+      "colours": 2,
+      "trims_per_1k": 1.0,
+      "satin_width_med": 1.71,
+      "satin_width_p95": 2.41,
+      "satin_density": 0.41,
+      "satin_share": 0.67,
+      "run_len_med": 3.0
+    },
+    {
+      "file": "Decopro.DST",
+      "stitches": 2058,
+      "size_mm": [
+        70.6,
+        25.2
+      ],
+      "colours": 1,
+      "trims_per_1k": 1.5,
+      "satin_width_med": 1.71,
+      "satin_width_p95": 2.41,
+      "satin_density": 0.41,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "jet technology.DST",
+      "stitches": 934,
+      "size_mm": [
+        99.8,
+        9.4
+      ],
+      "colours": 1,
+      "trims_per_1k": 6.4,
+      "satin_width_med": null,
+      "satin_width_p95": null,
+      "satin_density": null,
+      "satin_share": 0.0,
+      "run_len_med": 0.99
+    },
+    {
+      "file": "BALHOUSIE CARE GROUP (1).DST",
+      "stitches": 20412,
+      "size_mm": [
+        114.6,
+        95.6
+      ],
+      "colours": 11,
+      "trims_per_1k": 2.7,
+      "satin_width_med": 1.5,
+      "satin_width_p95": 2.06,
+      "satin_density": 0.4,
+      "satin_share": 0.11,
+      "run_len_med": 3.23
+    },
+    {
+      "file": "peppa B shot b.DST",
+      "stitches": 4296,
+      "size_mm": [
+        99.8,
+        52.6
+      ],
+      "colours": 1,
+      "trims_per_1k": 2.3,
+      "satin_width_med": 2.61,
+      "satin_width_p95": 4.08,
+      "satin_density": 0.41,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "peppa B shot.DST",
+      "stitches": 4148,
+      "size_mm": [
+        99.4,
+        51.0
+      ],
+      "colours": 1,
+      "trims_per_1k": 2.4,
+      "satin_width_med": 2.5,
+      "satin_width_p95": 4.03,
+      "satin_density": 0.41,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "peppa Chiken.DST",
+      "stitches": 4346,
+      "size_mm": [
+        100.4,
+        50.6
+      ],
+      "colours": 1,
+      "trims_per_1k": 3.2,
+      "satin_width_med": 2.6,
+      "satin_width_p95": 3.93,
+      "satin_density": 0.41,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "peppa Demon Girl.DST",
+      "stitches": 3777,
+      "size_mm": [
+        100.0,
+        35.8
+      ],
+      "colours": 1,
+      "trims_per_1k": 4.0,
+      "satin_width_med": 2.06,
+      "satin_width_p95": 2.73,
+      "satin_density": 0.41,
+      "satin_share": 0.84,
+      "run_len_med": 1.8
+    },
+    {
+      "file": "scilly chocolate.DST",
+      "stitches": 5114,
+      "size_mm": [
+        100.4,
+        41.8
+      ],
+      "colours": 1,
+      "trims_per_1k": 2.2,
+      "satin_width_med": 2.33,
+      "satin_width_p95": 7.18,
+      "satin_density": 0.41,
+      "satin_share": 0.98,
+      "run_len_med": 1.28
+    },
+    {
+      "file": "sarah ppe gel.DST",
+      "stitches": 5596,
+      "size_mm": [
+        90.4,
+        86.8
+      ],
+      "colours": 2,
+      "trims_per_1k": 3.6,
+      "satin_width_med": 3.18,
+      "satin_width_p95": 4.12,
+      "satin_density": 0.45,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "tp logo.DST",
+      "stitches": 9053,
+      "size_mm": [
+        100.2,
+        86.4
+      ],
+      "colours": 1,
+      "trims_per_1k": 0.7,
+      "satin_width_med": 2.82,
+      "satin_width_p95": 3.51,
+      "satin_density": 0.4,
+      "satin_share": 0.3,
+      "run_len_med": 3.04
+    },
+    {
+      "file": "tp logoNEW.DST",
+      "stitches": 3588,
+      "size_mm": [
+        73.0,
+        63.2
+      ],
+      "colours": 1,
+      "trims_per_1k": 1.4,
+      "satin_width_med": 7.74,
+      "satin_width_p95": 10.1,
+      "satin_density": 0.2,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "GT Logistix_logo.DST",
+      "stitches": 1902,
+      "size_mm": [
+        40.4,
+        36.8
+      ],
+      "colours": 4,
+      "trims_per_1k": 1.1,
+      "satin_width_med": 4.7,
+      "satin_width_p95": 8.1,
+      "satin_density": 0.4,
+      "satin_share": 0.7,
+      "run_len_med": 1.66
+    },
+    {
+      "file": "GT Rentals_logo.DST",
+      "stitches": 1909,
+      "size_mm": [
+        40.2,
+        37.2
+      ],
+      "colours": 4,
+      "trims_per_1k": 1.6,
+      "satin_width_med": 2.87,
+      "satin_width_p95": 7.47,
+      "satin_density": 0.4,
+      "satin_share": 1.0,
+      "run_len_med": null
+    },
+    {
+      "file": "Sundays emb.DST",
+      "stitches": 3560,
+      "size_mm": [
+        100.6,
+        31.0
+      ],
+      "colours": 1,
+      "trims_per_1k": 3.4,
+      "satin_width_med": 1.6,
+      "satin_width_p95": 4.82,
+      "satin_density": 0.41,
+      "satin_share": 0.63,
+      "run_len_med": 1.92
+    },
+    {
+      "file": "CELEBRATING 100.DST",
+      "stitches": 4403,
+      "size_mm": [
+        100.3,
+        42.6
+      ],
+      "colours": 5,
+      "trims_per_1k": 1.8,
+      "satin_width_med": 1.63,
+      "satin_width_p95": 4.51,
+      "satin_density": 0.41,
+      "satin_share": 0.92,
+      "run_len_med": 0.9
+    }
+  ]
+}

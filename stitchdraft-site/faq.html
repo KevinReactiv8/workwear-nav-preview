@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAQ — StitchDraft</title>
+<meta name="description" content="Straight answers for digitizing businesses considering StitchDraft: data isolation, file formats, calibration, billing, and what the engine can and can't do yet.">
+<style>
+  :root {
+    --fabric: #2e353b;
+    --fabric-deep: #272d32;
+    --panel: #3a4147;
+    --panel-2: #444d54;
+    --thread: #ece5d8;
+    --thread-dim: #b9c0c5;
+    --steel: #98a3ab;
+    --accent: #ef7c1a;
+    --accent-soft: #f5a15c;
+    --stitch-rule: repeating-linear-gradient(90deg, var(--accent) 0 14px, transparent 14px 24px);
+    --sans: "Avenir Next", Avenir, "Century Gothic", Futura, "Segoe UI", system-ui, sans-serif;
+    --body: -apple-system, "Segoe UI", system-ui, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--fabric); color: var(--thread); font-family: var(--body); line-height: 1.6; font-size: 17px; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 clamp(1.2rem, 5vw, 3rem); }
+
+  header.nav { position: sticky; top: 0; z-index: 10; background: rgba(39,45,50,.92); backdrop-filter: blur(8px); border-bottom: 1px solid #454e55; }
+  .navbar { display: flex; align-items: center; justify-content: space-between; padding: .9rem clamp(1.2rem, 5vw, 3rem); max-width: 1100px; margin: 0 auto; }
+  .logo { font-family: var(--sans); font-weight: 700; font-size: 1.25rem; letter-spacing: -.01em; color: var(--thread); text-decoration: none; }
+  .logo b { color: var(--accent); }
+  .logo::after { content: ""; display: block; height: 3px; width: 100%; background: var(--stitch-rule); margin-top: 2px; }
+  .nav-links { display: flex; gap: 1.4rem; align-items: center; }
+  .nav-links a { color: var(--thread-dim); text-decoration: none; font-size: .95rem; }
+  .nav-links a:hover { color: var(--accent-soft); }
+  .nav-cta { font-family: var(--sans); font-weight: 600; font-size: .92rem; color: var(--fabric-deep) !important; background: var(--accent); padding: .55rem 1.1rem; }
+  .nav-cta:hover { background: var(--accent-soft); }
+
+  .eyebrow { font-family: var(--mono); font-size: .78rem; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); margin: 0 0 1.1rem; }
+  .eyebrow::before { content: ""; display: inline-block; width: 38px; height: 3px; background: var(--stitch-rule); margin-right: .8rem; vertical-align: middle; }
+  h1 { font-family: var(--sans); font-size: clamp(2rem, 4.6vw, 3.2rem); line-height: 1.08; font-weight: 700; letter-spacing: -.015em; margin: 0 0 1rem; text-wrap: balance; }
+  .lede { font-size: clamp(1.02rem, 1.6vw, 1.2rem); color: var(--thread-dim); max-width: 38em; margin: 0 0 1rem; }
+  .page-head { padding: clamp(3rem, 7vw, 5rem) 0 2.5rem; }
+
+  .faq-group { margin: 0 0 2.8rem; }
+  .group-title { font-family: var(--mono); font-size: .78rem; letter-spacing: .2em; text-transform: uppercase; color: var(--steel); margin: 0 0 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--panel-2); }
+  details { background: var(--panel); margin-bottom: .7rem; }
+  details[open] { outline: 1px solid var(--panel-2); }
+  summary {
+    font-family: var(--sans); font-weight: 600; font-size: 1.05rem; cursor: pointer;
+    padding: 1.05rem 1.3rem; list-style: none; position: relative; padding-right: 3rem;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: "+"; position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%);
+    font-family: var(--mono); color: var(--accent); font-size: 1.3rem; font-weight: 400;
+  }
+  details[open] summary::after { content: "–"; }
+  summary:hover { color: var(--accent-soft); }
+  .answer { padding: 0 1.3rem 1.2rem; color: var(--thread-dim); }
+  .answer p { margin: 0 0 .8rem; max-width: 68ch; }
+  .answer p:last-child { margin-bottom: 0; }
+  .answer strong { color: var(--thread); }
+  .answer .mono { font-family: var(--mono); font-size: .92em; }
+
+  .cta-band { background: var(--fabric-deep); padding: 3rem 0; margin-top: 3rem; border-top: 1px solid #454e55; }
+  .cta-band .inner { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; justify-content: space-between; }
+  .cta-band h2 { font-family: var(--sans); font-size: 1.5rem; margin: 0; }
+  .btn { font-family: var(--sans); font-weight: 600; text-decoration: none; padding: .8rem 1.5rem; font-size: 1rem; display: inline-block; background: var(--accent); color: var(--fabric-deep); }
+  .btn:hover { background: var(--accent-soft); }
+
+  footer { border-top: 1px solid #454e55; padding: 2.2rem 0 2.6rem; }
+  .foot { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: baseline; font-size: .85rem; color: var(--steel); }
+  a { color: var(--accent-soft); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="navbar">
+    <a class="logo" href="index.html"><svg viewBox="0 0 100 100" width="30" height="30" aria-hidden="true" style="vertical-align:-8px;margin-right:.45rem"><g stroke="#ef7c1a" stroke-width="4.21" stroke-linecap="round" fill="none"><line x1="72.01" y1="19.29" x2="75.99" y2="14.71"/>
+<line x1="66.53" y1="15.89" x2="68.90" y2="8.41"/>
+<line x1="60.00" y1="14.46" x2="60.31" y2="4.84"/>
+<line x1="53.06" y1="13.73" x2="51.35" y2="4.26"/>
+<line x1="46.07" y1="14.42" x2="42.50" y2="5.48"/>
+<line x1="39.61" y1="16.49" x2="33.93" y2="8.72"/>
+<line x1="34.57" y1="19.94" x2="26.37" y2="14.93"/>
+<line x1="31.73" y1="24.71" x2="22.12" y2="24.30"/>
+<line x1="31.78" y1="29.55" x2="23.89" y2="35.05"/>
+<line x1="35.30" y1="34.12" x2="30.65" y2="42.54"/>
+<line x1="41.12" y1="37.76" x2="38.54" y2="47.03"/>
+<line x1="48.15" y1="40.59" x2="46.37" y2="50.05"/>
+<line x1="55.83" y1="43.41" x2="53.68" y2="52.78"/>
+<line x1="63.78" y1="47.20" x2="60.04" y2="56.07"/>
+<line x1="71.17" y1="53.19" x2="64.78" y2="60.38"/>
+<line x1="75.79" y1="62.74" x2="66.50" y2="65.24"/>
+<line x1="74.51" y1="72.93" x2="65.16" y2="70.66"/>
+<line x1="69.54" y1="81.10" x2="61.48" y2="75.84"/>
+<line x1="62.55" y1="87.16" x2="56.20" y2="79.93"/>
+<line x1="54.50" y1="91.24" x2="49.89" y2="82.80"/>
+<line x1="45.76" y1="93.48" x2="43.11" y2="84.23"/>
+<line x1="36.51" y1="93.60" x2="36.43" y2="83.97"/>
+<line x1="27.57" y1="89.94" x2="30.29" y2="82.58"/>
+<line x1="20.86" y1="83.16" x2="25.14" y2="78.84"/></g></svg>Stitch<b>Draft</b></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#proof">Proof</a>
+      <a class="nav-cta" href="mailto:info@stitchdraft.co.uk?subject=StitchDraft%20pilot%20enquiry">Book a pilot</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">Straight answers</p>
+    <h1>Frequently asked questions</h1>
+    <p class="lede">The questions digitizing businesses actually ask us — answered plainly, including the ones about what StitchDraft can&rsquo;t do yet.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="faq-group">
+    <p class="group-title">Your data &amp; your style</p>
+
+    <details>
+      <summary>Will my files be used to train a competitor&rsquo;s model?</summary>
+      <div class="answer">
+        <p><strong>No — contractually and architecturally.</strong> Every licensee&rsquo;s corpus, corrections and calibration profile are isolated per tenant. Your data never improves anyone else&rsquo;s drafts, and no shared model is trained across shops.</p>
+        <p>If you end your licence, your calibration profile leaves with you.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Who owns the stitch files the engine produces?</summary>
+      <div class="answer">
+        <p><strong>You do.</strong> Drafts generated under your licence, and the finished files your experts approve, are your work product — the same as if your team had digitized them from scratch. We charge for the drafting service, not for rights in the output.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>How many of our files do you need for calibration?</summary>
+      <div class="answer">
+        <p>Useful calibration starts at around <strong>25&ndash;50 production files</strong> — our published fingerprint was measured on 26. More files sharpen it: with a few hundred, the profile resolves per technique and design size; with a full back-catalogue, per fabric and garment type.</p>
+        <p>The most valuable files are ones paired with their original artwork, because each pair lets us measure your decisions against the source — but stitch files alone carry most of the signal.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="faq-group">
+    <p class="group-title">Capability — and limits</p>
+
+    <details>
+      <summary>How is this different from the auto-digitizing already in Wilcom, Hatch or Pulse?</summary>
+      <div class="answer">
+        <p>Those tools ship one generic algorithm for every user, which is why their output never looks like <em>your</em> work. StitchDraft is calibrated on your own back-catalogue — your densities, your satin widths, your underlay and trim habits — and then keeps learning from your experts&rsquo; corrections on live jobs. Generic tools are frozen; yours compounds.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>What can the engine handle today, honestly?</summary>
+      <div class="answer">
+        <p><strong>Strong today:</strong> left-chest-scale logo work — satin lettering, tatami fills with underlay and pull compensation, fine-detail run stitching, multi-colour sequencing.</p>
+        <p><strong>Routed to your experts:</strong> wide ornate serif lettering, very fine detail near needle limits, 3D puff, appliqué, caps, and large-format jacket backs. The workflow flags these rather than pretending; your team digitizes them manually as they do now — and those files feed the next calibration pass.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>What artwork can customers send in?</summary>
+      <div class="answer">
+        <p>PNG, JPG, PDF and vector formats (AI/EPS/SVG via PDF). Flat logo artwork digitizes best. Photographs and heavily gradiented art are flagged for human handling — that&rsquo;s true of manual digitizing too.</p>
+        <p>White-on-transparent artwork (logos destined for dark garments) is handled correctly — a common failure in generic tools.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>What stitch file formats do you output?</summary>
+      <div class="answer">
+        <p>Native output is <span class="mono">.DST</span> (Tajima) — the universal production format every commercial machine and every major digitizing suite reads. Conversions to <span class="mono">.PES</span>, <span class="mono">.EXP</span>, <span class="mono">.JEF</span> and other machine formats are included.</p>
+        <p>We don&rsquo;t write <span class="mono">.EMB</span> — that&rsquo;s Wilcom&rsquo;s sealed proprietary format, and nothing outside Wilcom can create it. Machines don&rsquo;t need it: they stitch <span class="mono">.DST</span> natively. For editing, every job also ships the artwork as clean, colour-separated <span class="mono">.SVG</span> vectors at true stitch size — the clean route to a native .EMB (see the next answer).</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Can our digitizers edit a draft in Wilcom?</summary>
+      <div class="answer">
+        <p>Yes — the honest way. Converting a .DST to .EMB gives you stitches, not objects; recognition can&rsquo;t reliably rebuild fragmented elements, and no software fixes that — the object data simply isn&rsquo;t in a stitch file. So we never ask your team to convert stitches.</p>
+        <p>Instead they import the job&rsquo;s <span class="mono">.SVG</span> into Wilcom as pre-traced, colour-separated artwork at final size and punch native objects straight over it, with the draft&rsquo;s sewn preview as the stitch plan. The result is a clean first-generation .EMB — and the slow front of the job (cleanup, tracing, separation) is already done before they start.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Do my digitizers need to learn new software?</summary>
+      <div class="answer">
+        <p>Review happens in the browser: sewn preview, stitch counts, density map, approve or send back. For touch-ups, your team keeps using the software they already know — corrected files are simply uploaded back, and the engine learns from the diff automatically. No new digitizing suite to learn.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="faq-group">
+    <p class="group-title">Commercials</p>
+
+    <details>
+      <summary>What counts as an &ldquo;accepted file&rdquo;?</summary>
+      <div class="answer">
+        <p>A draft your team approves for production — as-is or after touch-up. <strong>Drafts, regenerations and rejected files cost nothing.</strong> If a draft is so far off your expert digitizes from scratch, you don&rsquo;t pay for it; you only pay when the engine actually saved the work.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Is this going to replace my digitizers?</summary>
+      <div class="answer">
+        <p>It removes the front of every job and the whole of many. Simple work ships from the draft with a review click; harder work starts from finished art prep and a working stitch plan instead of a blank screen. The same team points at several times the volume — and the share of jobs that ship untouched grows with every correction your experts feed back. Faster turnaround becomes something you sell; your experts spend the day on work worth their skill.</p>
+        <p>What it does change: growth stops requiring you to find and hire scarce digitizers.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>What does the pilot involve?</summary>
+      <div class="answer">
+        <p>Two weeks, no commitment: you provide ~100 backlog files for calibration, then run live jobs through the engine alongside your normal process. We measure three numbers together — <strong>acceptance rate</strong>, <strong>minutes-to-fix per draft</strong>, and how fast both improve. You keep every file produced. If the numbers don&rsquo;t convince you, you walk away with a free style analysis of your own catalogue.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>What does it cost?</summary>
+      <div class="answer">
+        <p>Pricing is agreed with founding partners as part of the pilot, and the model is simple: <strong>you only pay for accepted files</strong> — drafts, regenerations and rejected files cost nothing, and there are no seats or minimums. Early shops lock in preferential founding-partner terms.</p>
+        <p><a href="mailto:info@stitchdraft.co.uk?subject=StitchDraft%20pilot%20enquiry">Get in touch</a> and we&rsquo;ll talk numbers against your actual volume.</p>
+      </div>
+    </details>
+  </div>
+
+</div>
+
+<div class="cta-band">
+  <div class="wrap inner">
+    <h2>A question we haven&rsquo;t answered?</h2>
+    <span style="display:flex;gap:1rem;flex-wrap:wrap"><a class="btn" href="mailto:info@stitchdraft.co.uk?subject=StitchDraft%20question">Ask us — info@stitchdraft.co.uk</a>
+    <a class="btn" style="background:transparent;color:var(--thread);border:1px solid var(--panel-2)" href="https://wa.me/447770593555?text=Hi%2C%20I%27m%20interested%20in%20a%20StitchDraft%20pilot">WhatsApp: +44 7770 593555</a></span>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap foot">
+    <span><strong style="color:var(--thread)">Stitch<span style="color:var(--accent)">Draft</span></strong> &middot; AI digitizing, licensed to digitizers</span>
+    <span><a href="mailto:info@stitchdraft.co.uk">info@stitchdraft.co.uk</a> &middot; <a href="tel:+447770593555">+44 7770 593555</a> &middot; <a href="https://wa.me/447770593555?text=Hi%2C%20I%27m%20interested%20in%20a%20StitchDraft%20pilot">WhatsApp</a></span>
+    <span>&copy; 2026 StitchDraft &middot; stitchdraft.co.uk</span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+python-multipart
+pyembroidery
+pillow
+numpy
+opencv-python-headless
+shapely
+scikit-image
+scipy
