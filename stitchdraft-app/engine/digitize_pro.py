@@ -756,6 +756,8 @@ def digitize(in_path, out_path, target_width_mm=80.0):
     print(f"  stitches {n['stitch']}, jumps {n['jump']}, trims {n['trim']}, "
           f"colour changes {n['cc']}")
     print(f"  size {(max(xs)-min(xs))/10:.1f} x {(max(ys)-min(ys))/10:.1f} mm")
+    # machine-readable thread sequence for the production worksheet
+    print("  THREADS " + ",".join("#%02x%02x%02x" % tuple(c) for c, _ in regions))
     if dropped:
         print(f"  WARNING: {dropped} region(s) below {MIN_FEATURE_MM}mm needle "
               f"limit were dropped — enlarge the design or simplify the art")

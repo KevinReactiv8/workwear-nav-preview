@@ -1,2 +1,4 @@
 data/
 __pycache__/
+# access codes live in the STITCHDRAFT_TENANTS env var — never commit them
+tenants.json

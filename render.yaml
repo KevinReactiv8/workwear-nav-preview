@@ -3,11 +3,24 @@ services:
     name: stitchdraft-studio
     runtime: python
     rootDir: stitchdraft-app
+    # The free plan has NO persistent disk (every redeploy/restart wipes
+    # jobs, verdicts and the acceptance rate) and sleeps when idle. For
+    # real pilot use switch to "starter" and uncomment the disk below —
+    # STITCHDRAFT_DATA then points the app at it.
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: STITCHDRAFT_SECRET
         generateValue: true
+      - key: STITCHDRAFT_TENANTS
+        sync: false   # access codes — set in the Render dashboard, never in git
       - key: PYTHON_VERSION
         value: 3.11.9
+    # --- persistent storage: uncomment BOTH blocks together (needs a paid plan)
+    #   (add under envVars)  - key: STITCHDRAFT_DATA
+    #                          value: /var/data
+    # disk:
+    #   name: stitchdraft-data
+    #   mountPath: /var/data
+    #   sizeGB: 1
