@@ -5,7 +5,11 @@ open in Inkscape + Ink/Stitch for GUI-tuned professional digitizing.
 Usage: python vectorize_svg.py input.png output.svg [target_width_mm]
 """
 import sys
-from digitize_pro import extract_regions
+from pathlib import Path
+
+# the engine lives with the app (single copy — see stitchdraft-app/engine)
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "stitchdraft-app" / "engine"))
+from digitize_pro import extract_regions  # noqa: E402
 
 
 def poly_to_path(poly):

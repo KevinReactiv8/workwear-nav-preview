@@ -1,6 +1,7 @@
 # Image → Embroidery File (.dst) — Proof of Concept
 
-> **v2:** `digitize_pro.py` is the upgraded engine — see
+> **v2:** `digitize_pro.py` (now kept only in `stitchdraft-app/engine/`, the
+> single copy the app and the regression suite both run) is the upgraded engine — see
 > [Professional-grade engine](#professional-grade-engine-digitize_propy) below.
 > `digitize.py` (v1, fills only) is kept for comparison.
 
@@ -66,7 +67,7 @@ The v2 engine applies the techniques a human digitizer uses, automatically:
 
 ```bash
 pip install pyembroidery pillow numpy opencv-python-headless shapely
-python digitize_pro.py input.png output.dst 100   # 100 = width in mm
+python ../stitchdraft-app/engine/digitize_pro.py input.png output.dst 100   # 100 = width in mm
 python vectorize_svg.py input.png output.svg 100  # SVG for Ink/Stitch route
 ```
 

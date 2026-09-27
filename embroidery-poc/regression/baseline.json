@@ -1,51 +1,74 @@
 {
   "cambridge.png": {
-    "stitches": 2474,
-    "trims": 35,
+    "stitches": 2449,
+    "trims": 34,
     "colours": 3,
     "w_mm": 111.8,
-    "h_mm": 22.8
+    "h_mm": 22.8,
+    "knockout_hits": 4
   },
   "cf_badge.png": {
-    "stitches": 6193,
-    "trims": 65,
+    "stitches": 6203,
+    "trims": 66,
     "colours": 3,
     "w_mm": 99.5,
-    "h_mm": 73.6
+    "h_mm": 73.6,
+    "knockout_hits": 2
   },
   "01_letter_ladder_sans.png": {
     "stitches": 3119,
-    "trims": 61,
+    "trims": 60,
     "colours": 2,
     "w_mm": 91.3,
-    "h_mm": 66.1
+    "h_mm": 66.1,
+    "knockout_hits": 4
   },
   "05_stroke_ladder.png": {
     "stitches": 6984,
     "trims": 17,
     "colours": 2,
     "w_mm": 91.5,
-    "h_mm": 69.3
+    "h_mm": 69.3,
+    "knockout_hits": 0
   },
   "07_junctions.png": {
-    "stitches": 3476,
-    "trims": 48,
+    "stitches": 3489,
+    "trims": 50,
     "colours": 2,
     "w_mm": 101.3,
-    "h_mm": 61.3
+    "h_mm": 61.3,
+    "knockout_hits": 0
   },
   "09_touching_elements.png": {
-    "stitches": 3287,
+    "stitches": 3280,
     "trims": 18,
     "colours": 4,
     "w_mm": 100.9,
-    "h_mm": 52.9
+    "h_mm": 53.1,
+    "knockout_hits": 0
   },
   "11_micro_emblems.png": {
-    "stitches": 3051,
-    "trims": 20,
+    "stitches": 3065,
+    "trims": 22,
     "colours": 2,
     "w_mm": 99.8,
-    "h_mm": 68.0
+    "h_mm": 68.0,
+    "knockout_hits": 0
+  },
+  "10_composite_crest.png": {
+    "stitches": 11294,
+    "trims": 79,
+    "colours": 6,
+    "w_mm": 100.0,
+    "h_mm": 89.8,
+    "knockout_hits": 15
+  },
+  "11_knockout_text.png": {
+    "stitches": 12683,
+    "trims": 132,
+    "colours": 3,
+    "w_mm": 89.8,
+    "h_mm": 66.8,
+    "knockout_hits": 77
   }
 }

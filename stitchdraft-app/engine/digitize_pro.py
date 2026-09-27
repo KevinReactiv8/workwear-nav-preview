@@ -99,6 +99,7 @@ def extract_regions(path, target_width_mm, n_colors=8):
         if alpha is not None:
             alpha = np.array(Image.fromarray(alpha).resize(img.size, Image.LANCZOS))
 
+    rgb_arr = np.array(img)
     pal_img = img.quantize(colors=n_colors, method=Image.MEDIANCUT)
     labels = np.array(pal_img)
     palette = np.array(pal_img.getpalette()).reshape(-1, 3)[:n_colors]
@@ -123,6 +124,7 @@ def extract_regions(path, target_width_mm, n_colors=8):
         labels = labels[y0:y1, x0:x1]
         if transparent is not None:
             transparent = transparent[y0:y1, x0:x1]
+        rgb_arr = rgb_arr[y0:y1, x0:x1]
         content_w = x1 - x0
     else:
         content_w = img.width
@@ -162,7 +164,14 @@ def extract_regions(path, target_width_mm, n_colors=8):
             if d < best_d and t < 0.9:
                 best, best_d = m, d
         if best is not None:
-            merged[l] = None  # halo: drop entirely (antialiasing, not artwork)
+            # colour-wise it sits between the background and an element —
+            # but so does real artwork (a purple quarter of a navy-on-white
+            # crest). Antialiasing is only a 1-2px fringe, so a colour with
+            # a solid interior that survives erosion is artwork: keep it
+            m = (labels == l).astype(np.uint8)
+            solid = cv2.erode(m, np.ones((5, 5), np.uint8)).sum()
+            if solid < 0.25 * m.sum():
+                merged[l] = None  # halo: drop entirely (antialiasing, not artwork)
     if merged:
         lut = np.arange(n_colors)
         drop = np.zeros(n_colors, bool)
@@ -234,7 +243,16 @@ def extract_regions(path, target_width_mm, n_colors=8):
             geom = unary_union(polys)
             if isinstance(geom, Polygon):
                 geom = MultiPolygon([geom])
-            regions.append((tuple(int(c) for c in palette[label]), geom))
+            # median-cut returns the AVERAGE of its colour box, which mixes
+            # in antialiasing and drifts (orange 235,110,30 came back as
+            # 209,118,65). The artwork's true colour is the commonest exact
+            # pixel inside the solid part of the region
+            core = cv2.erode(mask, kernel).astype(bool)
+            px = rgb_arr[core if core.any() else mask.astype(bool)]
+            if len(px) > 20000:
+                px = px[:: len(px) // 20000]
+            u, cnt = np.unique(px, axis=0, return_counts=True)
+            regions.append((tuple(int(c) for c in u[cnt.argmax()]), geom))
     return regions
 
 
@@ -603,6 +621,34 @@ def write_svg(regions, svg_path):
     print(f"wrote {svg_path}")
 
 
+GRADIENT_WARN_MM2 = 25.0     # blended area above this -> route to a human
+
+
+def unstitchable_blend_mm2(path, regions, target_width_mm):
+    """Area of artwork (mm², at sewn size) whose colour is none of the
+    thread colours we're about to stitch — gradients, shading, photos.
+
+    Antialiasing also sits between colours, but only as a 1-2px fringe; a
+    morphological open at ~0.6mm wipes fringes out and leaves only broad
+    blended areas, which flat-fill embroidery can't reproduce."""
+    img = Image.open(path)
+    ppm = 8.0  # analysis resolution, px per mm
+    scale = min(target_width_mm * ppm, 2000) / img.width
+    img = img.resize((max(1, round(img.width * scale)), max(1, round(img.height * scale))),
+                     Image.BILINEAR)
+    rgba = np.array(img.convert("RGBA")).astype(float)
+    rgb, alpha = rgba[..., :3], rgba[..., 3]
+    content = alpha >= 128
+    border = np.concatenate([rgb[0], rgb[-1], rgb[:, 0], rgb[:, -1]])
+    cols = [np.array(c, float) for c, _ in regions] + [np.median(border, axis=0)]
+    dist = np.min([np.linalg.norm(rgb - c, axis=-1) for c in cols], axis=0)
+    blend = ((dist > 40) & content).astype(np.uint8)
+    px_per_mm = img.width / target_width_mm
+    k = max(3, round(0.6 * px_per_mm))
+    blend = cv2.morphologyEx(blend, cv2.MORPH_OPEN, np.ones((k, k), np.uint8))
+    return float(blend.sum()) / px_per_mm ** 2
+
+
 def digitize(in_path, out_path, target_width_mm=80.0):
     regions = extract_regions(in_path, target_width_mm)
     if not regions:
@@ -713,6 +759,10 @@ def digitize(in_path, out_path, target_width_mm=80.0):
     if dropped:
         print(f"  WARNING: {dropped} region(s) below {MIN_FEATURE_MM}mm needle "
               f"limit were dropped — enlarge the design or simplify the art")
+    blend = unstitchable_blend_mm2(in_path, regions, target_width_mm)
+    if blend > GRADIENT_WARN_MM2:
+        print(f"  GRADIENT: {blend:.0f}mm² of blended/photographic colour could not "
+              f"be matched to a thread — this draft flattens it; route to a human digitizer")
 
 
 if __name__ == "__main__":

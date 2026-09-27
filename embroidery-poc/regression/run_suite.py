@@ -11,7 +11,10 @@ Usage, from embroidery-poc/:
     python regression/run_suite.py --update-baseline  # accept current output
 
 A design FAILS if, vs baseline: stitch count drifts >15%, trims drift >30%
-(and by more than 5), or the sewn size drifts >2%. Previews are written to
+(and by more than 5), the sewn size drifts >2%, the thread-colour count
+changes (a colour silently dropped — the crest's purple and green once
+were), or a colour sews into its own knockouts (white text reversed out of
+a badge — once filled over, and stitch counts alone barely noticed). Previews are written to
 regression/out/ for eyeball review — numbers catch drift, eyes catch ugly.
 """
 import json
@@ -20,9 +23,11 @@ import sys
 from pathlib import Path
 
 import pyembroidery as pe
+from shapely.geometry import Point, Polygon
+from shapely.ops import unary_union
 
 HERE = Path(__file__).parent
-ENGINE = HERE.parent / "digitize_pro.py"
+ENGINE = HERE.parent.parent / "stitchdraft-app" / "engine" / "digitize_pro.py"
 BASELINE = HERE / "baseline.json"
 OUT = HERE / "out"
 
@@ -35,7 +40,47 @@ DESIGNS = [
     ("07_junctions.png", 100.0),
     ("09_touching_elements.png", 100.0),
     ("11_micro_emblems.png", 100.0),
+    ("10_composite_crest.png", 100.0),
+    ("11_knockout_text.png", 100.0),
 ]
+
+# a few needle points can legitimately graze a hole edge (ties, satin
+# overshoot on tiny counters); a filled-over knockout puts hundreds there
+KNOCKOUT_TOLERANCE = 25
+
+
+def knockout_hits(dst_path, art_path, width):
+    """Needle points of each colour landing inside that colour's own holes.
+    The engine writes absolute coordinates (0.1mm) in the same mm space as
+    extract_regions, so no alignment is needed. Regions map to thread
+    blocks in order."""
+    sys.path.insert(0, str(ENGINE.parent))
+    from digitize_pro import extract_regions
+    holes = []
+    for _, geom in extract_regions(str(art_path), width):
+        # a hole can legitimately hold more art of the same colour (a letter
+        # inside a frame) — carve that art out, plus 1mm for its satin
+        # border overhang. Only OTHER shapes are carved: the hole's own
+        # edge stays tight, so a filled-over knockout still shows up
+        hs = []
+        for p in geom.geoms:
+            for h in p.interiors:
+                hp = Polygon(h)
+                nested = [q for q in geom.geoms if q is not p and q.within(hp)]
+                hole = hp.buffer(-0.3)
+                if nested:
+                    hole = hole.difference(unary_union(nested).buffer(1.0))
+                hs.append(hole)
+        holes.append([h for h in hs if not h.is_empty])
+    p = pe.read(str(dst_path))
+    block, hits = 0, 0
+    for x, y, cmd in p.stitches:
+        if cmd == pe.COLOR_CHANGE:
+            block += 1
+        elif cmd == pe.STITCH and block < len(holes):
+            pt = Point(x / 10, y / 10)
+            hits += sum(1 for h in holes[block] if h.contains(pt))
+    return hits
 
 
 def metrics(dst_path):
@@ -69,6 +114,7 @@ def main():
                             f"{r.stderr.strip().splitlines()[-1] if r.stderr.strip() else '?'}")
             continue
         m = metrics(dst)
+        m["knockout_hits"] = knockout_hits(dst, HERE / "inputs" / name, width)
         results[name] = m
         b = baseline.get(name)
         if b and not update:
@@ -79,12 +125,19 @@ def main():
                 msgs.append(f"trims {b['trims']} -> {m['trims']}")
             if abs(m["w_mm"] - b["w_mm"]) > 0.02 * b["w_mm"]:
                 msgs.append(f"width {b['w_mm']} -> {m['w_mm']}mm")
+            if m["colours"] != b["colours"]:
+                msgs.append(f"colours {b['colours']} -> {m['colours']}")
+            kb = b.get("knockout_hits", 0)
+            if m["knockout_hits"] > max(1.5 * kb, kb + KNOCKOUT_TOLERANCE):
+                msgs.append(f"stitches inside knockouts {b.get('knockout_hits', 0)} "
+                            f"-> {m['knockout_hits']}")
             if msgs:
                 failures.append(f"{name}: " + ", ".join(msgs))
         status = "BASE" if not b else ("DRIFT" if any(
             f.startswith(name + ":") for f in failures) else "ok")
         print(f"  {name:32s} {m['stitches']:6d} st {m['trims']:4d} trims "
-              f"{m['w_mm']:6.1f}x{m['h_mm']:.1f}mm  [{status}]")
+              f"{m['w_mm']:6.1f}x{m['h_mm']:.1f}mm {m['colours']}col "
+              f"{m['knockout_hits']:3d}ko  [{status}]")
 
     if update or not baseline:
         BASELINE.write_text(json.dumps(results, indent=2))
