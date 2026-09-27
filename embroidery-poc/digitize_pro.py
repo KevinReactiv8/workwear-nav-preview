@@ -433,7 +433,17 @@ def satin_border(poly, out):
     """Satin column along the region outline: running underlay then dense
     zigzag between an inner and outer offset of the edge."""
     half = SATIN_WIDTH / 2 + SATIN_PULL_COMP
-    rings = [poly.exterior] + list(poly.interiors)
+    rings = [poly.exterior]
+    # a hole is a knockout (reversed-out text, a star cut from a badge):
+    # centring the border on its edge would sew half the column into it
+    # and choke thin letters, so walk the border inside the fill instead
+    solid = Polygon(poly.exterior).buffer(1e-6)
+    for h in poly.interiors:
+        grown = Polygon(h).buffer(SATIN_WIDTH / 2, join_style=2)
+        if isinstance(grown, Polygon) and grown.within(solid):
+            rings.append(grown.exterior)
+        else:
+            rings.append(h)
     for ring in rings:
         if ring.length < SATIN_WIDTH * 3:
             continue
@@ -469,7 +479,16 @@ def pull_compensate(poly, angle):
     if result.is_empty or not isinstance(result, Polygon):
         return poly
     back = Polygon(rotate(result.exterior.coords, angle, origin))
-    return back if back.is_valid else poly
+    if not back.is_valid:
+        return poly
+    # the growth above works on the outline only — cut the original holes
+    # back out, or knockouts (white text reversed out of a badge) get
+    # filled over
+    if poly.interiors:
+        back = back.difference(unary_union([Polygon(h) for h in poly.interiors]))
+        if not isinstance(back, Polygon):
+            return poly
+    return back
 
 
 # ----------------------------------------------------------------------------
